@@ -1,0 +1,1333 @@
+<!doctype html>
+<html lang="sv" data-size="m">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Läsning på svenska</title>
+<meta name="description" content="Nyheter, kultur och böcker på svenska, med finsk ordhjälp.">
+<meta name="theme-color" content="#DDE6F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#05070E" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Läsning">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+@font-face {
+  /* Varafontti laitteille, joilla ei ole Applen New York -fonttia. */
+  font-family: "Literata";
+  src: url("fonts/literata.woff2") format("woff2");
+  font-weight: 200 900;
+  font-display: swap;
+}
+@property --tint {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #30B0C7;
+}
+
+:root {
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, sans-serif;
+  --serif: ui-serif, "New York", "Literata", Georgia, serif;
+
+  --label: #000;
+  --label2: rgba(60, 60, 67, 0.74);
+  --label3: rgba(60, 60, 67, 0.48);
+  --sep: rgba(60, 60, 67, 0.16);
+  --wall: #DDE6F3;
+
+  --card: rgba(255, 255, 255, 0.74);
+  --card-edge: rgba(255, 255, 255, 0.95);
+  --glass: rgba(255, 255, 255, 0.40);
+  --glass-strong: rgba(250, 251, 255, 0.84);
+  --rim-hi: rgba(255, 255, 255, 0.95);
+  --rim-lo: rgba(255, 255, 255, 0.25);
+  --lens: rgba(255, 255, 255, 0.62);
+  --shadow: 0 12px 34px rgba(24, 36, 72, 0.13), 0 2px 6px rgba(24, 36, 72, 0.06);
+  --card-shadow: 0 6px 22px rgba(24, 36, 72, 0.08), 0 1px 2px rgba(24, 36, 72, 0.05);
+
+  --blue: #007AFF;
+  --indigo: #5856D6;
+  --pink: #FF2D55;
+  --orange: #FF9500;
+  --green: #34C759;
+  --teal: #30B0C7;
+  --reddit: #FF4500;
+
+  --blob1: rgba(0, 122, 255, 0.34);
+  --blob2: rgba(175, 82, 222, 0.30);
+  --blob3: rgba(52, 199, 89, 0.24);
+  --blob4: rgba(255, 149, 0, 0.22);
+  --tint-strength: 42%;
+
+  --sum: 17px;
+  --title: 20px;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --label: #fff;
+    --label2: rgba(235, 235, 245, 0.72);
+    --label3: rgba(235, 235, 245, 0.42);
+    --sep: rgba(255, 255, 255, 0.10);
+    --wall: #05070E;
+
+    --card: rgba(30, 32, 40, 0.66);
+    --card-edge: rgba(255, 255, 255, 0.10);
+    --glass: rgba(36, 38, 48, 0.42);
+    --glass-strong: rgba(30, 32, 42, 0.84);
+    --rim-hi: rgba(255, 255, 255, 0.42);
+    --rim-lo: rgba(255, 255, 255, 0.06);
+    --lens: rgba(255, 255, 255, 0.14);
+    --shadow: 0 14px 40px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+    --card-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+
+    --blue: #0A84FF;
+    --indigo: #5E5CE6;
+    --pink: #FF375F;
+    --orange: #FF9F0A;
+    --green: #30D158;
+    --teal: #40C8E0;
+
+    --blob1: rgba(10, 132, 255, 0.30);
+    --blob2: rgba(94, 92, 230, 0.34);
+    --blob3: rgba(48, 209, 88, 0.22);
+    --blob4: rgba(255, 55, 95, 0.16);
+    --tint-strength: 36%;
+  }
+}
+html[data-size="s"] { --sum: 15px; --title: 18px; }
+html[data-size="l"] { --sum: 20px; --title: 23px; }
+
+* { box-sizing: border-box; }
+html {
+  background: var(--wall);
+  color: var(--label);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.4;
+  transition: --tint 0.7s ease;
+}
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible {
+  outline: 2.5px solid var(--tint);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* Taustakuva: revontulia ja kesäiltaa. Avdelningens färg lyser i hörnet. */
+.wall {
+  position: fixed;
+  inset: -12%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 34% at 18% 6%, color-mix(in srgb, var(--tint) var(--tint-strength), transparent), transparent 72%),
+    radial-gradient(40% 36% at 92% 22%, var(--blob2), transparent 70%),
+    radial-gradient(46% 40% at 6% 62%, var(--blob1), transparent 72%),
+    radial-gradient(44% 40% at 88% 78%, var(--blob4), transparent 70%),
+    radial-gradient(50% 40% at 40% 104%, var(--blob3), transparent 72%),
+    var(--wall);
+}
+
+/* Lasimateriaali */
+.glass {
+  position: relative;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  backdrop-filter: blur(24px) saturate(190%);
+  box-shadow:
+    inset 0 1px 0 var(--rim-hi),
+    inset 0 -1px 0 var(--rim-lo),
+    var(--shadow);
+}
+.glass::before {
+  /* Reunan valotaite */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(150deg, var(--rim-hi), var(--rim-lo) 34%, transparent 58%, var(--rim-lo) 82%, var(--rim-hi));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.glass::after {
+  /* Pinnan heijastus */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(170deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 42%);
+  pointer-events: none;
+}
+@media (prefers-color-scheme: dark) {
+  .glass::after { background: linear-gradient(170deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0) 40%); }
+}
+.glass > * { position: relative; z-index: 1; }
+
+/* Yläpalkki */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 20;
+  height: calc(env(safe-area-inset-top, 0px) + 60px);
+  padding: calc(env(safe-area-inset-top, 0px) + 8px) 14px 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  pointer-events: none;
+}
+.compact {
+  margin-top: 2px;
+  background: color-mix(in srgb, var(--glass-strong) 80%, transparent);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font: 600 15px/1.2 var(--font);
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+  transition: opacity 0.25s ease, transform 0.35s cubic-bezier(.2, .9, .3, 1.2);
+}
+.compact.on { opacity: 1; transform: none; }
+.round {
+  position: absolute;
+  right: 14px;
+  top: calc(env(safe-area-inset-top, 0px) + 8px);
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.round svg { width: 22px; height: 22px; }
+
+/* Vierityksen reunahäivytys palkkien alla */
+.edge {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 15;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.edge.top {
+  top: 0;
+  height: calc(env(safe-area-inset-top, 0px) + 70px);
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--wall) 80%, transparent), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent);
+}
+.edge.bottom {
+  bottom: 0;
+  height: calc(env(safe-area-inset-bottom, 0px) + 92px);
+  background: linear-gradient(to top, color-mix(in srgb, var(--wall) 65%, transparent), transparent);
+  -webkit-mask-image: linear-gradient(to top, #000 40%, transparent);
+  mask-image: linear-gradient(to top, #000 40%, transparent);
+}
+
+/* Sisältö */
+.wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top, 0px) + 66px) 14px calc(env(safe-area-inset-bottom, 0px) + 120px);
+}
+.hero { padding: 0 6px 18px; }
+.today {
+  margin: 0;
+  font: 600 17px/1.3 var(--font);
+  color: var(--label2);
+}
+.hero h1 {
+  margin: 2px 0 6px;
+  font: 700 clamp(34px, 9vw, 44px)/1.08 var(--font-display);
+  letter-spacing: -0.022em;
+}
+.status {
+  margin: 0;
+  font-size: 15px;
+  color: var(--label2);
+}
+.status.stale { color: var(--pink); }
+
+.day {
+  margin: 26px 8px 10px;
+  font: 600 13px/1.2 var(--font);
+  color: var(--label2);
+  letter-spacing: 0.01em;
+}
+.day:first-child { margin-top: 6px; }
+
+.card {
+  margin: 0 0 14px;
+  border-radius: 28px;
+  background: var(--card);
+  box-shadow: inset 0 0 0 0.5px var(--card-edge), inset 0 1px 0 var(--card-edge), var(--card-shadow);
+  overflow: hidden;
+}
+.media {
+  display: block;
+  margin: 8px 8px 0;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--sep);
+}
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.body { padding: 14px 18px 18px; }
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.2;
+  color: var(--label2);
+  margin-bottom: 8px;
+}
+.src {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
+  color: var(--label);
+  min-width: 0;
+}
+.src i {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cat);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cat) 22%, transparent);
+}
+.meta time { margin-left: auto; white-space: nowrap; }
+.cat-varlden { --cat: var(--blue); }
+.cat-aktuellt { --cat: var(--indigo); }
+.cat-kultur { --cat: var(--pink); }
+.cat-latt { --cat: var(--green); }
+
+.card h2 {
+  margin: 0 0 8px;
+  font: 700 var(--title)/1.25 var(--font-display);
+  letter-spacing: -0.012em;
+}
+.card h2 a { text-decoration: none; }
+.card h2 a:hover { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 0.16em; }
+.sum {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: var(--sum);
+  line-height: 1.55;
+  color: var(--label);
+  opacity: 0.9;
+}
+.w {
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.15s ease;
+}
+@media (hover: hover) {
+  .w:hover { background: color-mix(in srgb, var(--tint) 14%, transparent); }
+}
+.w.on {
+  background: color-mix(in srgb, var(--tint) 26%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--tint) 26%, transparent);
+}
+.chips {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+.chips:empty { display: none; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font: 600 12px/1.2 var(--font);
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 14%, transparent);
+}
+.chip svg { width: 13px; height: 13px; stroke-width: 2.2; }
+.chip.bok { --c: var(--orange); }
+.chip.read { --c: var(--label2); }
+.card.read h2, .card.read .sum { opacity: 0.55; }
+.card.read .media { opacity: 0.7; }
+
+.tip {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  border-radius: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 15px;
+  line-height: 1.35;
+}
+.tip p { margin: 0; flex: 1; }
+.tip button {
+  flex: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #fff;
+  background: var(--tint);
+  cursor: pointer;
+}
+
+.more {
+  display: block;
+  width: 100%;
+  margin: 6px 0 0;
+  padding: 15px;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--tint);
+  cursor: pointer;
+}
+.empty {
+  padding: 40px 18px;
+  text-align: center;
+  color: var(--label2);
+}
+.empty button {
+  margin-top: 10px;
+  border: 0;
+  background: none;
+  color: var(--tint);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Reddit */
+.note {
+  margin: 0 0 14px;
+  padding: 16px 18px;
+  border-radius: 24px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--label2);
+}
+.note p { margin: 0; }
+.rlink {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  text-decoration: none;
+}
+.rlink .ic {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--reddit) 80%, #fff), var(--reddit));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+}
+.rlink .ic svg { width: 24px; height: 24px; }
+.rlink strong { display: block; font-size: 17px; }
+.rlink span { display: block; font-size: 14px; color: var(--label2); margin-top: 2px; }
+.rlink .chev { margin-left: auto; color: var(--label3); flex: none; width: 10px; height: 16px; }
+
+/* Välilehtipalkki */
+.tabbar {
+  position: fixed;
+  z-index: 30;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
+  transform: translateX(-50%);
+  width: min(560px, calc(100% - 20px));
+  height: 66px;
+  padding: 5px;
+  border-radius: 33px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+.lens {
+  position: absolute;
+  z-index: 0 !important;
+  top: 5px;
+  bottom: 5px;
+  left: 0;
+  width: 0;
+  border-radius: 28px;
+  background: var(--lens);
+  box-shadow: inset 0 1px 0 var(--rim-hi), inset 0 0 0 0.5px var(--rim-lo), 0 2px 10px rgba(0,0,0,.08);
+  transition: transform 0.5s cubic-bezier(.25, 1.35, .45, 1), width 0.5s cubic-bezier(.25, 1.35, .45, 1);
+}
+.tab {
+  border: 0;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+  padding: 0;
+  border-radius: 28px;
+  color: var(--label);
+  cursor: pointer;
+}
+.tab svg {
+  width: 23px;
+  height: 23px;
+  stroke-width: 1.75;
+  transition: transform 0.3s cubic-bezier(.25, 1.4, .45, 1);
+}
+.tab span {
+  font: 600 10.5px/1 var(--font);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.tab[aria-pressed="true"] { color: var(--c); }
+.tab[aria-pressed="true"] svg { stroke-width: 2.2; transform: scale(1.06); }
+
+/* Arkit */
+.sheet {
+  position: fixed;
+  z-index: 40;
+  left: 50%;
+  width: min(540px, calc(100% - 20px));
+  border-radius: 30px;
+  background: var(--glass-strong);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.22s ease, transform 0.4s cubic-bezier(.2, 1.2, .35, 1), visibility 0s linear 0.4s;
+}
+.sheet.on {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.22s ease, transform 0.4s cubic-bezier(.2, 1.2, .35, 1), visibility 0s;
+}
+.word-sheet {
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 86px);
+  transform: translate(-50%, 18px) scale(0.95);
+  transform-origin: 50% 100%;
+  padding: 18px 18px 16px 20px;
+  max-height: calc(100vh - 200px);
+  overflow: auto;
+}
+.word-sheet.on { transform: translate(-50%, 0) scale(1); }
+.menu-sheet {
+  top: calc(env(safe-area-inset-top, 0px) + 60px);
+  left: auto;
+  right: 10px;
+  width: min(360px, calc(100% - 20px));
+  transform: scale(0.9);
+  transform-origin: calc(100% - 26px) 0;
+  padding: 8px;
+  max-height: calc(100vh - 160px);
+  overflow: auto;
+}
+.menu-sheet.on { transform: none; }
+
+.ws-head { display: flex; align-items: flex-start; gap: 12px; }
+.ws-head > div { flex: 1; min-width: 0; }
+.ws-word {
+  font: 600 28px/1.15 var(--serif);
+  overflow-wrap: anywhere;
+}
+.ws-lemma { margin-top: 4px; font-size: 14px; color: var(--label2); }
+.ws-lemma b { color: var(--label); font-weight: 600; }
+.x {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--sep);
+  color: var(--label2);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.x svg { width: 14px; height: 14px; }
+.ws-senses {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: s;
+}
+.ws-senses li {
+  position: relative;
+  padding: 8px 0 8px 28px;
+  font: 600 19px/1.3 var(--font);
+  border-top: 0.5px solid var(--sep);
+}
+.ws-senses li:first-child { border-top: 0; }
+.ws-senses li::before {
+  counter-increment: s;
+  content: counter(s);
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font: 600 12px/20px var(--font);
+  text-align: center;
+  color: var(--tint);
+  background: color-mix(in srgb, var(--tint) 16%, transparent);
+}
+.ws-senses.single li { padding-left: 0; }
+.ws-senses.single li::before { display: none; }
+.ws-parts { margin: 14px 0 0; display: grid; gap: 8px; }
+.ws-parts div {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-size: 17px;
+}
+.ws-parts dt { font: 500 17px/1.3 var(--serif); color: var(--label2); min-width: 4.5em; }
+.ws-parts dd { margin: 0; font-weight: 600; }
+.ws-also { margin: 10px 0 0; font-size: 14px; color: var(--label2); }
+.ws-also b { color: var(--label); font-weight: 600; }
+.ws-mt {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--tint) 10%, transparent);
+}
+.ws-mt[hidden] { display: none; }
+.ws-mt .sv { margin: 0 0 6px; font: 17px/1.45 var(--serif); color: var(--label2); }
+.ws-mt .fi { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.4; }
+.ws-mt small { display: block; margin-top: 8px; font-size: 12px; color: var(--label3); }
+.ws-actions { display: flex; gap: 8px; margin-top: 16px; }
+.pill {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 14px;
+  font-weight: 600;
+  font-size: 15px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--sep);
+  color: var(--label);
+}
+.pill.primary { background: var(--tint); color: #fff; flex-grow: 2; }
+
+/* Valikko */
+.group {
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--card) 70%, transparent);
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 50px;
+  padding: 8px 16px;
+  font-size: 16px;
+}
+.row + .row { border-top: 0.5px solid var(--sep); }
+.row > span:first-child { flex: 1; }
+.switch {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  width: 51px;
+  height: 31px;
+  margin: 0;
+  border-radius: 999px;
+  background: rgba(120, 120, 128, 0.24);
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18), 0 1px 1px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s cubic-bezier(.25, 1.3, .45, 1);
+}
+.switch:checked { background: var(--green); }
+.switch:checked::after { transform: translateX(20px); }
+.seg {
+  display: flex;
+  padding: 2px;
+  border-radius: 10px;
+  background: rgba(120, 120, 128, 0.16);
+}
+.seg button {
+  border: 0;
+  background: none;
+  width: 44px;
+  height: 30px;
+  border-radius: 8px;
+  font-family: var(--serif);
+  cursor: pointer;
+}
+.seg button[aria-pressed="true"] {
+  background: var(--card);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+.seg button:nth-child(1) { font-size: 13px; }
+.seg button:nth-child(2) { font-size: 16px; }
+.seg button:nth-child(3) { font-size: 20px; }
+.group h3 {
+  margin: 0;
+  padding: 14px 16px 6px;
+  font: 600 13px/1.2 var(--font);
+  color: var(--label2);
+}
+.srcrow { font-size: 15px; }
+.srcrow .src { font-weight: 500; }
+.srcrow a { text-decoration: none; }
+.srcrow .st { margin-left: auto; font-size: 13px; color: var(--label2); text-align: right; }
+.srcrow .st.bad { color: var(--pink); }
+.fine {
+  margin: 4px 8px 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--label3);
+}
+.fine a { color: var(--label2); }
+
+@media (max-width: 380px) {
+  .tab span { font-size: 9.5px; }
+  .tab svg { width: 21px; height: 21px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: var(--glass-strong); }
+}
+</style>
+</head>
+<body>
+<div class="wall" aria-hidden="true"></div>
+<div class="edge top" aria-hidden="true"></div>
+<div class="edge bottom" aria-hidden="true"></div>
+
+<div class="topbar">
+  <div class="compact glass" id="compact" aria-hidden="true"></div>
+  <button class="round glass" id="menuBtn" type="button" aria-label="Inställningar och källor" aria-expanded="false" aria-controls="menu">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+  </button>
+</div>
+
+<main class="wrap">
+  <header class="hero">
+    <p class="today" id="today"></p>
+    <h1 id="title">Allt</h1>
+    <p class="status" id="status" aria-live="polite">Hämtar texter…</p>
+  </header>
+  <div id="view"></div>
+</main>
+
+<nav class="tabbar glass" id="tabbar" aria-label="Avdelningar">
+  <span class="lens" id="lens" aria-hidden="true"></span>
+</nav>
+
+<section class="sheet glass word-sheet" id="wordSheet" role="dialog" aria-label="Ordhjälp" aria-hidden="true"></section>
+
+<section class="sheet glass menu-sheet" id="menu" role="dialog" aria-label="Inställningar" aria-hidden="true">
+  <div class="group">
+    <label class="row"><span>Dölj texter jag har läst</span><input class="switch" type="checkbox" role="switch" id="hideRead"></label>
+    <div class="row"><span>Textstorlek</span>
+      <div class="seg" id="sizes" role="group" aria-label="Textstorlek">
+        <button type="button" data-size="s" aria-label="Liten">A</button>
+        <button type="button" data-size="m" aria-label="Mellan">A</button>
+        <button type="button" data-size="l" aria-label="Stor">A</button>
+      </div>
+    </div>
+  </div>
+  <div class="group">
+    <h3 id="srcHead">Källor</h3>
+    <div id="srcList"></div>
+  </div>
+  <p class="fine">
+    Rubriker och ingresser kommer från källorna. Ordlista: FreeDict och WikDict, byggd på Wiktionary (CC BY-SA 3.0).
+    Böjningsformer: Lemmatization Lists (ODbL). Ord som saknas och hela meningar översätts av MyMemory.
+  </p>
+</section>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ---------- Asetukset ---------- */
+  const PAGE = 30;
+  const ICONS = {
+    allt: '<rect x="3.5" y="3.5" width="7" height="7" rx="2.2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2.2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2.2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2.2"/>',
+    varlden: '<circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2M12 3.4c2.5 2.4 3.8 5.3 3.8 8.6s-1.3 6.2-3.8 8.6c-2.5-2.4-3.8-5.3-3.8-8.6s1.3-6.2 3.8-8.6z"/>',
+    aktuellt: '<rect x="3.5" y="4.5" width="13.5" height="15" rx="2.5"/><path d="M17 8.5h2a1.5 1.5 0 0 1 1.5 1.5v7.5a2 2 0 0 1-2 2H6M7 9h6.5M7 12.5h6.5M7 16h4"/>',
+    kultur: '<rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.7"/><path d="M4 17.5l4.5-4.5 3.5 3.5 3-3 5.5 5.5"/>',
+    bok: '<path d="M12 6.8c-1.9-1.5-4.4-2.2-7.6-2.2v13.2c3.2 0 5.7.7 7.6 2.2 1.9-1.5 4.4-2.2 7.6-2.2V4.6c-3.2 0-5.7.7-7.6 2.2zM12 6.8v13.2"/>',
+    latt: '<path d="M5 19.2C5 11 10.2 5.3 19.4 4.8c.5 9.3-5.2 14.4-14.4 14.4zM5 19.2l7.8-7.8"/>',
+    reddit: '<path d="M4 6.6A2.6 2.6 0 0 1 6.6 4h7A2.6 2.6 0 0 1 16.2 6.6v4a2.6 2.6 0 0 1-2.6 2.6H9.2L5.6 16v-2.8A2.6 2.6 0 0 1 4 10.6z"/><path d="M18.4 9h.1a2 2 0 0 1 2 2v3.6a2 2 0 0 1-2 2h-.4v2.6l-3-2.6h-2.6a2 2 0 0 1-1.8-1.2"/>',
+  };
+  const TABS = [
+    { id: "allt", label: "Allt", title: "Allt", color: "var(--teal)", test: () => true },
+    { id: "varlden", label: "Världen", title: "Världen", color: "var(--blue)", test: (i) => i.category === "varlden" },
+    { id: "aktuellt", label: "Aktuellt", title: "Aktuellt", color: "var(--indigo)", test: (i) => i.category === "aktuellt" },
+    { id: "kultur", label: "Kultur", title: "Kultur", color: "var(--pink)", test: (i) => i.category === "kultur" },
+    { id: "bok", label: "Böcker", title: "Böcker", color: "var(--orange)", test: (i) => (i.tags || []).includes("bok") },
+    { id: "latt", label: "Lätt", title: "Lätt svenska", color: "var(--green)", test: (i) => i.category === "latt" },
+    { id: "reddit", label: "Reddit", title: "Reddit", color: "var(--reddit)", test: () => false },
+  ];
+
+  const store = {
+    get(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw === null ? fallback : JSON.parse(raw);
+      } catch { return fallback; }
+    },
+    set(key, value) {
+      try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* yksityinen selaus tms. */ }
+    },
+  };
+
+  const state = {
+    items: [],
+    sources: [],
+    reddit: [],
+    generatedTs: 0,
+    tab: store.get("sl.tab", "allt"),
+    hideRead: store.get("sl.hideRead", false),
+    size: store.get("sl.size", "m"),
+    tipSeen: store.get("sl.tipSeen", false),
+    read: new Set(store.get("sl.read", [])),
+    shown: PAGE,
+  };
+  if (!TABS.some((t) => t.id === state.tab)) state.tab = "allt";
+
+  /* ---------- Apufunktiot ---------- */
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, props = {}, ...children) => {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) {
+      if (k === "class") node.className = v;
+      else if (k === "text") node.textContent = v;
+      else if (k === "html") node.innerHTML = v; // vain omia, kiinteitä SVG-merkkijonoja
+      else node.setAttribute(k, v);
+    }
+    for (const c of children) if (c !== null && c !== undefined && c !== false) node.append(c);
+    return node;
+  };
+  const svg = (paths, cls = "") =>
+    `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+  const safeUrl = (u) => (typeof u === "string" && /^https?:\/\//i.test(u) ? u : null);
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const rtf = new Intl.RelativeTimeFormat("sv", { numeric: "auto" });
+  function ago(ts) {
+    const diff = ts - Date.now() / 1000;
+    const abs = Math.abs(diff);
+    if (abs < 3600) return rtf.format(Math.min(-1, Math.round(diff / 60)), "minute");
+    if (abs < 86400) return rtf.format(Math.round(diff / 3600), "hour");
+    return rtf.format(Math.round(diff / 86400), "day");
+  }
+  const dayFmt = new Intl.DateTimeFormat("sv-SE", { weekday: "long", day: "numeric", month: "long" });
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  function dayLabel(ts) {
+    const d = new Date(ts * 1000);
+    const start = new Date(); start.setHours(0, 0, 0, 0);
+    const diffDays = Math.round((start - new Date(d.getFullYear(), d.getMonth(), d.getDate())) / 86400000);
+    if (diffDays <= 0) return "I dag";
+    if (diffDays === 1) return "I går";
+    return cap(dayFmt.format(d));
+  }
+
+  const saveRead = () => store.set("sl.read", [...state.read].slice(-3000));
+  const currentTab = () => TABS.find((t) => t.id === state.tab);
+  const unreadIn = (tab) => state.items.filter((i) => tab.test(i) && !state.read.has(i.id)).length;
+
+  /* ---------- Sanojen pilkkominen ---------- */
+  const WORD = /\p{L}+(?:[-’']\p{L}+)*/gu;
+  function wordify(text, node) {
+    let last = 0;
+    for (const m of text.matchAll(WORD)) {
+      if (m.index > last) node.append(text.slice(last, m.index));
+      node.append(el("span", { class: "w", "data-o": String(m.index), text: m[0] }));
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) node.append(text.slice(last));
+    return node;
+  }
+  function sentenceAt(text, offset) {
+    const re = /[^.!?…]+(?:[.!?…]+|$)/g;
+    let m;
+    while ((m = re.exec(text))) {
+      if (offset >= m.index && offset < m.index + m[0].length) return m[0].trim();
+    }
+    return text;
+  }
+
+  /* ---------- Yläosa ---------- */
+  function renderHeader() {
+    const tab = currentTab();
+    $("today").textContent = cap(dayFmt.format(new Date()));
+    $("title").textContent = tab.title;
+    $("compact").textContent = tab.title;
+    document.body.style.setProperty("--tint", getComputedStyle(document.documentElement).getPropertyValue(tab.color.slice(4, -1)).trim() || "#30B0C7");
+    renderStatus();
+  }
+  function renderStatus() {
+    const status = $("status");
+    if (!state.generatedTs) return;
+    status.classList.remove("stale");
+    if (state.tab === "reddit") {
+      status.textContent = `${state.reddit.length} genvägar`;
+      return;
+    }
+    const hours = (Date.now() / 1000 - state.generatedTs) / 3600;
+    const unread = unreadIn(currentTab());
+    if (hours > 12) {
+      status.classList.add("stale");
+      status.textContent = `Senast uppdaterat ${ago(state.generatedTs)}. Kontrollera fliken Actions på GitHub.`;
+    } else {
+      status.textContent = `${unread} olästa. Uppdaterat ${ago(state.generatedTs)}.`;
+    }
+  }
+
+  /* ---------- Välilehdet ---------- */
+  function renderTabs() {
+    const bar = $("tabbar");
+    for (const tab of TABS) {
+      const btn = el("button", { class: "tab", type: "button", "data-tab": tab.id, "aria-pressed": "false", html: svg(ICONS[tab.id]) },
+        el("span", { text: tab.label }));
+      btn.style.setProperty("--c", tab.color);
+      btn.addEventListener("click", () => selectTab(tab.id));
+      bar.append(btn);
+    }
+    window.addEventListener("resize", moveLens);
+  }
+  function moveLens() {
+    const active = $("tabbar").querySelector('[aria-pressed="true"]');
+    if (!active) return;
+    const lens = $("lens");
+    lens.style.width = `${active.offsetWidth}px`;
+    lens.style.transform = `translateX(${active.offsetLeft}px)`;
+  }
+  function markTabs() {
+    for (const btn of $("tabbar").querySelectorAll(".tab")) {
+      btn.setAttribute("aria-pressed", String(btn.dataset.tab === state.tab));
+    }
+    moveLens();
+  }
+  function selectTab(id) {
+    closeWord();
+    if (id === state.tab) {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+      return;
+    }
+    state.tab = id;
+    state.shown = PAGE;
+    store.set("sl.tab", id);
+    markTabs();
+    renderHeader();
+    renderView();
+    window.scrollTo({ top: 0 });
+  }
+
+  /* ---------- Jutut ---------- */
+  function cardNode(item) {
+    const source = state.sources.find((s) => s.id === item.source);
+    const read = state.read.has(item.id);
+    const link = safeUrl(item.link) || "#";
+    const chips = el("div", { class: "chips" });
+    if ((item.tags || []).includes("bok")) chips.append(el("span", { class: "chip bok", html: svg(ICONS.bok) }, "Bok"));
+    if (read) chips.append(el("span", { class: "chip read", text: "Läst" }));
+
+    const card = el("article", { class: `card cat-${item.category}${read ? " read" : ""}` });
+    const markRead = () => {
+      if (state.read.has(item.id)) return;
+      state.read.add(item.id);
+      saveRead();
+      card.classList.add("read");
+      chips.append(el("span", { class: "chip read", text: "Läst" }));
+      renderStatus();
+    };
+
+    const img = safeUrl(item.image);
+    if (img && img.startsWith("https://")) {
+      const media = el("a", { class: "media", href: link, target: "_blank", rel: "noopener", tabindex: "-1", "aria-hidden": "true" },
+        el("img", { src: img, alt: "", loading: "lazy", decoding: "async", referrerpolicy: "no-referrer" }));
+      media.querySelector("img").addEventListener("error", () => media.remove());
+      media.addEventListener("click", markRead);
+      card.append(media);
+    }
+
+    const title = el("a", { href: link, target: "_blank", rel: "noopener", text: item.title });
+    title.addEventListener("click", markRead);
+    title.addEventListener("auxclick", markRead);
+
+    const body = el("div", { class: "body" },
+      el("div", { class: "meta" },
+        el("span", { class: "src" }, el("i"), source ? source.name : item.source),
+        el("time", { datetime: item.published, text: ago(item.ts) })),
+      el("h2", {}, title));
+    if (item.summary) body.append(wordify(item.summary.normalize("NFC"), el("p", { class: "sum", lang: "sv" })));
+    body.append(chips);
+    card.append(body);
+    return card;
+  }
+
+  function renderView() {
+    const view = $("view");
+    view.textContent = "";
+    if (state.tab === "reddit") return renderReddit(view);
+
+    const tab = currentTab();
+    const list = state.items.filter((i) => tab.test(i) && !(state.hideRead && state.read.has(i.id)));
+
+    if (!state.tipSeen && list.length) {
+      const ok = el("button", { type: "button", text: "Okej" });
+      const tip = el("div", { class: "tip glass" }, el("p", { text: "Tryck på ett ord i texten så ser du vad det betyder på finska." }), ok);
+      ok.addEventListener("click", () => { state.tipSeen = true; store.set("sl.tipSeen", true); tip.remove(); });
+      view.append(tip);
+    }
+
+    if (!list.length) {
+      const any = state.items.some((i) => tab.test(i));
+      const box = el("div", { class: "empty" });
+      if (state.hideRead && any) {
+        const show = el("button", { type: "button", text: "Visa lästa texter" });
+        show.addEventListener("click", () => setHideRead(false));
+        box.append(el("div", { text: "Du har läst allt här." }), show);
+      } else {
+        box.append(el("div", { text: "Inga nya texter här just nu. Titta in igen senare." }));
+      }
+      view.append(box);
+      return;
+    }
+
+    let lastDay = "";
+    const frag = document.createDocumentFragment();
+    for (const item of list.slice(0, state.shown)) {
+      const label = dayLabel(item.ts);
+      if (label !== lastDay) {
+        frag.append(el("h2", { class: "day", text: label }));
+        lastDay = label;
+      }
+      frag.append(cardNode(item));
+    }
+    view.append(frag);
+
+    const left = list.length - state.shown;
+    if (left > 0) {
+      const more = el("button", { class: "more glass", type: "button", text: `Visa ${Math.min(PAGE, left)} till` });
+      more.addEventListener("click", () => { state.shown += PAGE; renderView(); });
+      view.append(more);
+    }
+  }
+
+  function renderReddit(view) {
+    view.append(el("div", { class: "note glass" },
+      el("p", { text: "Reddit stängde av sina RSS-flöden den 13 november 2026, så inläggen kan inte visas här längre. Genvägarna öppnar Reddit direkt." })));
+    if (!state.reddit.length) {
+      view.append(el("div", { class: "empty", text: "Inga genvägar. Lägg till dem i sources.json." }));
+      return;
+    }
+    const chev = '<svg class="chev" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 2l6 6-6 6"/></svg>';
+    const group = el("div", { class: "card" });
+    state.reddit.forEach((r, n) => {
+      const a = el("a", { class: "rlink", href: r.url, target: "_blank", rel: "noopener" },
+        el("span", { class: "ic", html: svg(ICONS.reddit) }),
+        el("div", {}, el("strong", { text: r.name }), r.about ? el("span", { text: r.about }) : null));
+      a.insertAdjacentHTML("beforeend", chev);
+      if (n) a.style.borderTop = "0.5px solid var(--sep)";
+      group.append(a);
+    });
+    view.append(group);
+  }
+
+  /* ---------- Sanakirja ---------- */
+  let glossary = null;
+  let glossaryPromise = null;
+  function loadGlossary() {
+    if (!glossaryPromise) {
+      glossaryPromise = fetch("ordlista.json", { cache: "no-cache" })
+        .then((r) => (r.ok ? r.json() : {}))
+        .catch(() => ({}))
+        .then((g) => (glossary = g));
+    }
+    return glossaryPromise;
+  }
+
+  const mtCache = new Map();
+  async function machineTranslate(text) {
+    const q = text.slice(0, 450);
+    if (mtCache.has(q)) return mtCache.get(q);
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(q)}&langpair=sv|fi`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const raw = data && data.responseData && data.responseData.translatedText;
+    if (!raw || Number(data.responseStatus) !== 200 || /MYMEMORY WARNING|QUERY LENGTH/i.test(raw)) throw new Error("quota");
+    const out = new DOMParser().parseFromString(raw, "text/html").documentElement.textContent.trim();
+    mtCache.set(q, out);
+    return out;
+  }
+
+  const sheet = $("wordSheet");
+  let activeWord = null;
+  sheet.addEventListener("click", (e) => e.stopPropagation());
+
+  // Pidä napautettu sana näkyvissä arkin yläpuolella.
+  function keepWordVisible() {
+    if (!activeWord) return;
+    requestAnimationFrame(() => {
+      const sheetTop = window.innerHeight - parseFloat(getComputedStyle(sheet).bottom) - sheet.offsetHeight;
+      const r = activeWord.getBoundingClientRect();
+      const overlap = r.bottom - (sheetTop - 20);
+      if (overlap > 0) window.scrollBy({ top: overlap, behavior: reduceMotion ? "auto" : "smooth" });
+    });
+  }
+
+  function closeWord() {
+    if (activeWord) activeWord.classList.remove("on");
+    activeWord = null;
+    sheet.classList.remove("on");
+    sheet.setAttribute("aria-hidden", "true");
+  }
+
+  function sensesList(senses) {
+    const ol = el("ol", { class: `ws-senses${senses.length === 1 ? " single" : ""}` });
+    for (const s of senses) ol.append(el("li", { text: s.join(", ") }));
+    return ol;
+  }
+
+  async function openWord(word, sentence, isPhrase = false) {
+    sheet.textContent = "";
+    const close = el("button", { class: "x", type: "button", "aria-label": "Stäng",
+      html: '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg>' });
+    close.addEventListener("click", closeWord);
+    const lemmaLine = el("div", { class: "ws-lemma" });
+    sheet.append(el("div", { class: "ws-head" },
+      el("div", {}, el("div", { class: "ws-word", lang: "sv", text: word }), lemmaLine), close));
+
+    const content = el("div");
+    const mt = el("div", { class: "ws-mt", hidden: "" });
+    const actions = el("div", { class: "ws-actions" });
+    sheet.append(content, mt, actions);
+
+    const showMt = async (text) => {
+      mt.hidden = false;
+      mt.textContent = "";
+      if (text !== word || isPhrase) mt.append(el("p", { class: "sv", lang: "sv", text }));
+      const fi = el("p", { class: "fi", lang: "fi", text: "Översätter…" });
+      mt.append(fi, el("small", { text: "Maskinöversättning (MyMemory)" }));
+      keepWordVisible();
+      try {
+        fi.textContent = await machineTranslate(text);
+      } catch {
+        fi.textContent = "Översättningen kunde inte hämtas just nu. Prova Google.";
+      }
+      keepWordVisible();
+    };
+
+    if (sentence && !isPhrase) {
+      const btn = el("button", { class: "pill primary", type: "button", text: "Översätt meningen" });
+      btn.addEventListener("click", () => { btn.hidden = true; showMt(sentence); });
+      actions.append(btn);
+    }
+    actions.append(el("a", { class: "pill", target: "_blank", rel: "noopener",
+      href: `https://translate.google.com/?sl=sv&tl=fi&op=translate&text=${encodeURIComponent(isPhrase ? word : (sentence || word))}`,
+      text: "Google" }));
+
+    sheet.classList.add("on");
+    sheet.setAttribute("aria-hidden", "false");
+
+    if (isPhrase) {
+      lemmaLine.textContent = "Markerad text";
+      showMt(word);
+      return;
+    }
+
+    content.append(el("p", { class: "ws-lemma", text: "Slår upp…" }));
+    keepWordVisible();
+    await loadGlossary();
+    content.textContent = "";
+    const hit = glossary && glossary[word.toLowerCase()];
+    if (hit && hit.m) {
+      const [first, second] = hit.m;
+      if (first.l.toLowerCase() !== word.toLowerCase()) {
+        lemmaLine.append("grundform ", el("b", { lang: "sv", text: first.l }));
+        if (first.p) lemmaLine.append(`, ${first.p}`);
+      } else if (first.p) {
+        lemmaLine.textContent = first.p;
+      }
+      content.append(sensesList(first.s));
+      if (second) {
+        content.append(el("p", { class: "ws-also" }, "Kan också vara ", el("b", { lang: "sv", text: second.l }), `: ${second.s.map((s) => s.join(", ")).join("; ")}`));
+      }
+    } else if (hit && hit.c) {
+      lemmaLine.textContent = "sammansatt ord";
+      const dl = el("dl", { class: "ws-parts" });
+      for (const part of hit.c) {
+        dl.append(el("div", {}, el("dt", { lang: "sv", text: part.l }), el("dd", { lang: "fi", text: part.s[0].join(", ") })));
+      }
+      content.append(dl);
+    } else {
+      lemmaLine.textContent = "finns inte i ordlistan";
+      showMt(word);
+    }
+    keepWordVisible();
+  }
+
+  document.addEventListener("click", (e) => {
+    const w = e.target.closest && e.target.closest(".w");
+    if (w) {
+      const sel = window.getSelection();
+      if (sel && !sel.isCollapsed && sel.toString().trim().includes(" ")) return;
+      if (activeWord) activeWord.classList.remove("on");
+      activeWord = w;
+      w.classList.add("on");
+      const p = w.closest(".sum");
+      const sentence = p ? sentenceAt(p.textContent, Number(w.dataset.o)) : "";
+      openWord(w.textContent, sentence);
+      return;
+    }
+    if (sheet.classList.contains("on") && !sheet.contains(e.target)) closeWord();
+  });
+
+  // Usean sanan maalaus (pitkä painallus) kääntää koko valinnan.
+  let selTimer = 0;
+  document.addEventListener("selectionchange", () => {
+    clearTimeout(selTimer);
+    selTimer = setTimeout(() => {
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed) return;
+      const text = sel.toString().replace(/\s+/g, " ").trim();
+      const node = sel.anchorNode && (sel.anchorNode.nodeType === 1 ? sel.anchorNode : sel.anchorNode.parentElement);
+      if (!node || !node.closest(".card") || !text.includes(" ") || text.length > 300) return;
+      if (activeWord) activeWord.classList.remove("on");
+      activeWord = null;
+      openWord(text, "", true);
+    }, 450);
+  });
+
+  /* ---------- Valikko ---------- */
+  const menu = $("menu");
+  function toggleMenu(open) {
+    const on = open ?? !menu.classList.contains("on");
+    menu.classList.toggle("on", on);
+    menu.setAttribute("aria-hidden", String(!on));
+    $("menuBtn").setAttribute("aria-expanded", String(on));
+    if (on) closeWord();
+  }
+  $("menuBtn").addEventListener("click", (e) => { e.stopPropagation(); toggleMenu(); });
+  document.addEventListener("pointerdown", (e) => {
+    if (menu.classList.contains("on") && !menu.contains(e.target) && !$("menuBtn").contains(e.target)) toggleMenu(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { closeWord(); toggleMenu(false); }
+  });
+
+  function setHideRead(value) {
+    state.hideRead = value;
+    $("hideRead").checked = value;
+    store.set("sl.hideRead", value);
+    state.shown = PAGE;
+    renderView();
+  }
+  $("hideRead").addEventListener("change", (e) => setHideRead(e.target.checked));
+
+  function setSize(size) {
+    state.size = size;
+    store.set("sl.size", size);
+    document.documentElement.dataset.size = size;
+    for (const b of $("sizes").querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.size === size));
+  }
+  $("sizes").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (b) setSize(b.dataset.size);
+  });
+
+  function renderSources() {
+    const list = $("srcList");
+    list.textContent = "";
+    for (const s of state.sources) {
+      const site = safeUrl(s.site);
+      const name = site ? el("a", { href: site, target: "_blank", rel: "noopener", text: s.name }) : s.name;
+      list.append(el("div", { class: `row srcrow cat-${s.category}` },
+        el("span", { class: "src" }, el("i"), name),
+        el("span", { class: `st${s.ok ? "" : " bad"}`, text: s.ok ? `${s.count} texter` : "fungerar inte" })));
+    }
+    const ok = state.sources.filter((s) => s.ok).length;
+    $("srcHead").textContent = `Källor: ${ok} av ${state.sources.length} fungerar`;
+  }
+
+  /* ---------- Vierityksen pikkuotsikko ---------- */
+  new IntersectionObserver(([entry]) => {
+    $("compact").classList.toggle("on", !entry.isIntersecting);
+  }, { rootMargin: "-60px 0px 0px 0px" }).observe($("title"));
+
+  /* ---------- Käynnistys ---------- */
+  async function load() {
+    setSize(state.size);
+    $("hideRead").checked = state.hideRead;
+    renderTabs();
+    markTabs();
+    renderHeader();
+    try {
+      const res = await fetch("feed.json", { cache: "no-cache" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      state.items = Array.isArray(data.items) ? data.items : [];
+      state.sources = Array.isArray(data.sources) ? data.sources : [];
+      state.reddit = Array.isArray(data.reddit) ? data.reddit.filter((r) => safeUrl(r.url)) : [];
+      state.generatedTs = Date.parse(data.generated) / 1000 || Date.now() / 1000;
+      renderHeader();
+      renderView();
+      renderSources();
+      setTimeout(loadGlossary, 1500);
+    } catch (err) {
+      const status = $("status");
+      status.classList.add("stale");
+      status.textContent = "Flödet finns inte än. Kör arbetsflödet ”Uppdatera flödet” under Actions på GitHub och ladda sedan om sidan.";
+      console.error(err);
+    }
+    requestAnimationFrame(moveLens);
+  }
+  load();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+{
+  "_ohje": "Lähteet. category: varlden | aktuellt | kultur | latt. Aseta enabled: false, jos haluat piilottaa lähteen. max_age_days: kuinka vanhoja juttuja näytetään (oletus 4).",
+  "sources": [
+    {
+      "id": "svt-utrikes",
+      "name": "SVT Utrikes",
+      "url": "https://www.svt.se/nyheter/utrikes/rss.xml",
+      "category": "varlden"
+    },
+    {
+      "id": "yle-utrikes",
+      "name": "Svenska Yle, utrikes",
+      "url": "https://yle.fi/rss/t/18-34953/sv",
+      "category": "varlden"
+    },
+    {
+      "id": "svt-nyheter",
+      "name": "SVT Nyheter",
+      "url": "https://www.svt.se/nyheter/rss.xml",
+      "category": "aktuellt"
+    },
+    {
+      "id": "ekot",
+      "name": "Ekot, Sveriges Radio",
+      "url": "https://api.sr.se/api/rss/program/83",
+      "category": "aktuellt"
+    },
+    {
+      "id": "yle-inrikes",
+      "name": "Svenska Yle, inrikes",
+      "url": "https://yle.fi/rss/t/18-34837/sv",
+      "category": "aktuellt"
+    },
+    {
+      "id": "svt-kultur",
+      "name": "SVT Kultur",
+      "url": "https://www.svt.se/kultur/rss.xml",
+      "category": "kultur"
+    },
+    {
+      "id": "kulturnytt",
+      "name": "Kulturnytt, Sveriges Radio",
+      "url": "https://api.sr.se/api/rss/program/478",
+      "category": "kultur"
+    },
+    {
+      "id": "yle-kultur",
+      "name": "Svenska Yle, kultur",
+      "url": "https://yle.fi/rss/t/18-150067/sv",
+      "category": "kultur"
+    },
+    {
+      "id": "opulens",
+      "name": "Opulens",
+      "url": "https://www.opulens.se/feed",
+      "category": "kultur",
+      "max_age_days": 10
+    },
+    {
+      "id": "8sidor",
+      "name": "8 Sidor",
+      "url": "https://8sidor.se/feed",
+      "category": "latt",
+      "max_age_days": 7
+    },
+    {
+      "id": "klartext",
+      "name": "Klartext, Sveriges Radio",
+      "url": "https://api.sr.se/api/rss/program/493",
+      "category": "latt",
+      "max_age_days": 7
+    },
+    {
+      "id": "yle-alla",
+      "name": "Svenska Yle, alla",
+      "url": "https://svenska.yle.fi/rss/articles/all",
+      "category": "aktuellt",
+      "enabled": false,
+      "_huom": "Varalla, jos Ylen aihekohtaiset syötteet lakkaavat toimimasta."
+    },
+    {
+      "id": "dn",
+      "name": "Dagens Nyheter",
+      "url": "https://www.dn.se/rss",
+      "category": "aktuellt",
+      "enabled": false,
+      "_huom": "Suuri osa jutuista on maksumuurin takana."
+    },
+    {
+      "id": "svd",
+      "name": "Svenska Dagbladet",
+      "url": "https://www.svd.se/feed/articles.rss",
+      "category": "aktuellt",
+      "enabled": false,
+      "_huom": "Suuri osa jutuista on maksumuurin takana."
+    },
+    {
+      "id": "hbl",
+      "name": "Hufvudstadsbladet",
+      "url": "https://www.hbl.fi/feeds/feed.xml",
+      "category": "aktuellt",
+      "enabled": false,
+      "_huom": "Suuri osa jutuista on maksumuurin takana."
+    }
+  ],
+  "_reddit_ohje": "Reddit lopetti RSS-syötteet 13.11.2026, joten sivu näyttää Redditistä vain pikalinkit. Lisää tai poista linkkejä vapaasti.",
+  "reddit": [
+    {
+      "name": "Min Reddit",
+      "url": "https://www.reddit.com/",
+      "about": "Din egen startsida med allt du följer."
+    },
+    {
+      "name": "r/sweden",
+      "url": "https://www.reddit.com/r/sweden/",
+      "about": "Nyheter och vardag i Sverige, mest på svenska."
+    },
+    {
+      "name": "r/svenskpolitik",
+      "url": "https://www.reddit.com/r/svenskpolitik/",
+      "about": "Diskussioner om svensk politik och samhälle."
+    },
+    {
+      "name": "r/Svenska",
+      "url": "https://www.reddit.com/r/Svenska/",
+      "about": "Frågor och svar om svenska språket, för dig som lär dig."
+    }
+  ]
+}
