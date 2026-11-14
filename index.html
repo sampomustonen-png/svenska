@@ -329,8 +329,27 @@ button { font: inherit; color: inherit; }
   font: 700 var(--title)/1.25 var(--font-display);
   letter-spacing: 0;
 }
-.card h2 a { text-decoration: none; }
-.card h2 a:hover { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 0.16em; }
+.foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+.open {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font: 700 14px/1 var(--font);
+  color: var(--cat);
+  background: color-mix(in srgb, var(--cat) 13%, transparent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.open svg { width: 14px; height: 14px; stroke-width: 2.2; }
+.open:hover { background: color-mix(in srgb, var(--cat) 20%, transparent); }
 .sum {
   margin: 0;
   font-family: var(--serif);
@@ -354,7 +373,6 @@ button { font: inherit; color: inherit; }
 .chips {
   display: flex;
   gap: 6px;
-  margin-top: 12px;
 }
 .chips:empty { display: none; }
 .chip {
@@ -991,17 +1009,21 @@ button { font: inherit; color: inherit; }
       card.append(media);
     }
 
-    const title = el("a", { href: link, target: "_blank", rel: "noopener", text: item.title });
-    title.addEventListener("click", markRead);
-    title.addEventListener("auxclick", markRead);
+    // Otsikon sanoja voi napauttaa kuten ingressin sanoja; juttu avataan omasta painikkeestaan.
+    const open = el("a", { class: "open", href: link, target: "_blank", rel: "noopener",
+      "aria-label": `Läs artikeln: ${item.title}`,
+      html: svg('<path d="M14 4.5h5.5V10M19.5 4.5L11 13M17 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-10A1.5 1.5 0 0 1 4 18.5v-10A1.5 1.5 0 0 1 5.5 7H10"/>') });
+    open.prepend("Läs artikeln");
+    open.addEventListener("click", markRead);
+    open.addEventListener("auxclick", markRead);
 
     const body = el("div", { class: "body" },
       el("div", { class: "meta" },
         el("span", { class: "src" }, el("i"), source ? source.name : item.source),
         el("time", { datetime: item.published, text: ago(item.ts) })),
-      el("h2", {}, title));
+      wordify(item.title.normalize("NFC"), el("h2", { lang: "sv" })));
     if (item.summary) body.append(wordify(item.summary.normalize("NFC"), el("p", { class: "sum", lang: "sv" })));
-    body.append(chips);
+    body.append(el("div", { class: "foot" }, chips, open));
     card.append(body);
     return card;
   }
@@ -1016,7 +1038,7 @@ button { font: inherit; color: inherit; }
 
     if (!state.tipSeen && list.length) {
       const ok = el("button", { type: "button", text: "Okej" });
-      const tip = el("div", { class: "tip glass" }, el("p", { text: "Tryck på ett ord i texten så ser du vad det betyder på finska." }), ok);
+      const tip = el("div", { class: "tip glass" }, el("p", { text: "Tryck på ett ord i rubriken eller texten så ser du vad det betyder på finska. Hela artikeln öppnar du med Läs artikeln." }), ok);
       ok.addEventListener("click", () => { state.tipSeen = true; store.set("sl.tipSeen", true); tip.remove(); });
       view.append(tip);
     }
@@ -1221,7 +1243,7 @@ button { font: inherit; color: inherit; }
       lemmaLine.textContent = "sammansatt ord";
       const dl = el("dl", { class: "ws-parts" });
       for (const part of hit.c) {
-        dl.append(el("div", {}, el("dt", { lang: "sv", text: part.l }), el("dd", { lang: "fi", text: part.s[0].join(", ") })));
+        dl.append(el("div", {}, el("dt", { lang: "sv", text: part.l }), el("dd", { lang: "fi", text: part.s.slice(0, 2).map((x) => x.join(", ")).join("; ") })));
       }
       content.append(dl);
     } else {
@@ -1240,7 +1262,7 @@ button { font: inherit; color: inherit; }
       activeWord = w;
       anchor = w;
       w.classList.add("on");
-      const p = w.closest(".sum");
+      const p = w.closest(".sum, h2");
       const sentence = p ? sentenceAt(p.textContent, Number(w.dataset.o)) : "";
       openWord(w.textContent, sentence);
       return;
