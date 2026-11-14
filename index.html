@@ -14,13 +14,6 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <style>
-@font-face {
-  /* Varafontti laitteille, joilla ei ole Applen New York -fonttia. */
-  font-family: "Literata";
-  src: url("fonts/literata.woff2") format("woff2");
-  font-weight: 200 900;
-  font-display: swap;
-}
 @property --tint {
   syntax: "<color>";
   inherits: true;
@@ -28,15 +21,16 @@
 }
 
 :root {
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
-  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, sans-serif;
-  --serif: ui-serif, "New York", "Literata", Georgia, serif;
+  --font: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif;
+  --font-display: var(--font);
+  --serif: var(--font);
 
   --label: #000;
   --label2: rgba(60, 60, 67, 0.74);
   --label3: rgba(60, 60, 67, 0.48);
   --sep: rgba(60, 60, 67, 0.16);
   --wall: #DDE6F3;
+  --wall-solid: #F7F9FD;
 
   --card: rgba(255, 255, 255, 0.74);
   --card-edge: rgba(255, 255, 255, 0.95);
@@ -73,6 +67,7 @@
     --label3: rgba(235, 235, 245, 0.42);
     --sep: rgba(255, 255, 255, 0.10);
     --wall: #05070E;
+    --wall-solid: #1C1E26;
 
     --card: rgba(30, 32, 40, 0.66);
     --card-edge: rgba(255, 255, 255, 0.10);
@@ -259,7 +254,7 @@ button { font: inherit; color: inherit; }
 .hero h1 {
   margin: 2px 0 6px;
   font: 700 clamp(34px, 9vw, 44px)/1.08 var(--font-display);
-  letter-spacing: -0.022em;
+  letter-spacing: -0.012em;
 }
 .status {
   margin: 0;
@@ -332,7 +327,7 @@ button { font: inherit; color: inherit; }
 .card h2 {
   margin: 0 0 8px;
   font: 700 var(--title)/1.25 var(--font-display);
-  letter-spacing: -0.012em;
+  letter-spacing: 0;
 }
 .card h2 a { text-decoration: none; }
 .card h2 a:hover { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 0.16em; }
@@ -508,7 +503,7 @@ button { font: inherit; color: inherit; }
 }
 .tab span {
   font: 600 10.5px/1 var(--font);
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   white-space: nowrap;
 }
 .tab[aria-pressed="true"] { color: var(--c); }
@@ -532,14 +527,17 @@ button { font: inherit; color: inherit; }
   transition: opacity 0.22s ease, transform 0.4s cubic-bezier(.2, 1.2, .35, 1), visibility 0s;
 }
 .word-sheet {
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 86px);
-  transform: translate(-50%, 18px) scale(0.95);
-  transform-origin: 50% 100%;
+  /* Kupla sijoitetaan sanan viereen sivun sisälle (ei kiinteästi ruudun alareunaan),
+     jotta iOS 26 Safarin työkalupalkki ei peitä sitä. */
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: min(380px, calc(100vw - 24px));
+  transform: scale(0.94);
   padding: 18px 18px 16px 20px;
-  max-height: calc(100vh - 200px);
-  overflow: auto;
 }
-.word-sheet.on { transform: translate(-50%, 0) scale(1); }
+.word-sheet.on { transform: none; }
+.word-sheet.glass { background: color-mix(in srgb, var(--glass-strong) 25%, var(--wall-solid)); }
 .menu-sheet {
   top: calc(env(safe-area-inset-top, 0px) + 60px);
   left: auto;
@@ -1107,22 +1105,43 @@ button { font: inherit; color: inherit; }
 
   const sheet = $("wordSheet");
   let activeWord = null;
+  let anchor = null; // napautettu sana tai maalattu valinta (Range)
+  let side = "below";
   sheet.addEventListener("click", (e) => e.stopPropagation());
 
-  // Pidä napautettu sana näkyvissä arkin yläpuolella.
-  function keepWordVisible() {
-    if (!activeWord) return;
-    requestAnimationFrame(() => {
-      const sheetTop = window.innerHeight - parseFloat(getComputedStyle(sheet).bottom) - sheet.offsetHeight;
-      const r = activeWord.getBoundingClientRect();
-      const overlap = r.bottom - (sheetTop - 20);
-      if (overlap > 0) window.scrollBy({ top: overlap, behavior: reduceMotion ? "auto" : "smooth" });
-    });
+  // Sijoita kupla sanan alle (tai yläpuolelle, jos alla ei ole tilaa) ja vieritä niin,
+  // että se mahtuu kokonaan ylä- ja alapalkin väliin.
+  function placeSheet(first = false) {
+    if (!anchor) return;
+    const r = anchor.getBoundingClientRect();
+    const vw = document.documentElement.clientWidth;
+    const w = sheet.offsetWidth;
+    const h = sheet.offsetHeight;
+    const topLimit = 72;
+    const bottomLimit = window.innerHeight - 96;
+    if (first) {
+      const need = Math.max(h, 230);
+      side = r.bottom + 10 + need <= bottomLimit || r.top - 10 - need < topLimit ? "below" : "above";
+    }
+    const left = Math.max(12, Math.min(r.left + r.width / 2 - w / 2, vw - w - 12));
+    const top = side === "below" ? r.bottom + 10 : r.top - 10 - h;
+    sheet.style.left = `${Math.round(left + window.scrollX)}px`;
+    sheet.style.top = `${Math.round(top + window.scrollY)}px`;
+    sheet.style.transformOrigin = `${Math.round(r.left + r.width / 2 - left)}px ${side === "below" ? "0" : "100%"}`;
+    // Sekä sanan että kuplan pitää näkyä palkkien välissä.
+    const regionTop = Math.min(r.top, top);
+    const regionBottom = Math.max(r.bottom, top + h);
+    let delta = 0;
+    if (regionBottom > bottomLimit) delta = regionBottom - bottomLimit + 8;
+    if (regionTop - delta < topLimit) delta = regionTop - topLimit - 8;
+    if (Math.abs(delta) > 1) window.scrollBy({ top: delta, behavior: reduceMotion ? "auto" : "smooth" });
   }
+  window.addEventListener("resize", () => placeSheet());
 
   function closeWord() {
     if (activeWord) activeWord.classList.remove("on");
     activeWord = null;
+    anchor = null;
     sheet.classList.remove("on");
     sheet.setAttribute("aria-hidden", "true");
   }
@@ -1153,13 +1172,13 @@ button { font: inherit; color: inherit; }
       if (text !== word || isPhrase) mt.append(el("p", { class: "sv", lang: "sv", text }));
       const fi = el("p", { class: "fi", lang: "fi", text: "Översätter…" });
       mt.append(fi, el("small", { text: "Maskinöversättning (MyMemory)" }));
-      keepWordVisible();
+      placeSheet();
       try {
         fi.textContent = await machineTranslate(text);
       } catch {
         fi.textContent = "Översättningen kunde inte hämtas just nu. Prova Google.";
       }
-      keepWordVisible();
+      placeSheet();
     };
 
     if (sentence && !isPhrase) {
@@ -1171,6 +1190,7 @@ button { font: inherit; color: inherit; }
       href: `https://translate.google.com/?sl=sv&tl=fi&op=translate&text=${encodeURIComponent(isPhrase ? word : (sentence || word))}`,
       text: "Google" }));
 
+    placeSheet(true);
     sheet.classList.add("on");
     sheet.setAttribute("aria-hidden", "false");
 
@@ -1181,7 +1201,7 @@ button { font: inherit; color: inherit; }
     }
 
     content.append(el("p", { class: "ws-lemma", text: "Slår upp…" }));
-    keepWordVisible();
+    placeSheet();
     await loadGlossary();
     content.textContent = "";
     const hit = glossary && glossary[word.toLowerCase()];
@@ -1208,7 +1228,7 @@ button { font: inherit; color: inherit; }
       lemmaLine.textContent = "finns inte i ordlistan";
       showMt(word);
     }
-    keepWordVisible();
+    placeSheet();
   }
 
   document.addEventListener("click", (e) => {
@@ -1218,6 +1238,7 @@ button { font: inherit; color: inherit; }
       if (sel && !sel.isCollapsed && sel.toString().trim().includes(" ")) return;
       if (activeWord) activeWord.classList.remove("on");
       activeWord = w;
+      anchor = w;
       w.classList.add("on");
       const p = w.closest(".sum");
       const sentence = p ? sentenceAt(p.textContent, Number(w.dataset.o)) : "";
@@ -1239,6 +1260,7 @@ button { font: inherit; color: inherit; }
       if (!node || !node.closest(".card") || !text.includes(" ") || text.length > 300) return;
       if (activeWord) activeWord.classList.remove("on");
       activeWord = null;
+      anchor = sel.getRangeAt(0).cloneRange();
       openWord(text, "", true);
     }, 450);
   });
