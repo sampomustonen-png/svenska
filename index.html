@@ -5,8 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Läsning på svenska</title>
 <meta name="description" content="Nyheter, kultur och böcker på svenska, med finsk ordhjälp.">
-<meta name="theme-color" content="#DDE6F3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#05070E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" id="themeColor" content="#E7EAEF">
+<script>
+  /* Teema asetetaan ennen piirtoa, jotta sivu ei välähdä väärän värisenä. */
+  (function () {
+    var t = "auto";
+    try { t = JSON.parse(localStorage.getItem("sl.theme")) || "auto"; } catch (e) {}
+    var dark = t === "dark" || (t === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.dataset.theme = t;
+    document.documentElement.dataset.scheme = dark ? "dark" : "light";
+  })();
+</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -29,8 +38,8 @@
   --label2: rgba(60, 60, 67, 0.74);
   --label3: rgba(60, 60, 67, 0.48);
   --sep: rgba(60, 60, 67, 0.16);
-  --wall: #DDE6F3;
-  --wall-solid: #F7F9FD;
+  --wall: #E7EAEF;
+  --wall-solid: #F8F9FB;
 
   --card: rgba(255, 255, 255, 0.74);
   --card-edge: rgba(255, 255, 255, 0.95);
@@ -50,24 +59,25 @@
   --teal: #30B0C7;
   --reddit: #FF4500;
 
-  --blob1: rgba(0, 122, 255, 0.34);
-  --blob2: rgba(175, 82, 222, 0.30);
-  --blob3: rgba(52, 199, 89, 0.24);
-  --blob4: rgba(255, 149, 0, 0.22);
-  --tint-strength: 42%;
+  /* Hillitty tausta: harmaansiniset ja lämpimän harmaat sävyt */
+  --blob1: rgba(110, 135, 175, 0.16);
+  --blob2: rgba(150, 140, 175, 0.12);
+  --blob3: rgba(130, 160, 145, 0.10);
+  --blob4: rgba(185, 165, 140, 0.11);
+  --tint-strength: 14%;
 
   --sum: 17px;
   --title: 20px;
-  color-scheme: light dark;
+  color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
+:root[data-scheme="dark"] {
+  color-scheme: dark;
     --label: #fff;
     --label2: rgba(235, 235, 245, 0.72);
     --label3: rgba(235, 235, 245, 0.42);
     --sep: rgba(255, 255, 255, 0.10);
-    --wall: #05070E;
-    --wall-solid: #1C1E26;
+    --wall: #0C0E12;
+    --wall-solid: #1C1E24;
 
     --card: rgba(30, 32, 40, 0.66);
     --card-edge: rgba(255, 255, 255, 0.10);
@@ -86,12 +96,11 @@
     --green: #30D158;
     --teal: #40C8E0;
 
-    --blob1: rgba(10, 132, 255, 0.30);
-    --blob2: rgba(94, 92, 230, 0.34);
-    --blob3: rgba(48, 209, 88, 0.22);
-    --blob4: rgba(255, 55, 95, 0.16);
-    --tint-strength: 36%;
-  }
+    --blob1: rgba(90, 115, 160, 0.14);
+    --blob2: rgba(120, 110, 160, 0.11);
+    --blob3: rgba(90, 130, 115, 0.08);
+    --blob4: rgba(150, 125, 110, 0.07);
+    --tint-strength: 12%;
 }
 html[data-size="s"] { --sum: 15px; --title: 18px; }
 html[data-size="l"] { --sum: 20px; --title: 23px; }
@@ -171,9 +180,7 @@ button { font: inherit; color: inherit; }
   background: linear-gradient(170deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 42%);
   pointer-events: none;
 }
-@media (prefers-color-scheme: dark) {
-  .glass::after { background: linear-gradient(170deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0) 40%); }
-}
+:root[data-scheme="dark"] .glass::after { background: linear-gradient(170deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0) 40%); }
 .glass > * { position: relative; z-index: 1; }
 
 /* Yläpalkki */
@@ -555,7 +562,7 @@ button { font: inherit; color: inherit; }
   padding: 18px 18px 16px 20px;
 }
 .word-sheet.on { transform: none; }
-.word-sheet.glass { background: color-mix(in srgb, var(--glass-strong) 25%, var(--wall-solid)); }
+.word-sheet.glass, .menu-sheet.glass { background: color-mix(in srgb, var(--glass-strong) 25%, var(--wall-solid)); }
 .menu-sheet {
   top: calc(env(safe-area-inset-top, 0px) + 60px);
   left: auto;
@@ -719,9 +726,10 @@ button { font: inherit; color: inherit; }
   background: var(--card);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
-.seg button:nth-child(1) { font-size: 13px; }
-.seg button:nth-child(2) { font-size: 16px; }
-.seg button:nth-child(3) { font-size: 20px; }
+#sizes button:nth-child(1) { font-size: 13px; }
+#sizes button:nth-child(2) { font-size: 16px; }
+#sizes button:nth-child(3) { font-size: 20px; }
+#themes button { width: auto; padding: 0 11px; font-size: 13px; font-weight: 600; }
 .group h3 {
   margin: 0;
   padding: 14px 16px 6px;
@@ -783,6 +791,13 @@ button { font: inherit; color: inherit; }
 <section class="sheet glass menu-sheet" id="menu" role="dialog" aria-label="Inställningar" aria-hidden="true">
   <div class="group">
     <label class="row"><span>Dölj texter jag har läst</span><input class="switch" type="checkbox" role="switch" id="hideRead"></label>
+    <div class="row"><span>Utseende</span>
+      <div class="seg" id="themes" role="group" aria-label="Utseende">
+        <button type="button" data-theme="auto">Auto</button>
+        <button type="button" data-theme="light">Ljust</button>
+        <button type="button" data-theme="dark">Mörkt</button>
+      </div>
+    </div>
     <div class="row"><span>Textstorlek</span>
       <div class="seg" id="sizes" role="group" aria-label="Textstorlek">
         <button type="button" data-size="s" aria-label="Liten">A</button>
@@ -1324,6 +1339,26 @@ button { font: inherit; color: inherit; }
     if (b) setSize(b.dataset.size);
   });
 
+  /* ---------- Teema ---------- */
+  const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  function applyTheme() {
+    const t = store.get("sl.theme", "auto");
+    const dark = t === "dark" || (t === "auto" && darkQuery.matches);
+    const root = document.documentElement;
+    root.dataset.theme = t;
+    root.dataset.scheme = dark ? "dark" : "light";
+    for (const b of $("themes").querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.theme === t));
+    $("themeColor").setAttribute("content", getComputedStyle(root).getPropertyValue("--wall").trim());
+    renderHeader();
+  }
+  $("themes").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    store.set("sl.theme", b.dataset.theme);
+    applyTheme();
+  });
+  darkQuery.addEventListener("change", applyTheme);
+
   function renderSources() {
     const list = $("srcList");
     list.textContent = "";
@@ -1349,7 +1384,7 @@ button { font: inherit; color: inherit; }
     $("hideRead").checked = state.hideRead;
     renderTabs();
     markTabs();
-    renderHeader();
+    applyTheme();
     try {
       const res = await fetch("feed.json", { cache: "no-cache" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
