@@ -1,0 +1,49 @@
+name: Uppdatera flödet
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  bygg-och-publicera:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Installera feedparser
+        run: pip install "feedparser>=6,<7"
+
+      - name: Hämta flödena och bygg ordlistan
+        run: python scripts/build_feed.py --sources sources.json --data data --out _site
+
+      - name: Kopiera sidan
+        run: cp -r index.html manifest.webmanifest fonts assets _site/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+      - name: Publicera
+        id: deployment
+        uses: actions/deploy-pages@v5
