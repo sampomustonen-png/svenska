@@ -1,5 +1,5 @@
 {
-  "_ohje": "Lähteet. category: varlden | aktuellt | kultur | latt. enabled: false piilottaa lähteen kaikilta. max_age_days: kuinka vanhoja juttuja näytetään (oletus 4). exclude_url: osoitteen osat, joita sisältävät jutut jätetään pois.",
+  "_ohje": "Lähteet. category: varlden | aktuellt | kultur | latt. enabled: false poistaa lähteen käytöstä. max_age_days: kuinka vanhoja juttuja näytetään (oletus 4). exclude_url: osoitteen osat, joita sisältävät jutut jätetään pois. include_url: vain nämä osoitteet otetaan mukaan. tags: merkinnät kaikille lähteen jutuille (bok, film, politik). require_tag: vain jutut, jotka saavat tämän merkinnän (esim. politik = länsimaiden politiikka). no_summary: syötteen tiivistelmä ohitetaan.",
   "sources": [
     {
       "id": "svt-utrikes",
@@ -12,6 +12,48 @@
       "name": "Svenska Yle, utrikes",
       "url": "https://yle.fi/rss/t/18-34953/sv",
       "category": "varlden"
+    },
+    {
+      "id": "europaportalen",
+      "name": "Europaportalen",
+      "url": "https://www.europaportalen.se/rss.xml",
+      "category": "varlden",
+      "tags": [
+        "politik"
+      ],
+      "include_url": [
+        "europaportalen.se/20"
+      ],
+      "no_summary": true,
+      "max_age_days": 6,
+      "_huom": "EU:n ja Euroopan politiikka. Syötteessä on myös kuvasivuja, joten mukaan otetaan vain osoitteet /vuosi/kuukausi/…; tiivistelmä puuttuu syötteestä, koko juttu aukeaa lukunäkymään."
+    },
+    {
+      "id": "konflikt",
+      "name": "Konflikt, Sveriges Radio",
+      "url": "https://api.sr.se/api/rss/program/1300",
+      "category": "varlden",
+      "tags": [
+        "politik"
+      ],
+      "max_age_days": 10,
+      "_huom": "SR:n viikoittainen ulkomaanmakasiini (maailmanpolitiikka)."
+    },
+    {
+      "id": "expressen-politik",
+      "name": "Expressen, världspolitik",
+      "url": "https://feeds.expressen.se/nyheter/",
+      "category": "varlden",
+      "require_tag": "politik",
+      "_huom": "Expressenin uutisista vain länsimaiden politiikka (require_tag). Osa jutuista on maksumuurin takana."
+    },
+    {
+      "id": "aftonbladet-politik",
+      "name": "Aftonbladet, världspolitik",
+      "url": "https://rss.aftonbladet.se/rss2/small/pages/sections/nyheter/",
+      "category": "varlden",
+      "require_tag": "politik",
+      "_huom": "Aftonbladetin uutisista vain länsimaiden politiikka (require_tag). Osa jutuista on maksumuurin takana."
     },
     {
       "id": "svt-nyheter",
@@ -66,7 +108,9 @@
       "name": "MovieZine",
       "url": "https://www.moviezine.se/feed",
       "category": "kultur",
-      "tags": ["film"],
+      "tags": [
+        "film"
+      ],
       "max_age_days": 4,
       "_huom": "Elokuva- ja tv-uutiset. Kaikki jutut saavat Film & tv -merkinnän."
     },

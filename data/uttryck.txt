@@ -1,0 +1,313 @@
+# Sanaliitot ja partikkeliverbit. Sanakupla näyttää nämä, kun napautettu sana kuuluu ilmaukseen.
+# Rivin muoto:  ilmaus|suomennos, suomennos = esimerkki; toinen merkitys
+# Kirjoita verbi perusmuodossa (ta upp, ei tog upp). "sig" tarkoittaa myös mig, dig, oss, er.
+# Verbin ja partikkelin väliin saa jäädä lyhyitä sanoja kuten inte, också, han, hon (tog inte upp).
+ta upp|ottaa esille, ottaa puheeksi = ta upp frågan; nostaa ylös
+ta över|ottaa haltuun, ottaa johtoon = ta över makten
+ta emot|ottaa vastaan
+ta bort|poistaa
+ta fram|laatia, kehittää = ta fram en plan; ottaa esiin
+ta med|ottaa mukaan
+ta tillbaka|perua, ottaa takaisin
+ta ut|nostaa (rahaa), ottaa ulos
+ta ställning|ottaa kantaa
+ta del av|tutustua jhk, saada käyttöönsä
+ta ansvar|ottaa vastuu
+ta hand om|huolehtia, hoitaa
+ta itu med|tarttua (ongelmaan), ryhtyä hoitamaan
+ta sig|päästä = ta sig fram, ta sig in
+ta slut|loppua
+ta till|turvautua jhk = ta till vapen
+ta reda på|ottaa selvää
+ta hänsyn till|ottaa huomioon
+ta illa upp|loukkaantua
+ta sig an|ottaa hoitaakseen
+gå ut|mennä ulos; tiedottaa, ilmoittaa = gick ut med beskedet; päättyä (määräaika) = tiden går ut
+gå ut på|olla kyse jstk, tarkoittaa = planen går ut på att
+gå med|liittyä = gå med i Nato
+gå med på|suostua jhk
+gå ner|laskea, laskeutua = priserna gick ner
+gå upp|nousta = räntan går upp
+gå över|siirtyä = gå över till; mennä ohi = det går över
+gå vidare|jatkaa, edetä
+gå igenom|käydä läpi; mennä läpi = förslaget gick igenom
+gå av|erota (virasta); laueta = skottet gick av
+gå emot|vastustaa, mennä vastoin
+gå bort|kuolla, menehtyä
+gå sönder|mennä rikki
+gå i pension|jäädä eläkkeelle
+gå tillbaka|palata; vähentyä
+gå framåt|edistyä
+gå till val|lähteä vaaleihin = gå till val på
+gå i konkurs|mennä konkurssiin
+komma fram|päästä perille; tulla esiin
+komma fram till|päätyä jhk (johtopäätökseen)
+komma överens|sopia = komma överens om
+komma ut|ilmestyä, tulla julki; päästä ulos
+komma in|päästä sisään; saapua = rapporten kom in
+komma tillbaka|palata
+komma upp|nousta esille = frågan kom upp
+komma på|keksiä; muistaa
+komma ihåg|muistaa
+komma att|tulla tekemään = det kommer att ta tid
+komma åt|päästä käsiksi
+komma överens om|sopia jstk
+hålla med|olla samaa mieltä
+hålla på|olla tekemässä jtak = håller på att; kestää = hur länge håller det på?
+hålla fast vid|pitää kiinni jstk
+hålla i|järjestää = hålla i mötet; pitää kiinni
+hålla ut|kestää, sinnitellä
+hålla emot|vastustaa, pitää vastaan
+hålla koll på|pitää silmällä, seurata
+hålla tal|pitää puhe
+lägga fram|esittää = lägga fram ett förslag
+lägga till|lisätä
+lägga ner|lopettaa, lakkauttaa = lägga ner verksamheten; laskea alas
+lägga ned|lopettaa, lakkauttaa
+lägga av|lopettaa
+lägga upp|julkaista (verkossa); suunnitella
+lägga på|lisätä = lägga på skatt; lopettaa puhelu
+lägga sig|mennä nukkumaan; laantua = vinden la sig
+lägga sig i|puuttua jhk, sekaantua
+sätta igång|aloittaa, käynnistää
+sätta in|ottaa käyttöön, lähettää = sätta in trupper; tallettaa
+sätta upp|pystyttää; asettaa = sätta upp mål
+sätta stopp för|lopettaa, tehdä loppu jstk
+sätta press på|painostaa
+sätta sig|istuutua
+ställa upp|asettua ehdolle = ställa upp i valet; auttaa, osallistua
+ställa in|peruuttaa = mötet ställs in; säätää
+ställa till|aiheuttaa = ställa till problem
+ställa krav|asettaa vaatimuksia
+ställa frågor|esittää kysymyksiä
+ställa sig bakom|asettua tukemaan
+stå upp för|puolustaa
+stå för|vastata jstk = stå för kostnaden; edustaa
+stå ut|kestää = stå ut med
+stå bakom|olla jnk takana, tukea
+stå inför|olla edessä = stå inför val
+stå på sig|pitää päänsä
+stå kvar|jäädä, pysyä = står kvar som minister
+slå fast|todeta, vahvistaa
+slå till|iskeä
+slå ut|syrjäyttää, tyrmätä
+slå ihop|yhdistää
+slå igenom|lyödä läpi
+slå tillbaka|iskeä takaisin
+slå larm|hälyttää, varoittaa
+se ut|näyttää jltak = det ser ut att
+se till|huolehtia = se till att
+se över|tarkistaa, käydä läpi = se över reglerna
+se fram emot|odottaa innolla
+se upp|varoa = se upp för
+dra tillbaka|vetää pois, perua
+dra sig tillbaka|vetäytyä
+dra in|lakkauttaa, vetää pois = dra in bidraget
+dra igång|käynnistää
+dra ner|vähentää, leikata = dra ner på kostnaderna
+dra ut|pitkittyä = förhandlingarna drar ut på tiden
+dra slutsatser|tehdä johtopäätöksiä
+få fram|saada esille, saada aikaan
+få igenom|saada läpi = få igenom förslaget
+få tillbaka|saada takaisin
+få veta|saada tietää
+få syn på|huomata
+få nog|saada tarpeekseen
+ge upp|luovuttaa, antaa periksi
+ge ut|julkaista
+ge efter|antaa periksi
+ge sig|antaa periksi; lähteä = ge sig iväg
+ge sig ut|lähteä (matkaan)
+ge med sig|antaa periksi
+göra av med|kuluttaa (rahaa)
+göra om|tehdä uudelleen
+göra upp|sopia = göra upp om
+göra slut|erota; lopettaa = göra slut på
+göra ont|sattua, koskea
+känna igen|tunnistaa
+känna till|tietää, tuntea
+lyfta fram|nostaa esiin
+peka ut|osoittaa (syylliseksi), nimetä
+peka på|viitata, osoittaa
+vara med|olla mukana
+vara kvar|olla jäljellä; jäädä
+vara med om|kokea
+vara emot|vastustaa
+vara tvungen|olla pakko
+bli av med|päästä eroon jstk; menettää
+bli kvar|jäädä
+bli av|toteutua = det blev inte av
+skjuta upp|lykätä
+skjuta ner|ampua alas
+sticka ut|erottua
+lämna in|jättää = lämna in en ansökan
+lämna över|luovuttaa
+stänga av|sulkea, katkaista; erottaa = stängdes av
+stänga ner|sulkea
+öppna upp|avata
+höra av sig|ottaa yhteyttä
+tala om|kertoa
+tycka om|pitää jstk
+hitta på|keksiä
+skriva under|allekirjoittaa
+fylla i|täyttää (lomake)
+falla samman|romahtaa
+bryta ut|puhjeta = kriget bröt ut
+bryta ihop|romahtaa
+bryta mot|rikkoa = bryta mot lagen
+leda till|johtaa jhk
+handla om|olla kyse jstk, käsitellä = boken handlar om
+satsa på|panostaa jhk
+tro på|uskoa jhk
+bero på|johtua jstk; riippua jstk
+lita på|luottaa jhk
+skära ner|leikata, supistaa = skära ner på
+spela in|äänittää, kuvata
+spela roll|olla merkitystä = det spelar ingen roll
+äga rum|tapahtua, järjestetään
+råka ut för|joutua jnk kohteeksi
+träda i kraft|astua voimaan
+ha rätt|olla oikeassa
+ha fel|olla väärässä
+ha råd|olla varaa
+ha kvar|olla jäljellä
+ha ont|olla kipeä = ha ont i huvudet
+riskera att|uhata, olla vaarassa = riskerar att förlora
+se sig om|katsella ympärilleen
+utgå från|lähteä jstk, olettaa
+anmäla sig|ilmoittautua
+oroa sig|olla huolissaan
+röra sig|liikkua; olla kyse = det rör sig om
+klara sig|selviytyä, pärjätä
+lära sig|oppia
+bestå av|koostua jstk
+gälla för|koskea jtak
+på grund av|takia, vuoksi
+på grund av att|koska
+i stället|sen sijaan
+i stället för|jnk sijaan
+trots att|vaikka
+för att|jotta = för att vinna; koska = för att han var sjuk
+efter att|sen jälkeen kun
+innan dess|sitä ennen
+sedan dess|siitä lähtien
+när det gäller|mitä tulee jhk, kun on kyse jstk
+vad gäller|mitä tulee jhk
+i fråga om|jnk osalta
+med anledning av|jnk johdosta
+till följd av|jnk seurauksena
+i samband med|jnk yhteydessä
+i form av|jnk muodossa
+i och med|myötä = i och med beslutet
+i och med att|koska, sen myötä että
+å ena sidan|toisaalta
+å andra sidan|toisaalta
+framför allt|ennen kaikkea
+bland annat|muun muassa
+till exempel|esimerkiksi
+så kallad|niin sanottu
+så länge|niin kauan (kuin)
+så snart|heti kun
+så fort|heti kun
+så att|niin että, jotta
+även om|vaikka
+om än|vaikkakin
+i dag|tänään; nykyään
+i går|eilen
+i morgon|huomenna
+i år|tänä vuonna
+i fjol|viime vuonna
+förra året|viime vuonna
+nästa år|ensi vuonna
+i veckan|tällä viikolla
+förra veckan|viime viikolla
+nästa vecka|ensi viikolla
+i helgen|viikonloppuna
+i höst|tänä syksynä
+i höstas|viime syksynä
+i vår|tänä keväänä; meidän …ssa = i vår tid = meidän aikanamme
+i våras|viime keväänä
+i sommar|tänä kesänä
+i somras|viime kesänä
+i vinter|tänä talvena
+i vintras|viime talvena
+under tiden|sillä välin
+på sikt|pitkällä aikavälillä
+på kort sikt|lyhyellä aikavälillä
+på lång sikt|pitkällä aikavälillä
+för närvarande|tällä hetkellä
+i nuläget|tällä hetkellä
+just nu|juuri nyt
+hela tiden|koko ajan
+till slut|lopulta
+till sist|lopuksi
+i slutet av|jnk lopussa
+i början av|jnk alussa
+i mitten av|jnk puolivälissä
+runt om|ympäri, ympärillä
+runt om i världen|ympäri maailmaa
+mer än|yli, enemmän kuin
+mindre än|alle, vähemmän kuin
+fler än|yli, useampi kuin
+inte minst|etenkin, varsinkin
+inte heller|ei myöskään
+inte bara|ei vain
+utan också|vaan myös
+allt fler|yhä useampi
+allt mer|yhä enemmän
+mer och mer|yhä enemmän
+i princip|periaatteessa
+i själva verket|itse asiassa
+i alla fall|joka tapauksessa
+i så fall|siinä tapauksessa
+på så sätt|siten, sillä tavalla
+på nytt|uudelleen
+på plats|paikalla, paikan päällä
+på väg|matkalla = på väg mot
+på gång|tulossa, käynnissä
+i gång|käynnissä
+till och med|jopa
+i och för sig|sinänsä
+efter hand|vähitellen
+så småningom|vähitellen, lopulta
+hur som helst|joka tapauksessa; miten tahansa
+när som helst|milloin tahansa
+vem som helst|kuka tahansa
+vad som helst|mitä tahansa
+var som helst|missä tahansa
+det vill säga|eli, toisin sanoen
+med andra ord|toisin sanoen
+enligt uppgift|tietojen mukaan
+med hjälp av|jnk avulla
+i stort sett|suurin piirtein
+till största delen|suurimmaksi osaksi
+för det mesta|useimmiten
+till viss del|osittain
+i första hand|ensisijaisesti
+i övrigt|muuten
+för övrigt|muuten, sitä paitsi
+över huvud taget|ylipäätään
+fram till|asti = fram till 2030; luo = gick fram till dörren
+i takt med|sitä mukaa kuin
+på uppdrag av|jnk toimeksiannosta
+i syfte att|tarkoituksena
+för att inte tala om|puhumattakaan
+på allvar|tosissaan
+tack vare|jnk ansiosta
+oavsett om|riippumatta siitä, onko
+med tanke på|ottaen huomioon
+i förhållande till|suhteessa jhk
+jämfört med|verrattuna jhk
+till skillnad från|toisin kuin
+precis som|aivan kuten
+så mycket som|jopa = så mycket som hälften
+dygnet runt|ympäri vuorokauden
+i kraft|voimaan = träder i kraft
+i fokus|keskiössä
+mitt i|keskellä
+ju mer|mitä enemmän = ju mer, desto bättre
+desto mer|sitä enemmän
+ett par|pari, muutama
+en del|osa, jotkut = en del av; jonkin verran
+de flesta|useimmat
+så kallade|niin sanotut

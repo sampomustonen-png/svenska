@@ -67,6 +67,39 @@ FILM_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Länsimaiden politiikka: jutussa mainitaan länsimainen maa tai toimija JA politiikkaan liittyvä sana.
+WEST_RE = re.compile(
+    r"\b("
+    r"usa|usa:s|amerikansk\w*|trump\w*|vita huset|washington|kongress\w*|senat\w*|representanthus\w*|"
+    r"demokrater\w*|republikan\w*|eu|eu:s|eu-\w+|europa\w*|europeisk\w*|bryssel|nato\w*|"
+    r"tyskland\w*|tysk\w*|berlin|merz|frankrike\w*|fransk\w*|macron|paris|storbritannien\w*|britt\w*|"
+    r"london|starmer|italien\w*|meloni|spanien\w*|spansk\w*|polen\w*|polsk\w*|nederländ\w*|belgien\w*|"
+    r"österrike\w*|ungern\w*|kanada\w*|danmark\w*|dansk\w*|norge\w*|norsk\w*|baltikum|estland\w*|"
+    r"lettland\w*|litauen\w*|grekland\w*|portugal\w*|irland\w*|schweiz\w*|ukrain\w*|zelenskyj\w*|"
+    r"von der leyen|kaja kallas|europaparlament\w*|eu-kommission\w*|ministerråd\w*"
+    r")\b",
+    re.IGNORECASE,
+)
+POLITICS_RE = re.compile(
+    r"\b("
+    r"val|valet|valen|valrörelse\w*|valseger\w*|president\w*|premiärminister\w*|statsminister\w*|"
+    r"regering\w*|parlament\w*|parti|partiet|partier\w*|\w+partiet|minister\w*|\w+minister\w*|"
+    r"förhandl\w*|avtal\w*|sanktion\w*|tull\w*|toppmöte\w*|politi\w*|opposition\w*|koalition\w*|"
+    r"omröstning\w*|förbundskansler\w*|kansler\w*|lagförslag\w*|budget\w*|säkerhetspolitik\w*|"
+    r"försvar\w*|diplomat\w*|fredssamtal\w*|fredsavtal\w*|vapenvila\w*|kommission\w*|ledamot\w*|"
+    r"demokrati\w*|populis\w*|högerextrem\w*|ytterhöger\w*|migrationspolitik\w*|asylpolitik\w*|"
+    r"\w*medlemskap\w*|\w+valet|\w+valen|\w*toppmöte\w*|\w*samtal|\w*förhandling\w*|\w*minister\w*|\w*ministr\w*"
+    r")\b",
+    re.IGNORECASE,
+)
+
+# Länsimaiset johtajat: pelkkä nimi riittää politiikkamerkintään.
+LEADER_RE = re.compile(
+    r"\b(trump\w*|vance|macron\w*|merz|starmer\w*|meloni\w*|von der leyen|kaja kallas|zelenskyj\w*|"
+    r"tusk\w*|orbán\w*|orban\w*|sánchez|rutte\w*|frederiksen\w*|støre\w*|stubb\w*|orpo\w*|rubio\w*)\b",
+    re.IGNORECASE,
+)
+
 # Opulensin ingressit alkavat lajityypillä, esim. "LYRIK. " tai "TONSATT POESI. ".
 GENRE_RE = re.compile(r"^([A-ZÅÄÖÉ][A-ZÅÄÖÉ0-9 \-&]{4,40})\.\s+")
 # WordPress-syötteiden loppurivi, esim. "Inlägget X dök först upp på MovieZine.se."
@@ -165,6 +198,8 @@ def normalise_link(link: str) -> str:
 def tags_for(title: str, summary: str) -> list[str]:
     text = f"{title} {summary}"
     tags = []
+    if LEADER_RE.search(text) or (WEST_RE.search(text) and POLITICS_RE.search(text)):
+        tags.append("politik")
     if BOOK_RE.search(text) and not NOT_BOOK_RE.search(text):
         tags.append("bok")
     if FILM_RE.search(text):
@@ -225,6 +260,8 @@ def read_source(source: dict, now: float) -> tuple[dict, list[dict]]:
     status["site"] = parsed.feed.get("link")
     max_age = float(source.get("max_age_days", DEFAULT_MAX_AGE_DAYS)) * 86400
     exclude = [p.lower() for p in source.get("exclude_url", [])]
+    include = [p.lower() for p in source.get("include_url", [])]
+    required = source.get("require_tag")
     items = []
     for entry in parsed.entries:
         link = entry.get("link", "")
@@ -233,12 +270,14 @@ def read_source(source: dict, now: float) -> tuple[dict, list[dict]]:
             continue
         if any(p in link.lower() for p in exclude):
             continue
+        if include and not any(p in link.lower() for p in include):
+            continue
         published = entry_time(entry) or now
         if published > now + 3600:
             published = now
         if now - published > max_age:
             continue
-        summary_raw = entry.get("summary", "")
+        summary_raw = "" if source.get("no_summary") else entry.get("summary", "")
         if not summary_raw and entry.get("content"):
             summary_raw = entry["content"][0].get("value", "")
         summary = WP_FOOTER_RE.sub("", clean_text(summary_raw))
@@ -250,6 +289,9 @@ def read_source(source: dict, now: float) -> tuple[dict, list[dict]]:
         summary = truncate(summary)
         if summary.lower() == title.lower():
             summary = ""
+        tags = sorted(set(tags_for(title, summary)) | set(source.get("tags", [])))
+        if required and required not in tags:
+            continue
         items.append(
             {
                 "id": hashlib.sha1(normalise_link(link).encode()).hexdigest()[:12],
@@ -261,7 +303,7 @@ def read_source(source: dict, now: float) -> tuple[dict, list[dict]]:
                 "ts": int(published),
                 "source": source["id"],
                 "category": source["category"],
-                "tags": sorted(set(tags_for(title, summary)) | set(source.get("tags", []))),
+                "tags": tags,
                 "image": feed_image(entry),
             }
         )

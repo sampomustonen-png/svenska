@@ -37,6 +37,7 @@
     { id: "nyheter", label: "Nyheter", title: "Nyheter", color: "--blue", segs: [
       { id: "alla", label: "Alla", test: isNews },
       { id: "varlden", label: "Världen", test: (i) => i.category === "varlden" },
+      { id: "politik", label: "Politik", test: (i) => has(i, "politik") },
       { id: "aktuellt", label: "Aktuellt", test: (i) => i.category === "aktuellt" },
     ] },
     { id: "kultur", label: "Kultur", title: "Kultur", color: "--pink", segs: [
@@ -296,7 +297,8 @@
       }
     };
     take((i) => i.category === "latt", 2);
-    take((i) => i.category === "varlden", 2);
+    take((i) => has(i, "politik"), 1);
+    take((i) => i.category === "varlden", 1);
     take((i) => i.category === "aktuellt", 2);
     take((i) => has(i, "bok") || has(i, "film"), 1);
     take((i) => i.category === "kultur", 1);
@@ -437,6 +439,7 @@
     if (item.genre) chips.append(el("span", { class: "chip genre", text: item.genre }));
     if (has(item, "bok")) chips.append(el("span", { class: "chip bok", html: svg("bok") }, "Bok"));
     if (has(item, "film")) chips.append(el("span", { class: "chip film", html: svg("film") }, "Film & tv"));
+    if (has(item, "politik")) chips.append(el("span", { class: "chip politik", html: svg("varlden") }, "Världspolitik"));
     if (chips.childNodes.length) body.append(chips);
 
     const markBtn = el("button", { class: "mark", type: "button" });
@@ -975,6 +978,7 @@
 
   function closeWord() {
     if (activeWord) activeWord.classList.remove("on");
+    for (const sp of document.querySelectorAll(".w.phr")) sp.classList.remove("phr");
     activeWord = null;
     anchor = null;
     sheet.classList.remove("on");
@@ -990,14 +994,56 @@
     return el("span", { class: "ws-freq rare", text: "ovanligt ord" });
   }
 
-  function sensesList(senses) {
+  /** Suomennoksen sanavartalo vertailua varten: "olla (jollakin)" -> ["olla"], "-ssa" ohitetaan. */
+  function fiStems(fi) {
+    const out = [];
+    for (const phrase of fi) {
+      for (const part of phrase.replace(/\([^)]*\)/g, " ").toLowerCase().split(/[\s,]+/)) {
+        const w = part.replace(/[^\p{L}]/gu, "");
+        if (w.length >= 4) out.push(w.slice(0, Math.max(4, Math.ceil(w.length * 0.7))));
+      }
+    }
+    return out;
+  }
+  /** Minkä merkityksen suomennos löytyy virkkeen käännöksestä? -1 jos ei minkään. */
+  function senseInTranslation(senses, translation) {
+    if (!translation || senses.length < 2) return -1;
+    const words = translation.toLowerCase().split(/[^\p{L}-]+/u).filter(Boolean);
+    for (let i = 0; i < senses.length; i++) {
+      if (fiStems(senses[i][0]).some((stem) => words.some((w) => w.startsWith(stem)))) return i;
+    }
+    return -1;
+  }
+  function sensesList(senses, hit = -1) {
+    const order = senses.map((s, i) => i);
+    if (hit > 0) order.splice(order.indexOf(hit), 1) && order.unshift(hit);
     const ol = el("ol", { class: `ws-senses${senses.length === 1 ? " single" : ""}` });
-    for (const [fi, def] of senses) {
-      const li = el("li", { lang: "fi", text: fi.join(", ") });
+    for (const i of order) {
+      const [fi, def] = senses[i];
+      const li = el("li", { lang: "fi", class: i === hit ? "ctx-hit" : null }, fi.join(", "));
+      if (i === hit) li.append(el("span", { class: "ctx-tag", lang: "sv", text: "i den här meningen" }));
       if (def) li.append(el("small", { lang: "sv", text: def }));
       ol.append(li);
     }
     return ol;
+  }
+  function phraseBox(found) {
+    const box = el("div", { class: "ws-phrase" });
+    for (const ph of found) {
+      box.append(el("div", { class: "ph-head" }, el("span", { class: "ph-label", text: "Uttryck" }), el("b", { lang: "sv", text: ph.text })));
+      const ul = el("ul");
+      for (const [fi, note] of ph.s.slice(0, 3)) {
+        const li = el("li", { lang: "fi", text: fi.join(", ") });
+        if (note) li.append(el("small", { lang: "sv", text: note }));
+        ul.append(li);
+      }
+      box.append(ul);
+    }
+    return box;
+  }
+  function markPhrase(spans, from, to) {
+    for (const sp of document.querySelectorAll(".w.phr")) sp.classList.remove("phr");
+    for (let k = from; k <= to; k++) if (spans[k]) spans[k].classList.add("phr");
   }
 
   async function openWord(word, ctx, isPhrase = false) {
@@ -1061,9 +1107,14 @@
     });
 
     if (!isPhrase) actions.append(star);
+    let refreshSenses = null;
     if (ctx.sentence && !isPhrase) {
       const btn = el("button", { class: "pill primary", type: "button", text: "Översätt meningen" });
-      btn.addEventListener("click", () => { btn.hidden = true; showMt(ctx.sentence, "s"); });
+      btn.addEventListener("click", async () => {
+        btn.hidden = true;
+        const text = await showMt(ctx.sentence, "s");
+        if (text && refreshSenses) refreshSenses(text);
+      });
       actions.append(btn);
     }
     actions.append(el("a", { class: "pill", target: "_blank", rel: "noopener", text: "Google",
@@ -1094,6 +1145,16 @@
       paintStar();
       return;
     }
+    if (ctx.words && ctx.index >= 0) {
+      const found = dict.phrasesAt(ctx.words, ctx.index);
+      if (found.length) {
+        content.append(phraseBox(found));
+        markPhrase(ctx.spans, found[0].from, found[0].to);
+      }
+    }
+    await loadMt();
+    if (token !== openToken) return;
+    const sentenceFi = (ctx.sentence && (mtData.s[ctx.sentence] || mmCache.get(ctx.sentence.slice(0, 450)))) || "";
     const hit = dict.lookup(word);
     if (hit && hit.type === "word") {
       const [first, second] = hit.entries;
@@ -1106,7 +1167,15 @@
       }
       const badge = freqBadge(word, first.l);
       if (badge) lemmaLine.append(" ", badge);
-      content.append(sensesList(first.s.slice(0, 3)));
+      const senses = first.s.slice(0, 4);
+      let list = sensesList(senses, senseInTranslation(senses, sentenceFi));
+      content.append(list);
+      refreshSenses = (fiText) => {
+        const fresh = sensesList(senses, senseInTranslation(senses, fiText));
+        list.replaceWith(fresh);
+        list = fresh;
+        placeSheet();
+      };
       fiForSave = first.s[0] ? first.s[0][0].slice(0, 3).join(", ") : "";
       if (second) {
         content.append(el("p", { class: "ws-also" }, "Kan också vara ", el("b", { lang: "sv", text: second.l }),
@@ -1150,9 +1219,13 @@
       w.classList.add("on");
       const container = w.closest("[data-text]");
       const holder = w.closest("[data-link]");
+      const spans = container ? [...container.querySelectorAll(".w")] : [w];
       const ctx = {
         sentence: container ? sentenceAt(container.textContent, Number(w.dataset.o)) : "",
         link: holder ? holder.dataset.link : "",
+        spans,
+        words: spans.map((x) => x.textContent.toLowerCase()),
+        index: spans.indexOf(w),
       };
       openWord(w.textContent, ctx);
       return;

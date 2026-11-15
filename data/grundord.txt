@@ -1,0 +1,864 @@
+# Perussanasto: yleisimpien ruotsin sanojen suomennokset, yleisin merkitys ensin.
+# Rivin muoto:  sana|sanaluokka|suomennos, suomennos = ruotsinkielinen esimerkki; seuraava merkitys; ...
+# Merkitykset erotetaan puolipisteellä (enintään neljä). "=" jälkeen tulee esimerkki tai selitys.
+# Nämä korvaavat sanakirjan merkitykset. Tiedosto egna-ord.json menee vielä näiden edelle.
+vara|verb|olla = vara hemma; kestää = filmen varar två timmar; tavara, tuote = substantiv: en vara
+så|adv.|niin, näin = så bra; joten, niin että = konjunktion; sitten = först…, så…; kylvää = verb: så frön
+kunna|verb|voida, pystyä = jag kan komma; osata = hon kan svenska; saattaa = det kan regna
+men|konj.|mutta; vaiva, haitta = substantiv: få men
+göra|verb|tehdä; valmistaa; saada (tuntemaan) = göra någon glad = ilahduttaa jotakuta
+komma|verb|tulla = komma hem; saapua, päästä = komma fram; tulla tekemään = komma att = tuleva tapahtuma; pilkku = substantiv: ett komma
+bra|adj.|hyvä; hyvin = må bra = voida hyvin; kunnossa = det är bra nu
+vad|pron.|mitä, mikä = vad gör du?; kuinka = vad bra! = kuinka hyvä!; pohje = substantiv
+här|adv.|täällä, tässä; tänne = kom här; armeija = substantiv: en här
+se|verb|nähdä; katsoa = se på tv; näyttää jltak = se ut; huolehtia = se till att
+gå|verb|mennä; kävellä; lähteä, kulkea = tåget går; onnistua, käydä = det går bra = se onnistuu
+ta|verb|ottaa; viedä (aikaa), kestää = det tar en timme; ottaa mukaan = ta med; ottaa esille = ta upp
+någon|pron.|joku; jokin; kukaan, mikään = frågor: finns det någon?
+mig|pron.|minua, minut; minulle; itseäni = jag tvättar mig
+bara|adv.|vain, ainoastaan; kunhan = bara du kommer
+eller|konj.|tai; vai = frågor
+sig|pron.|itseään, itsensä; (refleksiivi) = tvätta sig = peseytyä
+finnas|verb|olla olemassa, löytyä = det finns = on (olemassa); olla saatavilla
+lite|adv.|vähän, hieman
+där|adv.|siellä, siinä; jossa = huset där jag bor
+ut|adv.|ulos; esiin = komma ut = ilmestyä
+ingen|pron.|ei kukaan = person; ei mikään, ei yhtään = sak
+veta|verb|tietää
+dig|pron.|sinua, sinut; sinulle; itseäsi
+upp|adv.|ylös; auki = öppna upp
+stor|adj.|suuri, iso; merkittävä
+andra|pron.|toinen = ordningstal: den andra; muut, toiset = de andra
+ni|pron.|te; Te = artigt
+över|prep.|yli; yllä, yläpuolella; ohi = det är över = se on ohi; -sta = glad över = iloinen jstk
+detta|pron.|tämä
+även|adv.|myös; jopa; vaikka = även om
+något|pron.|jokin, jotain; hieman = något bättre
+vilken|pron.|mikä, mitä; joka = relativt; mikä, kuinka = vilken tur! = mikä onni
+behöva|verb|tarvita; täytyä = du behöver inte = sinun ei tarvitse
+ge|verb|antaa; tuottaa = ge resultat; luovuttaa = ge upp
+hel|adj.|koko; ehjä
+tänka|verb|ajatella; aikoa = jag tänker resa; miettiä
+själv|pron.|itse
+mot|prep.|kohti, -a kohden = mot norr; vastaan = rösta mot; -lle, kohtaan = snäll mot
+många|pron.|monta, monet, moni
+helt|adv.|täysin, kokonaan
+tid|subst.|aika; aika, ajanvaraus = boka tid
+del|subst.|osa; jotkut, osa = en del människor
+rätt|adj.|oikea; oikein = adverb; oikeus = ha rätt att; tuomioistuin = substantiv: i rätten
+ny|adj.|uusi
+fråga|subst.|kysymys; asia, kysymys = en politisk fråga; kysyä = verb
+svenska|subst.|ruotsin kieli, ruotsi; ruotsalainen nainen
+åt|prep.|-lle, jollekin = köpa åt någon; -lle päin = åt höger = oikealle; söi = preteritum av äta
+utan|prep.|ilman; vaan = inte A utan B
+väl|adv.|hyvin; kai, kaiketi = du kommer väl?; kun (kerran) = väl hemma
+aldrig|adv.|ei koskaan
+sedan|adv.|sitten, myöhemmin; -sta lähtien = sedan 2020 = vuodesta 2020; koska = sedan han kom
+nog|adv.|kai, varmaankin = det är nog sant; tarpeeksi; kyllä = nog vill jag
+folk|subst.|kansa; ihmiset, väki
+hitta|verb|löytää; keksiä = hitta på
+stå|verb|seistä, seisoa; lukea, olla kirjoitettuna = det står i tidningen; olla edessä = stå inför; kestää = stå ut
+liv|subst.|elämä; henki = rädda livet; vyötärö = om livet
+känna|verb|tuntea = jag känner henne; tuntea, tuntua = känna sig trött; tietää = känna till
+riktig|adj.|oikea; todellinen
+fan|interj.|piru, perkele = kirosana; fani = substantiv: ett fan
+just|adv.|juuri; vasta = just nu = juuri nyt
+igen|adv.|taas, uudelleen; kiinni = stänga igen
+idag|adv.|tänään; nykyään
+innan|konj.|ennen kuin; ennen; aiemmin
+god|adj.|hyvä; maukas = god mat
+sätt|subst.|tapa; keino = på sätt och vis = tavallaan
+höra|verb|kuulla; kuulua = höra till; ottaa yhteyttä = höra av sig
+lägga|verb|laittaa, panna; asettaa; lisätä = lägga till; esittää = lägga fram
+sitta|verb|istua; olla (jossakin) = sitta i fängelse; sijaita; olla jumissa = sitta fast
+låta|verb|antaa = låt mig = anna minun; kuulostaa = det låter bra; jättää tekemättä = låta bli
+land|subst.|maa, valtio; maaseutu = på landet; maa, ranta = i land = maihin
+gång|subst.|kerta; käynti, meno = i gång = käynnissä; käytävä
+hem|adv.|kotiin; koti = substantiv
+fel|subst.|virhe; vika; väärä = adjektiv; väärin = adverb
+läsa|verb|lukea; opiskella
+visa|verb|näyttää; osoittaa = det visar att; esittää = visa en film
+precis|adv.|juuri, täsmälleen; tarkka
+er|pron.|teidän; teitä, teidät
+verkligen|adv.|todella, todellakin
+annat|pron.|muuta, toista
+väldigt|adv.|todella, hyvin = väldigt bra; valtavan
+ändå|adv.|kuitenkin, silti; joka tapauksessa
+fram|adv.|eteen, esiin; perille = komma fram
+jobb|subst.|työ; työpaikka
+kolla|verb|katsoa, tarkistaa
+fin|adj.|hieno; kaunis; hyvä = fint väder
+bild|subst.|kuva; käsitys = en bild av läget
+dra|verb|vetää; lähteä = dra iväg; vetää pois = dra in
+plats|subst.|paikka; tila = ta plats; sija = första plats
+sluta|verb|lopettaa; loppua = filmen slutar
+hög|adj.|korkea; kova = hög musik; kasa, pino = substantiv
+lära|verb|oppia = lära sig; opettaa; oppi = substantiv
+gälla|verb|koskea; olla voimassa; olla kyse = det gäller = on kyse
+mena|verb|tarkoittaa; olla mieltä = hon menar att
+väg|subst.|tie; keino, tapa; matkalla = på vägen
+lika|adv.|yhtä = lika stor; samanlainen; sama = lika lön
+pengar|subst.|rahat, raha
+inga|pron.|ei yhtään, ei mitään = monikko
+ganska|adv.|melko, aika
+honom|pron.|häntä, hänet = om en man
+runt|adv.|ympäri, ympärillä; noin = runt 100 = noin sata
+fortfarande|adv.|yhä, edelleen
+flera|pron.|useita, monta; useampi
+annan|pron.|toinen, muu
+välja|verb|valita
+följa|verb|seurata; noudattaa = följa regler; tulla mukaan = följa med
+gärna|adv.|mielellään
+typ|subst.|tyyppi, laji; tyyliin, suunnilleen = puhekieli
+sida|subst.|sivu; puoli = å ena sidan = toisaalta
+kalla|verb|kutsua; nimittää = kallas = kutsutaan
+nästa|adj.|seuraava, ensi
+åka|verb|matkustaa, mennä (kulkuneuvolla); ajaa = åka bil; jäädä kiinni = åka fast
+död|adj.|kuollut; kuolema = substantiv
+faktiskt|adv.|itse asiassa, todella
+därför|adv.|siksi, sen vuoksi; koska = därför att
+hos|prep.|luona; -lla = hos läkaren = lääkärissä
+tidigare|adv.|aiemmin; aiempi, entinen
+först|adv.|ensin, ensimmäisenä; vasta = först i morgon
+både|konj.|sekä = både A och B = sekä A että B
+klart|adv.|selvästi; tietysti = klart att; valmis = det är klart
+nära|adv.|lähellä; läheinen
+viss|adj.|tietty; varma = vara viss om
+lämna|verb|jättää; lähteä = lämna landet; luovuttaa = lämna över
+slut|subst.|loppu; lopussa, loppunut = det är slut
+vanlig|adj.|tavallinen; yleinen
+låt|subst.|kappale, laulu
+tala|verb|puhua; kertoa = tala om
+kille|subst.|poika, kaveri
+klara|verb|selviytyä, pärjätä = klara sig; suoriutua jstk = klara provet
+lätt|adj.|helppo; kevyt; helposti = adverb
+tal|subst.|puhe; luku = talet 5; puheen ollen = på tal om
+samhälle|subst.|yhteiskunta; yhdyskunta, taajama
+direkt|adv.|suoraan; heti, välittömästi; suora = adjektiv
+stark|adj.|vahva; voimakas
+kul|adj.|kiva, hauska
+visst|adv.|kyllä, tietysti = visst kan du; tietty = en viss
+senare|adv.|myöhemmin; myöhempi
+samtidigt|adv.|samalla, samaan aikaan
+träffa|verb|tavata; osua
+illa|adv.|huonosti, pahasti; voida pahoin = må illa
+köra|verb|ajaa (autoa); kuljettaa, viedä = köra hem någon; aloittaa = köra igång
+låg|adj.|matala; alhainen
+öka|verb|kasvaa, lisääntyä; lisätä
+känd|adj.|tunnettu, kuuluisa
+kort|adj.|lyhyt; lyhyesti; kortti = substantiv
+mål|subst.|tavoite; maali = sport; oikeusjuttu = i målet; ateria = mål mat
+massa|subst.|paljon = en massa; massa
+handel|subst.|kauppa; kaupankäynti
+fungera|verb|toimia
+må|verb|voida = hur mår du? = miten voit?; saada, olkoon = må det gå bra
+heta|verb|olla nimeltään
+val|subst.|vaalit, vaali = allmänna val; valinta; valas = djur
+par|subst.|pari; muutama = ett par dagar
+tur|subst.|onni = ha tur; vuoro = din tur; kierros, retki
+fatta|verb|ymmärtää, tajuta; tehdä (päätös) = fatta beslut; tarttua
+spel|subst.|peli; soitto
+grund|subst.|perusta, peruste; takia = på grund av; matala = adjektiv
+sex|räkn.|kuusi; seksi = substantiv
+säkert|adv.|varmasti; varmaan; turvallisesti
+tills|konj.|kunnes; asti = tills i morgon
+tag|subst.|ote; hetki = ett tag = hetken; tarttua = ta tag i
+jo|interj.|kyllä = vastaväite
+trots|prep.|huolimatta; vaikka = trots att; uhma = substantiv
+vart|adv.|minne, mihin
+vidare|adv.|eteenpäin; edelleen; ja niin edelleen = och så vidare
+igenom|adv.|läpi
+sådan|pron.|sellainen; tällainen
+utanför|prep.|ulkopuolella
+resa|subst.|matka; matkustaa = verb; nousta = resa sig
+bruka|verb|olla tapana = jag brukar = minulla on tapana; käyttää, viljellä
+nå|verb|saavuttaa; ylettyä; tavoittaa = nå någon; no = interjektion
+historia|subst.|historia; tarina
+övrig|adj.|muu; muuten = i övrigt
+skön|adj.|mukava; ihana; kaunis
+flytta|verb|muuttaa (asuntoa); siirtää
+morgon|subst.|aamu; huomenna = i morgon
+räkna|verb|laskea; luottaa = räkna med; pitää jnak = räknas som
+parti|subst.|puolue; erä
+ställe|subst.|paikka; sen sijaan = i stället
+artikel|subst.|artikkeli, juttu; artikla = i lag
+rum|subst.|huone; tila; tapahtua = äga rum
+absolut|adv.|ehdottomasti; ehdoton
+chans|subst.|mahdollisuus, tilaisuus
+dricka|verb|juoda; juoma = substantiv
+form|subst.|muoto; kunto = i form
+varandra|pron.|toisiaan, toisensa
+ringa|verb|soittaa (puhelimella); soida
+passa|verb|sopia; vahtia = passa barn; syöttää = sport
+värd|adj.|arvoinen; isäntä = substantiv
+dum|adj.|tyhmä; ilkeä
+förra|adj.|edellinen, viime = förra veckan
+stoppa|verb|pysäyttää; estää; pistää, tunkea = stoppa i
+pris|subst.|hinta; palkinto
+före|prep.|ennen; edellä
+missa|verb|missata, menettää; myöhästyä = missa tåget
+spelare|subst.|pelaaja; soitin
+håll|subst.|suunta = åt alla håll; taho = från flera håll; kaukaa = på håll
+hänga|verb|riippua, roikkua; ripustaa; pysyä mukana = hänga med
+snälla|interj.|ole kiltti = snälla, hjälp mig; kiltti = adjektiv snäll
+möjligt|adj.|mahdollista; mahdollisimman = så snabbt som möjligt
+medan|konj.|sillä aikaa kun; kun taas
+föda|verb|synnyttää; ruokkia; ravinto = substantiv
+innebära|verb|tarkoittaa, merkitä
+grej|subst.|juttu, asia
+roll|subst.|rooli, osa; merkitys = spela roll = olla merkitystä
+hård|adj.|kova; ankara
+sakna|verb|kaivata; puuttua = det saknas
+förlora|verb|hävitä = förlora matchen; menettää
+snygg|adj.|hyvännäköinen, komea; siisti
+full|adj.|täysi; humalassa
+skada|subst.|vahinko, vamma; vahingoittaa = verb
+säsong|subst.|kausi
+poäng|subst.|piste; pointti, ydin = poängen är
+starta|verb|aloittaa, käynnistää
+kropp|subst.|keho, ruumis
+förklara|verb|selittää; julistaa = förklara krig
+stanna|verb|pysähtyä; jäädä = stanna hemma
+inse|verb|tajuta, käsittää
+funka|verb|toimia
+fylla|verb|täyttää; täyttää vuosia = fylla år
+be|verb|pyytää = be om hjälp; rukoilla
+anta|verb|olettaa; hyväksyä = anta en lag; ottaa vastaan = anta utmaningen
+säker|adj.|varma; turvallinen
+tank|subst.|säiliö; panssarivaunu
+möta|verb|tavata; kohdata
+idé|subst.|idea, ajatus
+fri|adj.|vapaa; ilmainen
+önska|verb|toivoa; toivottaa
+speciell|adj.|erityinen, erikoinen
+fort|adv.|nopeasti; linnoitus = substantiv
+driva|verb|pyörittää, johtaa = driva företag; ajaa (asiaa) = driva frågan; ajelehtia
+nyhet|subst.|uutinen
+räcka|verb|riittää; ojentaa = räcka fram; ulottua
+bryta|verb|rikkoa = bryta mot lagen; murtaa, katkaista; puhjeta = kriget bröt ut
+skjuta|verb|ampua; lykätä = skjuta upp; työntää
+exakt|adv.|tarkalleen; tarkka
+snacka|verb|jutella
+stämma|verb|pitää paikkansa = det stämmer; haastaa oikeuteen = stämma någon; virittää; kokous = substantiv
+anledning|subst.|syy
+alternativ|subst.|vaihtoehto; vaihtoehtoinen
+hit|adv.|tänne; hitti = substantiv
+tydlig|adj.|selvä, selkeä
+äga|verb|omistaa; tapahtua = äga rum
+regel|subst.|sääntö
+leta|verb|etsiä
+ingenting|pron.|ei mitään
+kring|prep.|ympärillä, ympäri; noin = kring 50; -sta = frågor kring
+självklart|adv.|tietenkin, itsestään selvästi
+inne|adv.|sisällä
+framför|prep.|edessä; ennen kaikkea = framför allt
+förälder|subst.|vanhempi = föräldrar = vanhemmat
+extra|adj.|ylimääräinen, lisä-
+dagens|adj.|tämän päivän, nykyinen
+någonsin|adv.|koskaan, ikinä
+imorgon|adv.|huomenna
+oavsett|prep.|riippumatta
+vänster|adj.|vasen; vasemmisto = politik
+förslag|subst.|ehdotus, esitys
+halv|adj.|puoli
+ensam|adj.|yksin; yksinäinen; ainoa = ensam om
+perfekt|adj.|täydellinen
+rest|subst.|loppu, jäännös
+helg|subst.|viikonloppu; pyhä, juhlapyhä
+hoppa|verb|hypätä; erota, luopua = hoppa av
+EU|subst.|EU, Euroopan unioni
+SD|subst.|ruotsidemokraatit = Sverigedemokraterna
+röst|subst.|ääni = hennes röst; ääni = i valet: röster
+råd|subst.|neuvo; neuvosto = Europeiska rådet; varaa = ha råd med
+hälsa|subst.|terveys; tervehtiä = verb; käydä kylässä = hälsa på
+bjuda|verb|tarjota; kutsua = bjuda på fest
+led|subst.|väylä, reitti; nivel; kärsi = preteritum av lida
+tips|subst.|vinkki, vihje
+märka|verb|huomata; merkitä
+tidning|subst.|sanomalehti, lehti
+kosta|verb|maksaa = det kostar 10 kronor
+ekonomisk|adj.|taloudellinen
+mark|subst.|maa, maaperä = på marken; alue; markka
+falla|verb|pudota, kaatua; laskea = priset faller; kaatua = regeringen föll
+försök|subst.|yritys; koe, kokeilu
+uppgift|subst.|tehtävä; tieto = enligt uppgifter = tietojen mukaan
+inlägg|subst.|kirjoitus, julkaisu = på sociala medier; puheenvuoro
+fara|subst.|vaara; matkustaa, lähteä = verb
+synd|subst.|sääli = det är synd; synti
+förstöra|verb|tuhota; pilata
+enkel|adj.|yksinkertainen; helppo; yhdensuuntainen = enkel biljett
+engelska|subst.|englannin kieli, englanti
+topp|subst.|huippu; toppi
+peng|subst.|kolikko = pengar = rahat
+höger|adj.|oikea; oikeisto = politik
+lokal|adj.|paikallinen; tila, huoneisto = substantiv
+klar|adj.|selvä; valmis = är du klar?
+vända|verb|kääntää; kääntyä; kierros = substantiv
+ålder|subst.|ikä
+län|subst.|lääni, maakunta
+igång|adv.|käynnissä, käyntiin
+stan|subst.|kaupunki = stan = staden
+borta|adv.|poissa; kadoksissa
+ont|subst.|kipu = ha ont = koskea; pula = ont om
+någonting|pron.|jotain, jokin; mitään
+kl|subst.|kello = klockan
+lägg|subst.|pohje
+klass|subst.|luokka
+styra|verb|ohjata; hallita = styra landet
+bero|verb|riippua = det beror på; johtua = bero på
+suga|verb|imeä; olla surkea = det suger
+ben|subst.|jalka; luu
+hämta|verb|hakea, noutaa
+läge|subst.|tilanne; sijainti; tällä hetkellä = i nuläget
+jobbig|adj.|rasittava, hankala
+möte|subst.|kokous; tapaaminen
+buss|subst.|bussi, linja-auto
+studie|subst.|tutkimus
+förändra|verb|muuttaa
+ljus|subst.|valo; vaalea = adjektiv; kynttilä
+tjänst|subst.|palvelu; virka; palvelus = gör mig en tjänst
+ena|pron.|toinen (kahdesta) = den ena, å ena sidan = toisaalta; yhdistää = verb: ena landet
+slippa|verb|välttyä, päästä (tekemästä)
+tjäna|verb|ansaita; palvella; hyötyä
+tacka|verb|kiittää
+bestå|verb|koostua = bestå av; säilyä
+brott|subst.|rikos; murtuma
+syn|subst.|näkemys = syn på; näkö
+kontakt|subst.|yhteys, kontakti
+slag|subst.|lyönti, isku; laji = alla slag; taistelu = slaget vid; aivohalvaus
+kär|adj.|rakastunut; rakas
+dam|subst.|nainen, rouva; tammi = damspel
+bidra|verb|myötävaikuttaa, edistää = bidra till; osallistua
+vinst|subst.|voitto
+leda|verb|johtaa; ohjata
+mängd|subst.|määrä
+makt|subst.|valta
+chef|subst.|päällikkö, johtaja
+post|subst.|posti; virka, paikka
+lösning|subst.|ratkaisu
+samla|verb|kerätä, koota
+tåg|subst.|juna; kulkue
+bit|subst.|pala
+mobil|subst.|kännykkä, matkapuhelin
+ämne|subst.|aihe; aine
+ungdom|subst.|nuoriso; nuoruus; nuoret = ungdomar
+smart|adj.|fiksu, älykäs
+punkt|subst.|kohta; piste
+uppdrag|subst.|tehtävä, toimeksianto
+lov|subst.|loma = sommarlov; lupa
+finna|verb|löytää; havaita
+galen|adj.|hullu
+tillfälle|subst.|tilaisuus; kerta
+våg|subst.|aalto; vaaka
+rädd|adj.|pelokas, peloissaan = vara rädd för = pelätä
+skydda|verb|suojella
+träna|verb|harjoitella, treenata
+samtal|subst.|keskustelu; puhelu
+påstå|verb|väittää
+behandla|verb|käsitellä; kohdella; hoitaa
+tillåta|verb|sallia
+sort|subst.|laji, lajike
+anställa|verb|palkata
+gift|adj.|naimisissa; myrkky = substantiv
+intresse|subst.|kiinnostus; etu = i Sveriges intresse
+lyfta|verb|nostaa; ottaa esille = lyfta frågan; nousta = planet lyfter
+mening|subst.|lause, virke; tarkoitus = meningen med; mielipide
+dyka|verb|sukeltaa; ilmaantua = dyka upp
+högt|adv.|ääneen; korkealla
+iväg|adv.|matkaan, pois
+ytterligare|adv.|lisää, vielä; lisä-
+däremot|adv.|sen sijaan, sitä vastoin
+omkring|adv.|noin; ympärillä
+därmed|adv.|siten, näin ollen
+förr|adv.|ennen, aiemmin; ennemmin tai myöhemmin = förr eller senare
+icke|adv.|ei, ei-
+SVT|subst.|SVT = Sveriges Television, Ruotsin yleisradio
+annorlunda|adj.|erilainen; toisin
+lugnt|adv.|rauhallisesti
+fixa|verb|korjata, järjestää, hoitaa
+max|adv.|enintään
+sent|adv.|myöhään
+allvar|subst.|vakavuus; tosissaan = på allvar
+kommentar|subst.|kommentti
+såklart|adv.|tietysti
+värst|adj.|pahin = värsta
+fot|subst.|jalka (jalkaterä)
+erkänna|verb|myöntää, tunnustaa
+tyst|adj.|hiljainen; hiljaa
+debatt|subst.|keskustelu, väittely
+hantera|verb|käsitellä, hoitaa
+vård|subst.|hoito; hoiva
+delta|verb|osallistua = delta i
+lik|adj.|samanlainen = lik sin mamma; ruumis = substantiv
+köp|subst.|osto
+rak|adj.|suora
+gissa|verb|arvata
+uppskatta|verb|arvostaa; arvioida
+klippa|verb|leikata; kallio = substantiv
+kunskap|subst.|tieto, osaaminen
+råka|verb|sattua = råka göra; joutua = råka ut för
+affär|subst.|kauppa, liike; kauppa = göra affärer; juttu, skandaali = affären
+middag|subst.|päivällinen, illallinen
+plocka|verb|poimia, kerätä
+effekt|subst.|vaikutus; teho
+myndighet|subst.|viranomainen
+döma|verb|tuomita
+vis|subst.|tapa = på så vis; viisas = adjektiv
+leka|verb|leikkiä
+ladda|verb|ladata
+band|subst.|yhtye, bändi; nauha; side = band mellan
+pass|subst.|passi; vuoro = arbetspass
+höja|verb|nostaa, korottaa
+slänga|verb|heittää (pois)
+kämpa|verb|taistella, kamppailla
+fira|verb|juhlia, viettää
+bevis|subst.|todiste
+basera|verb|perustua = baseras på
+kontroll|subst.|valvonta, hallinta; tarkastus
+förhållande|subst.|suhde; olosuhteet = förhållanden
+butik|subst.|kauppa, myymälä
+period|subst.|jakso, kausi
+röra|verb|koskea, koskettaa; liikkua = röra sig; sotku = substantiv
+förvåna|verb|yllättää, hämmästyttää
+flytt|subst.|muutto
+åtta|räkn.|kahdeksan
+pågå|verb|olla käynnissä, jatkua
+ledsen|adj.|surullinen; pahoillaan
+färg|subst.|väri
+rad|subst.|rivi; joukko = en rad
+syfte|subst.|tarkoitus
+skämt|subst.|vitsi
+säkerhet|subst.|turvallisuus; varmuus
+föra|verb|viedä; käydä = föra samtal, föra krig; johtaa
+marknad|subst.|markkinat; tori
+ekonomi|subst.|talous
+dröm|subst.|unelma; uni
+student|subst.|opiskelija; ylioppilas
+grad|subst.|aste
+trycka|verb|painaa; painattaa = trycka en bok
+kritik|subst.|arvostelu, kritiikki
+tillgång|subst.|pääsy = tillgång till; varat = tillgångar
+söt|adj.|suloinen; makea
+fru|subst.|vaimo; rouva
+ledare|subst.|johtaja; pääkirjoitus
+händelse|subst.|tapahtuma
+anmäla|verb|ilmoittaa; tehdä rikosilmoitus = polisanmäla; ilmoittautua = anmäla sig
+värde|subst.|arvo
+utföra|verb|suorittaa, tehdä
+låna|verb|lainata
+träff|subst.|tapaaminen; osuma
+fest|subst.|juhlat
+unge|subst.|lapsi, kakara; poikanen
+amerikansk|adj.|amerikkalainen
+sticka|verb|pistää; neuloa; lähteä = sticka iväg
+far|subst.|isä
+förut|adv.|ennen, aiemmin
+skull|subst.|takia, vuoksi = för hans skull
+följande|adj.|seuraava
+tillhöra|verb|kuulua
+plus|subst.|plus; lisäksi
+km|subst.|kilometri
+jävligt|adv.|helvetin, tosi
+grattis|interj.|onneksi olkoon
+VM|subst.|MM-kisat = världsmästerskap
+stycke|subst.|kappale
+behålla|verb|säilyttää, pitää
+nät|subst.|verkko; netti
+ledig|adj.|vapaa; vapaalla
+sköta|verb|hoitaa
+grym|adj.|julma; mahtava = puhekieli
+relation|subst.|suhde
+ordning|subst.|järjestys; kunnossa = i ordning
+handling|subst.|teko, toiminta; asiakirja
+ordentlig|adj.|kunnollinen
+spår|subst.|jälki; raide
+förening|subst.|yhdistys
+fängelse|subst.|vankila; vankeus
+skäl|subst.|syy
+stödja|verb|tukea
+diskussion|subst.|keskustelu
+linje|subst.|linja
+klaga|verb|valittaa
+försvar|subst.|puolustus
+rätta|verb|korjata, oikaista
+fria|verb|vapauttaa = frias = vapautetaan syytteistä; kosia
+mörda|verb|murhata
+ända|adv.|aina, asti = ända till = aina … asti; pää, loppu = substantiv; takapuoli
+titel|subst.|nimi, otsikko = bokens titel; titteli
+bilda|verb|muodostaa = bilda regering; perustaa
+militär|adj.|sotilaallinen, sotilas-; armeija, sotilas = substantiv
+prov|subst.|koe; näyte
+smaka|verb|maistua; maistaa
+besök|subst.|vierailu, käynti
+tecken|subst.|merkki
+kraftig|adj.|voimakas; huomattava = kraftig ökning
+kontrollera|verb|tarkistaa; valvoa, hallita
+orsak|subst.|syy
+enskild|adj.|yksittäinen; yksityinen
+ring|subst.|rengas, sormus
+förlåt|interj.|anteeksi
+frisk|adj.|terve; raikas
+backa|verb|peruuttaa; perääntyä = backa från; tukea = backa upp
+lita|verb|luottaa = lita på
+verk|subst.|teos; virasto, laitos = Skatteverket; toteuttaa = sätta i verket
+klä|verb|pukea; pukeutua = klä sig; sopia jklle = det klär dig
+sur|adj.|hapan; äreä, nyrpeä
+laga|verb|korjata; laittaa ruokaa = laga mat
+konst|subst.|taide; taito, temppu = konsten att
+betydelse|subst.|merkitys
+trygg|adj.|turvallinen; levollinen
+angå|verb|koskea, kuulua jklle
+stil|subst.|tyyli
+start|subst.|alku, lähtö
+test|subst.|testi, koe
+team|subst.|tiimi, joukkue
+täcka|verb|peittää; kattaa = täcka kostnader
+fakta|subst.|tosiasiat, faktat
+bestämd|adj.|päättäväinen; määrätty
+ryska|subst.|venäjän kieli, venäjä
+utredning|subst.|selvitys; tutkinta = polisens utredning
+hopp|subst.|toivo; hyppy
+mitt|adv.|keskellä = mitt i; minun = mitt hus
+jord|subst.|maa, maapallo = jorden; multa, maaperä
+sist|adv.|viimeisenä; viimeksi
+st|subst.|kpl = stycken
+bidrag|subst.|avustus, tuki; panos, osuus
+vars|pron.|jonka, joiden
+allting|pron.|kaikki
+levande|adj.|elävä
+nere|adv.|alhaalla
+nr|subst.|numero
+södra|adj.|eteläinen, etelä-
+MP|subst.|vihreät = Miljöpartiet
+senast|adv.|viimeksi; viimeistään = senast i morgon
+sönder|adv.|rikki
+allra|adv.|kaikkein
+dels|adv.|osittain = dels … dels = toisaalta … toisaalta
+utifrån|prep.|perusteella; ulkoa
+överens|adv.|samaa mieltä = vara överens; sopia = komma överens
+allvarligt|adv.|vakavasti
+betydligt|adv.|huomattavasti
+sådär|adv.|noin, sillä tavalla; niin ja näin
+utöver|prep.|lisäksi, yli
+bredvid|prep.|vieressä
+högst|adv.|enintään; korkein; erittäin = högst osannolikt
+ifall|konj.|jos; siltä varalta että
+norra|adj.|pohjoinen, pohjois-
+riksdag|subst.|valtiopäivät, eduskunta = Ruotsin parlamentti, riksdagen
+definitivt|adv.|ehdottomasti, varmasti
+knappast|adv.|tuskin
+misstag|subst.|erehdys, virhe
+respekt|subst.|kunnioitus
+oerhört|adv.|valtavan, äärimmäisen
+hallå|interj.|hei, haloo
+såsom|konj.|kuten
+orolig|adj.|huolestunut; levoton
+djup|adj.|syvä
+ersätta|verb|korvata
+säkra|verb|varmistaa, turvata
+lös|adj.|irrallinen, löysä; vapaana = släppa lös
+placera|verb|sijoittaa
+förekomma|verb|esiintyä; tapahtua
+bära|verb|kantaa; pitää yllään = bära kläder; kannattaa
+natur|subst.|luonto; luonne
+sända|verb|lähettää
+gård|subst.|piha; maatila
+jaga|verb|jahdata; metsästää
+smak|subst.|maku
+officiell|adj.|virallinen
+studera|verb|opiskella; tutkia
+bekräfta|verb|vahvistaa
+scen|subst.|näyttämö, lava; kohtaus
+boende|subst.|asuminen; asukas = de boende; asunto
+upptäcka|verb|huomata, havaita; löytää
+lova|verb|luvata
+tung|adj.|raskas, painava
+våga|verb|uskaltaa
+meddelande|subst.|viesti, ilmoitus
+utgå|verb|lähteä = utgå från = lähteä jstk, olettaa; jäädä pois
+förbereda|verb|valmistella; valmistautua = förbereda sig
+yta|subst.|pinta; pinta-ala
+medicin|subst.|lääke; lääketiede
+tillstånd|subst.|lupa; tila, kunto
+enorm|adj.|valtava
+höjd|subst.|korkeus
+position|subst.|asema; sijainti
+mor|subst.|äiti
+relativ|adj.|suhteellinen
+allmänhet|subst.|yleisö = allmänheten; yleensä = i allmänhet
+reklam|subst.|mainos, mainonta
+ort|subst.|paikkakunta
+skuld|subst.|velka; syyllisyys, syy
+vikt|subst.|paino; merkitys = lägga vikt vid
+ständig|adj.|jatkuva
+tryck|subst.|paine; painatus
+sträcka|subst.|matka, osuus; ojentaa = verb
+mil|subst.|peninkulma = Ruotsin mil = 10 km
+dölja|verb|kätkeä, salata
+falsk|adj.|väärä, epäaito
+service|subst.|palvelu; huolto
+ton|subst.|tonni; sävy = tonen
+aktuell|adj.|ajankohtainen; kyseinen
+nytta|subst.|hyöty
+söder|subst.|etelä
+jacka|subst.|takki
+fart|subst.|vauhti, nopeus
+strid|subst.|taistelu; kiista
+rikta|verb|suunnata = rikta kritik mot
+föredra|verb|pitää parempana
+axel|subst.|olkapää; akseli
+dygn|subst.|vuorokausi
+press|subst.|paine; lehdistö
+anpassa|verb|sopeuttaa; sopeutua = anpassa sig
+typisk|adj.|tyypillinen
+tyska|subst.|saksan kieli
+ovan|adv.|yllä = se ovan; tottumaton = adjektiv
+lura|verb|huijata, petkuttaa
+begära|verb|pyytää, vaatia
+publik|subst.|yleisö; julkinen = adjektiv
+skiva|subst.|levy; viipale
+rulla|verb|rullata, pyöriä
+van|adj.|tottunut
+himla|adv.|tosi, hirveän = himla bra
+likadan|adj.|samanlainen
+nyss|adv.|äsken
+tex|adv.|esimerkiksi = t.ex.
+detsamma|pron.|samaa, sama = tack detsamma
+hittills|adv.|tähän mennessä
+version|subst.|versio
+framförallt|adv.|ennen kaikkea
+vadå|interj.|mitä sitten?, mitä tarkoitat?
+jäkla|adj.|hemmetin
+kommande|adj.|tuleva
+åter|adv.|taas, uudelleen; takaisin
+återigen|adv.|jälleen
+fy|interj.|hyi
+märkligt|adv.|kummallista, merkillistä
+ansvarig|adj.|vastuussa; vastuuhenkilö = substantiv
+osäker|adj.|epävarma
+andel|subst.|osuus
+socialdemokrat|subst.|sosiaalidemokraatti, demari
+inleda|verb|aloittaa
+skylla|verb|syyttää = skylla på någon
+konsekvens|subst.|seuraus
+utländsk|adj.|ulkomainen
+skyldig|adj.|syyllinen; velkaa = vara skyldig pengar; velvollinen = skyldig att
+sällskap|subst.|seura; yhdistys
+oroa|verb|huolestuttaa; olla huolissaan = oroa sig
+seriös|adj.|vakava, vakavasti otettava
+ställning|subst.|kanta = ta ställning; asema; teline
+uppenbar|adj.|ilmeinen
+besviken|adj.|pettynyt
+tröja|subst.|paita, pusero
+kliva|verb|astua; kiivetä
+lugna|verb|rauhoittaa
+art|subst.|laji
+syfta|verb|viitata = syfta på; pyrkiä = syfta till
+olycka|subst.|onnettomuus; epäonni
+vind|subst.|tuuli; ullakko
+lopp|subst.|kilpailu, juoksu; kuluessa = under årets lopp
+kamp|subst.|taistelu, kamppailu
+make|subst.|puoliso, aviomies; vertainen = utan make
+het|adj.|kuuma
+blåsa|verb|puhaltaa; tuulla = det blåser; rakko, rakkula = substantiv
+omgång|subst.|kierros
+riva|verb|purkaa = riva huset; repiä; raapia
+enhet|subst.|yksikkö; laite
+längta|verb|kaivata, ikävöidä
+sjunka|verb|vajota, upota; laskea = priserna sjunker
+arena|subst.|areena
+allvarlig|adj.|vakava
+uttalande|subst.|lausunto
+bas|subst.|perusta; tukikohta = militärbas; basso
+gömma|verb|piilottaa; piiloutua = gömma sig
+skydd|subst.|suoja; suojelu
+invandring|subst.|maahanmuutto
+uppfattning|subst.|käsitys, mielipide
+villa|subst.|omakotitalo; huvila
+bedöma|verb|arvioida
+kontrakt|subst.|sopimus
+avse|verb|tarkoittaa; koskea = avser; aikoa
+rykte|subst.|maine; huhu
+oro|subst.|huoli, levottomuus
+ange|verb|ilmoittaa, kertoa = enligt vad som anges; ilmiantaa
+praktisk|adj.|käytännöllinen
+franska|subst.|ranskan kieli
+märke|subst.|merkki
+tusental|subst.|tuhansia = tusentals
+flertal|subst.|useat, enemmistö = flertalet = useimmat
+finska|subst.|suomen kieli, suomi
+grunda|verb|perustaa
+fälla|verb|kaataa = fälla träd; antaa (tuomio) = fälla en dom; vuodattaa = fälla tårar; ansa = substantiv
+sparka|verb|potkaista; antaa potkut = sparka någon
+karl|subst.|mies
+norska|subst.|norjan kieli
+akut|adj.|akuutti, kiireellinen; päivystys = akuten
+följd|subst.|seuraus
+konflikt|subst.|konflikti, ristiriita
+tema|subst.|teema, aihe
+svänga|verb|kääntyä
+satsa|verb|panostaa, satsata
+stackars|adj.|raukka, poloinen
+tvärtom|adv.|päinvastoin
+info|subst.|tieto, tiedot
+bl.a.|adv.|muun muassa = bland annat
+cm|subst.|senttimetri
+DN|subst.|Dagens Nyheter = ruotsalainen sanomalehti
+Israel|subst.|Israel
+fortsatt|adv.|edelleen; jatkuva
+samman|adv.|yhteen
+slåss|verb|tapella, taistella
+kontakta|verb|ottaa yhteyttä
+käft|subst.|turpa, suu = håll käften = pidä suusi kiinni
+SM|subst.|SM-kisat = svenska mästerskap
+dr|subst.|tohtori
+hamna|verb|joutua, päätyä
+lida|verb|kärsiä
+moderaterna|subst.|maltillinen kokoomus = Moderaterna, Ruotsin oikeistopuolue
+moderat|adj.|maltillinen; moderaatti = puolueen jäsen
+närma|verb|lähestyä = närma sig
+inslag|subst.|piirre, osa = inslag i; juttu = tv-inslag
+skämmas|verb|hävetä
+torka|verb|kuivata; kuivuus = substantiv
+lek|subst.|leikki
+frysa|verb|palella; jäätyä; pakastaa
+bruk|subst.|käyttö; tapa
+part|subst.|osapuoli; osa
+spark|subst.|potku; potkut = få sparken
+granska|verb|tutkia, tarkastella
+pröva|verb|kokeilla; koetella; käsitellä (oikeudessa) = pröva ett mål
+ärende|subst.|asia, tapaus
+present|subst.|lahja
+ed|subst.|vala
+styrelse|subst.|hallitus = yhtiön, yhdistyksen; johtokunta
+bak|adv.|takana; peppu = substantiv
+ära|subst.|kunnia
+sikt|subst.|näkyvyys; ajan mittaan = på sikt
+syssla|verb|puuhata; askare = substantiv
+värdering|subst.|arvo = värderingar = arvot; arviointi
+inställning|subst.|asenne; asetus
+medel|subst.|keino; varat = medel; aine; keskiarvo
+id|subst.|henkilöllisyys = id-kort
+praktik|subst.|harjoittelu; käytäntö = i praktiken
+budskap|subst.|viesti, sanoma
+krossa|verb|murskata
+rita|verb|piirtää
+pension|subst.|eläke
+gripa|verb|pidättää = polisen grep en man; tarttua; koskettaa = gripande
+informera|verb|tiedottaa
+lager|subst.|varasto; kerros
+avdelning|subst.|osasto
+stämning|subst.|tunnelma; haaste = oikeus
+betrakta|verb|pitää jnak = betraktas som; tarkastella
+avgörande|adj.|ratkaiseva; ratkaisu = substantiv
+motstånd|subst.|vastarinta; vastustus
+inflytande|subst.|vaikutusvalta
+rensa|verb|siivota, puhdistaa
+motiv|subst.|motiivi
+ting|subst.|käräjät; esine
+ledamot|subst.|jäsen = riksdagsledamot = kansanedustaja
+beröra|verb|koskea
+brud|subst.|morsian
+samling|subst.|kokoelma; kokoontuminen
+# Uutis- ja politiikkasanastoa
+representanthus|subst.|edustajainhuone = USA:n kongressi
+mätning|subst.|mittaus; mielipidemittaus = opinionsmätning
+förhandla|verb|neuvotella
+fördrag|subst.|sopimus, valtiosopimus
+anfall|subst.|hyökkäys
+missil|subst.|ohjus
+häkta|verb|vangita = rätten häktade mannen
+häktad|adj.|vangittu
+åtal|subst.|syyte = väcka åtal = nostaa syyte
+misstanke|subst.|epäily
+tillträda|verb|astua virkaan = tillträda som president; ottaa vastaan (virka)
+avgå|verb|erota (virasta) = ministern avgår; lähteä = tåget avgår
+avgång|subst.|ero (virasta); lähtö
+riksbank|subst.|Ruotsin keskuspankki = Riksbanken
+upplopp|subst.|mellakka
+kravall|subst.|mellakka = kravaller
+segra|verb|voittaa
+läcka|verb|vuotaa; vuoto = substantiv
+uppge|verb|kertoa, ilmoittaa = uppger SVT = SVT kertoo
+meddela|verb|ilmoittaa, tiedottaa
+rapportera|verb|raportoida, uutisoida
+regim|subst.|hallinto, järjestelmä = regimen
+extremism|subst.|ääriliikehdintä, ekstremismi
+demokrat|subst.|demokraatti = USA:n demokraatit
+FN|subst.|YK = Förenta nationerna
+säkerhetsråd|subst.|turvallisuusneuvosto = FN:s säkerhetsråd
+ockupera|verb|miehittää, vallata
+offensiv|subst.|hyökkäys, offensiivi; hyökkäävä = adjektiv
+humanitär|adj.|humanitaarinen
+nödhjälp|subst.|hätäapu
+skadad|adj.|loukkaantunut; vahingoittunut
+dödad|adj.|tapettu, surmattu
+omkommen|adj.|menehtynyt = de omkomna = kuolleet
+veto|subst.|veto-oikeus, veto
+högsta|adj.|korkein = Högsta domstolen = korkein oikeus
+friande|adj.|vapauttava = friande dom
+fällande|adj.|langettava = fällande dom
+deportera|verb|karkottaa
+misstroende|subst.|epäluottamus
+riksrätt|subst.|virkasyyte = USA: impeachment
+tillfälligt|adv.|tilapäisesti, väliaikaisesti
+långsiktig|adj.|pitkäaikainen, pitkän aikavälin
+geopolitisk|adj.|geopoliittinen
+social|adj.|sosiaalinen = sociala medier = sosiaalinen media
+media|subst.|media, tiedotusvälineet = medier
+AI|subst.|tekoäly = artificiell intelligens
+artificiell|adj.|keinotekoinen
+hacker|subst.|hakkeri
+spionage|subst.|vakoilu
+säkerhetstjänst|subst.|turvallisuuspalvelu
+Säpo|subst.|Ruotsin suojelupoliisi = Säkerhetspolisen
+kommissionär|subst.|komissaari
+varsel|subst.|irtisanomisilmoitus, lomautusvaroitus = varsla personal
+varsla|verb|ilmoittaa irtisanomisista = varsla anställda
+väst|subst.|länsi = i väst = lännessä; liivi
+västvärlden|subst.|länsimaat
+underrättelse|subst.|tiedustelu = underrättelsetjänst; tieto
+proposition|subst.|hallituksen esitys = lakiesitys
+demonstration|subst.|mielenosoitus; esittely
+blockera|verb|estää, tukkia
+besked|subst.|ilmoitus, vastaus = få besked
+opposition|subst.|oppositio
+överenskommelse|subst.|sopimus
+toppmöte|subst.|huippukokous
+attentat|subst.|attentaatti, isku
+misstänkt|adj.|epäilty
+åtala|verb|syyttää, nostaa syyte
+talman|subst.|puhemies
+styrränta|subst.|ohjauskorko
+utsläpp|subst.|päästö
+kärnkraft|subst.|ydinvoima
+mandat|subst.|paikka (parlamentissa), mandaatti; valtuutus
+lagförslag|subst.|lakiehdotus
+konservativ|adj.|konservatiivinen, vanhoillinen
+republikan|subst.|republikaani
+inrikes|adj.|kotimaan, kotimainen = inrikes nyheter
+utrikes|adj.|ulkomaan, ulkomainen = utrikes nyheter
+avsätta|verb|syrjäyttää, erottaa (virasta)
+allierad|adj.|liittolainen
+partner|subst.|kumppani
+ansökan|subst.|hakemus
+godkännande|subst.|hyväksyntä
+lag|subst.|laki; joukkue
+anta|verb|olettaa; hyväksyä = riksdagen antog lagen; ottaa vastaan = anta utmaningen
+höja|verb|nostaa, korottaa
+sänka|verb|laskea, alentaa = sänka skatten; upottaa
+kris|subst.|kriisi
+gräns|subst.|raja
+skjutning|subst.|ampuminen, ammuskelu
+gängvåld|subst.|jengiväkivalta
+explosion|subst.|räjähdys
+sprängning|subst.|räjäytys
+spränga|verb|räjäyttää
+senaste|adj.|viimeisin, uusin; viime = de senaste åren = viime vuosina
+fler|adj.|useampi, enemmän = fler än; lisää = fler och fler = yhä useampi
+flesta|adj.|useimmat = de flesta
+polis|subst.|poliisi = polisen = poliisi
+svensk|adj.|ruotsalainen; ruotsalainen (henkilö) = substantiv
+engelsk|adj.|englantilainen; englanninkielinen
+finsk|adj.|suomalainen; suomenkielinen
+rysk|adj.|venäläinen; Venäjän = ryska regeringen

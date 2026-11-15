@@ -5,6 +5,7 @@
  *   f: taivutusmuoto -> "perusmuoto|perusmuoto"
  *   p: omat korjaukset: taivutusmuoto -> ensisijaiset perusmuodot
  *   z: sana -> yleisyys (zipf * 10)
+ *   u: sanaliitot [teksti, merkitykset, alkaako verbillä 0/1]
  */
 (function (root) {
   "use strict";
@@ -18,12 +19,33 @@
     "en", "et", "na", "ns", "ts", "es", "as", "s", "n", "t", "a", "e",
   ];
 
+  // Refleksiivipronominit: ilmauksen "sig" vastaa myös näitä.
+  const REFLEXIVE = new Set(["sig", "mig", "dig", "oss", "er"]);
+  // Lyhyet sanat, jotka saavat jäädä verbin ja partikkelin väliin (tog inte upp, tar han över).
+  const GAP = new Set([
+    "inte", "aldrig", "också", "även", "ju", "nog", "redan", "då", "nu", "sedan", "han", "hon", "de", "dom",
+    "vi", "jag", "du", "ni", "man", "den", "det", "alltså", "dock", "snart", "ofta", "gärna", "helt", "själv",
+    "heller", "bara", "just", "ändå", "fortfarande", "ännu", "inte", "kanske", "verkligen", "faktiskt",
+  ]);
+
   class Ordbok {
     constructor(data) {
       this.d = data.d || {};
       this.f = data.f || {};
       this.p = data.p || {};
       this.z = data.z || {};
+      this.phrases = [];
+      this.byToken = new Map();
+      for (const [text, s, verb] of data.u || []) {
+        const toks = text.toLowerCase().split(" ");
+        if (toks.length < 2) continue;
+        const phrase = { text, toks, s, verb: !!verb };
+        this.phrases.push(phrase);
+        for (const t of new Set(toks)) {
+          if (!this.byToken.has(t)) this.byToken.set(t, []);
+          this.byToken.get(t).push(phrase);
+        }
+      }
       this.lower = new Map();
       for (const key of Object.keys(this.d)) {
         const low = key.toLowerCase();
@@ -103,6 +125,60 @@
         if (!best || score > best.score) best = { score, parts: [leftKeys[0], ...rightParts] };
       }
       return best ? best.parts : null;
+    }
+
+    /** Vastaako tekstin sana ilmauksen sanaa (perusmuodon kautta)? */
+    tokenMatches(word, tok) {
+      if (word === tok) return true;
+      if (tok === "sig") return REFLEXIVE.has(word);
+      return this.lemmas(word, false).some((l) => l.toLowerCase() === tok);
+    }
+
+    /**
+     * Sanaliitot, joihin kohdan i sana kuuluu. words: virkkeen sanat pienillä kirjaimilla.
+     * Palauttaa [{ text, s, from, to }], pisin ensin.
+     */
+    phrasesAt(words, i) {
+      const word = words[i];
+      if (!word) return [];
+      const cands = new Set();
+      for (const key of [word, ...this.lemmas(word, false).map((l) => l.toLowerCase())]) {
+        for (const p of this.byToken.get(key) || []) cands.add(p);
+      }
+      if (REFLEXIVE.has(word)) for (const p of this.byToken.get("sig") || []) cands.add(p);
+      const out = [];
+      for (const p of cands) {
+        const n = p.toks.length;
+        for (let start = Math.max(0, i - n - 2); start <= i; start++) {
+          const hit = this.align(p, words, start);
+          if (hit && hit.includes(i)) {
+            out.push({ text: p.text, s: p.s, from: hit[0], to: hit[hit.length - 1] });
+            break;
+          }
+        }
+      }
+      out.sort((a, b) => b.text.split(" ").length - a.text.split(" ").length || a.from - b.from);
+      // Lyhyempi ilmaus, joka sisältyy pidempään (ta upp ⊂ ta upp frågan), jätetään pois.
+      return out.filter((x, k) => !out.slice(0, k).some((y) => y.from <= x.from && y.to >= x.to)).slice(0, 2);
+    }
+
+    align(p, words, start) {
+      if (!this.tokenMatches(words[start] || "", p.toks[0])) return null;
+      const covered = [start];
+      let j = start + 1;
+      for (let k = 1; k < p.toks.length; k++) {
+        if (k === 1 && p.verb) {
+          let skipped = 0;
+          while (skipped < 2 && words[j] && GAP.has(words[j]) && !this.tokenMatches(words[j], p.toks[1])) {
+            j++;
+            skipped++;
+          }
+        }
+        if (!words[j] || !this.tokenMatches(words[j], p.toks[k])) return null;
+        covered.push(j);
+        j++;
+      }
+      return covered;
     }
 
     /**

@@ -5,7 +5,7 @@ Oma ruotsinkielinen lukusivu: maailman uutiset, ajankohtaiset aiheet, kulttuuri,
 ## Mitä sivulla on
 
 - **I dag:** *Dagens läsning* poimii joka päivä kahdeksan juttua eri aiheista, helpoimmat ensin. Rengas näyttää, montako olet lukenut, ja peräkkäisten lukupäivien määrä näkyy sen vieressä. Alla ovat kaikki muut jutut.
-- **Nyheter:** maailman uutiset ja Ruotsin ja Suomen ajankohtaiset asiat (Alla, Världen, Aktuellt). SVT:n urheilu- ja paikallisuutiset on suodatettu pois.
+- **Nyheter:** maailman uutiset, länsimaiden politiikka sekä Ruotsin ja Suomen ajankohtaiset asiat (Alla, Världen, Politik, Aktuellt). *Politik* kokoaa jutut, joissa on kyse Euroopan, EU:n, USA:n tai muiden länsimaiden politiikasta; niissä on merkintä *Världspolitik*. SVT:n urheilu- ja paikallisuutiset on suodatettu pois.
 - **Kultur:** kulttuuri, *Böcker* (kirjallisuus) ja *Film & tv*.
 - **Lätt:** helppoa ruotsia (8 Sidor, Klartext).
 - **Mina ord:** tallentamasi sanat ja niiden kertaus.
@@ -15,9 +15,11 @@ Oma ruotsinkielinen lukusivu: maailman uutiset, ajankohtaiset aiheet, kulttuuri,
 
 Napauta mitä tahansa sanaa otsikossa tai tekstissä. Kupla näyttää:
 
+- **sanaliiton tai partikkeliverbin**, jos sana kuuluu sellaiseen (esim. *tog inte upp* → *ta upp* = ottaa esille, *på grund av* = takia). Ilmauksen sanat korostetaan tekstissä.
 - sanan perusmuodon ja sanaluokan (esim. *snöat → snöa, verb*)
 - kuinka yleinen sana on (*vanligt*, *ganska vanligt*, *ovanligt*)
-- suomennokset merkityksittäin, yleisin ensin, ja lyhyen ruotsinkielisen selityksen
+- enintään neljä merkitystä, yleisin ensin, ja esimerkin tai lyhyen selityksen
+- **virkkeeseen sopivan merkityksen**: jos virkkeen käännös on tiedossa, siihen sopiva merkitys nostetaan ensimmäiseksi ja merkitään *i den här meningen*
 - yhdyssanan osat (esim. *cykel + banor*)
 - **Spara** tallentaa sanan ja virkkeen, jossa se esiintyi, Mina ord -välilehdelle
 - **Översätt meningen** kääntää koko virkkeen
@@ -78,7 +80,9 @@ Jos käännösvaihe epäonnistuu, sivu julkaistaan silti. Silloin virkkeet kää
 | `ordbok.js` | sanahaku: taivutusmuodot, yhdyssanat |
 | `sw.js` | offline-tila |
 | `sources.json` | lähteet ja Reddit-linkit |
-| `data/egna-ord.json` | omat korjaukset sanakirjaan |
+| `data/grundord.txt` | noin 900 yleisimmän sanan tarkistetut suomennokset |
+| `data/uttryck.txt` | sanaliitot ja partikkeliverbit (noin 300 omaa ja sanakirjan omat) |
+| `data/egna-ord.json` | yksittäiset korjaukset ja taivutusmuotojen ohjaukset |
 | `data/*.gz` | valmis sanakirja, taivutusmuodot ja sanojen yleisyys |
 
 ## Lähteiden muokkaus
@@ -91,28 +95,48 @@ Lähteet ovat tiedostossa `sources.json`:
 | `name` | sivulla näkyvä nimi |
 | `url` | RSS-syötteen osoite |
 | `category` | `varlden`, `aktuellt`, `kultur` tai `latt` |
-| `tags` | merkinnät kaikille lähteen jutuille, esim. `["film"]` tai `["bok"]` |
+| `tags` | merkinnät kaikille lähteen jutuille: `bok`, `film` tai `politik` |
 | `exclude_url` | osoitteen osat, joita sisältävät jutut jätetään pois, esim. `"/sport/"` |
+| `include_url` | vain osoitteet, joissa on jokin näistä osista, otetaan mukaan |
+| `require_tag` | vain jutut, jotka saavat tämän merkinnän, esim. `"politik"` (Expressen ja Aftonbladet: vain maailmanpolitiikka) |
+| `no_summary` | `true` ohittaa syötteen tiivistelmän (jos se on pelkkää roskaa) |
 | `enabled` | `false` poistaa lähteen käytöstä |
 | `max_age_days` | kuinka monen päivän vanhoja juttuja näytetään (oletus 4) |
 
 Lähteen voi myös piilottaa vain itseltään valikon kytkimellä muuttamatta tiedostoa.
 
+Maailmanpolitiikan lähteet ovat SVT Utrikes, Svenska Yle utrikes, Europaportalen (EU ja Euroopan politiikka), Sveriges Radion *Konflikt* (viikoittainen ulkomaanmakasiini) sekä Expressenin ja Aftonbladetin uutisista ne, jotka koskevat länsimaiden politiikkaa. Jos jokin näistä näyttää valikossa tekstiä *fungerar inte*, sen syöteosoite on muuttunut.
+
 Dagens Nyheter, Svenska Dagbladet ja Hufvudstadsbladet ovat mukana, mutta pois päältä, koska suuri osa niiden jutuista on maksumuurin takana.
 
 ## Sanakirjan korjaaminen
 
-Jos jokin suomennos on väärin, lisää rivi tiedoston `data/egna-ord.json` kohtaan `ord`:
+Sanakirja koostuu kerroksista. Ylempi voittaa alemman:
 
-```json
-"cykel": {"p": "subst.", "s": [[["polkupyörä", "pyörä"], "fordon med pedaler"]], "ersätt": true},
+1. `data/egna-ord.json`: yksittäiset korjaukset
+2. `data/grundord.txt`: yleisimpien sanojen tarkistetut merkitykset
+3. FreeDict/WikDict-sanakirja (`data/sv-fi.json.gz`)
+
+Helpoin tapa korjata sana on lisätä tai muuttaa rivi tiedostossa `data/grundord.txt`:
+
+```
+driva|verb|pyörittää, johtaa = driva företag; ajaa (asiaa) = driva frågan; ajelehtia
 ```
 
-- `s` on lista merkityksiä: `[[suomennokset], "ruotsinkielinen selitys"]`.
-- `"ersätt": true` korvaa sanakirjan merkitykset. Ilman sitä omat merkitykset lisätään ensimmäisiksi.
-- Kohdassa `former` taivutusmuoto ohjataan oikeaan perusmuotoon, esim. `"är": "vara"`.
+- Muoto on `sana|sanaluokka|merkitykset`. Merkitykset erotetaan puolipisteellä (enintään neljä, yleisin ensin).
+- Yhden merkityksen sisällä suomennokset erotetaan pilkulla, ja `=`-merkin jälkeen voi kirjoittaa esimerkin.
 
-Korjaus tulee voimaan seuraavassa ajossa. Actions-ajon välimuistissa on myös lista sanoista, joita sanakirjasta ei löytynyt.
+Sanaliiton tai partikkeliverbin lisäät tiedostoon `data/uttryck.txt` samalla tavalla ilman sanaluokkaa:
+
+```
+ta upp|ottaa esille, ottaa puheeksi = ta upp frågan; nostaa ylös
+```
+
+Kirjoita verbi perusmuodossa. Sovellus tunnistaa myös taivutetut muodot (*tog upp*, *tar upp*) ja lyhyet välisanat (*tog inte upp*).
+
+Jos taivutusmuoto ohjautuu väärään perusmuotoon, lisää se tiedoston `data/egna-ord.json` kohtaan `former`, esim. `"lever": "leva|lever"`.
+
+Korjaukset tulevat voimaan seuraavassa ajossa. Actions-ajon välimuistissa on myös lista sanoista, joita sanakirjasta ei löytynyt.
 
 ## Hyvä tietää
 
