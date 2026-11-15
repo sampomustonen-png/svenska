@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import calendar
+import collections
 import concurrent.futures as cf
 import hashlib
 import html
@@ -21,6 +22,7 @@ import sys
 import time
 import unicodedata
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -376,6 +378,116 @@ def add_images(items: list[dict], cache_dir: Path | None) -> None:
         cache_file.write_text(json.dumps(cache, ensure_ascii=False), encoding="utf-8")
 
 
+def norm_title(text: str) -> str:
+    text = unicodedata.normalize("NFC", text).lower()
+    text = re.sub(r"[”“„\"«»’'`´]", "", text)
+    return re.sub(r"\s+", " ", text).strip(" .:–-")
+
+
+def site_links(site_url: str) -> dict[str, str]:
+    """Ohjelman verkkosivun juttulinkit: normalisoitu linkkiteksti -> osoite. Ensin sivun HTML suoraan,
+    jos siitä ei löydy linkkejä, sama sivu lukupalvelun kautta (tekstimuoto)."""
+    links: dict[str, str] = {}
+    try:
+        page = fetch(site_url, timeout=15, limit=2_000_000).decode("utf-8", "ignore")
+        for m in re.finditer(r'<a\b[^>]*?href="((?:https://www\.sverigesradio\.se)?/artikel/[^"#?]+)"[^>]*>(.*?)</a>', page, re.S | re.I):
+            text = norm_title(clean_text(m.group(2)))
+            if text:
+                links.setdefault(text, urllib.parse.urljoin("https://www.sverigesradio.se/", m.group(1)))
+    except Exception:
+        pass
+    if not links:
+        try:
+            md = fetch("https://r.jina.ai/" + site_url, timeout=45).decode("utf-8", "ignore")
+            for m in re.finditer(r"\[([^\]\n]{6,240})\]\((https://www\.sverigesradio\.se/artikel/[^)\s#?]+)\)", md):
+                links.setdefault(norm_title(m.group(1)), m.group(2))
+        except Exception:
+            pass
+    return links
+
+
+def find_on_site(title: str, links: dict[str, str]) -> str | None:
+    want = norm_title(title)
+    if want in links:
+        return links[want]
+    # Linkki voi kattaa koko kortin (otsikko + ingressi): riittää, että se alkaa otsikolla.
+    for text, url in links.items():
+        if len(want) >= 12 and text.startswith(want):
+            return url
+    return None
+
+
+def check_links(items: list[dict], sources: list[dict], cache_dir: Path | None, sites: dict[str, str] | None = None) -> list[dict]:
+    """Tarkistaa Sveriges Radion juttujen linkit. Syötteen numerolinkki (sverigesradio.se/artikel/123) ei
+    toimi kaikilla jutuilla (esim. Kulturnytt), vaikka juttu on verkossa toisella osoitteella. Silloin juttu
+    etsitään ohjelman verkkosivulta otsikon perusteella. Jos sitä ei löydy, juttu jätetään pois.
+    Toimiva linkki korvataan osoitteella, johon sivu ohjaa. Juttujen tunnisteet eivät muutu."""
+    wanted = {s["id"] for s in sources if s.get("check_links")}
+    links = sorted({it["link"] for it in items if it["source"] in wanted})
+    if not links:
+        return items
+    cache: dict[str, str] = {}
+    cache_file = cache_dir / "linkit.json" if cache_dir else None
+    if cache_file and cache_file.exists():
+        try:
+            cache = json.loads(cache_file.read_text(encoding="utf-8"))
+        except ValueError:
+            cache = {}
+
+    def probe(url: str) -> tuple[str, str | None, bool]:
+        """(linkki, lopullinen osoite tai None jos sivua ei ole, voiko tuloksen tallentaa)"""
+        if url in cache:
+            return url, cache[url], False
+        request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        try:
+            with urllib.request.urlopen(request, timeout=12) as response:
+                final = response.geturl()
+            return url, final if final.startswith("https://") else url, True
+        except urllib.error.HTTPError as exc:
+            if exc.code in (404, 410):
+                return url, None, False  # tarkistetaan uudelleen seuraavalla ajolla
+            return url, url, False
+        except Exception:
+            return url, url, False  # verkko-ongelma: juttu pidetään
+
+    with cf.ThreadPoolExecutor(max_workers=8) as pool:
+        results = list(pool.map(probe, links))
+    final = {url: dest for url, dest, _ in results}
+    for url, dest, cacheable in results:
+        if cacheable and dest:
+            cache[url] = dest
+    dead = {url for url, dest in final.items() if dest is None}
+
+    # Toimimattomat linkit: haetaan oikea osoite ohjelman verkkosivulta (yksi haku ohjelmaa kohden).
+    found = 0
+    by_site: dict[str, list[dict]] = collections.defaultdict(list)
+    for item in items:
+        if item["link"] in dead and (sites or {}).get(item["source"]):
+            by_site[sites[item["source"]]].append(item)
+    for site, site_items in by_site.items():
+        on_site = site_links(site)
+        for item in site_items:
+            url = find_on_site(item["title"], on_site)
+            if url:
+                final[item["link"]] = url
+                cache[item["link"]] = url
+                dead.discard(item["link"])
+                found += 1
+    kept = []
+    for item in items:
+        if item["link"] in dead:
+            continue
+        if item["link"] in final:
+            item["link"] = final[item["link"]]
+        kept.append(item)
+    print(f"Linkit: {len(links)} tarkistettu, {found} korjattu ohjelman sivulta, {len(dead)} jätetty pois (sivua ei ole).")
+    if cache_file:
+        cache = {k: v for k, v in cache.items() if k in final}
+        cache_file.parent.mkdir(parents=True, exist_ok=True)
+        cache_file.write_text(json.dumps(cache, ensure_ascii=False), encoding="utf-8")
+    return kept
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--sources", default="sources.json", type=Path)
@@ -411,6 +523,9 @@ def main() -> int:
     if not any(s["ok"] for s in ordered_statuses):
         print("Yksikään syöte ei toiminut, tiedostoja ei kirjoiteta.", file=sys.stderr)
         return 1
+
+    sites = {sid: st.get("site") for sid, st in statuses.items() if st.get("site")}
+    items = check_links(items, sources, args.cache, sites)
 
     if not args.no_images:
         add_images(items, args.cache)

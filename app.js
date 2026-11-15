@@ -937,7 +937,7 @@
     const source = state.sources.find((s) => s.id === item.source);
     const link = safeUrl(item.link) || "";
     const host = hostOf(link);
-    if (link) bar.append(el("a", { class: "linkbtn", href: link, target: "_blank", rel: "noopener", text: "Original ↗" }));
+    if (link) bar.append(el("a", { class: "linkbtn", href: link, target: "_blank", rel: "noopener", text: "Original ↗︎" }));
 
     const article = el("article", { class: `reader-article cat-${item.category}`, "data-link": link, "data-src": source ? source.name : host });
     const meta = el("div", { class: "meta" }, el("span", { class: "src" }, el("i"), source ? source.name : host));
@@ -952,7 +952,7 @@
     }
     const body = el("div", { class: "rbody" });
     article.append(body);
-    if (link) article.append(el("a", { class: "src-link", href: link, target: "_blank", rel: "noopener", text: `Läs originalet på ${host} ↗` }));
+    if (link) article.append(el("a", { class: "src-link", href: link, target: "_blank", rel: "noopener", text: `Läs originalet på ${host} ↗︎` }));
     view.append(article);
 
     const showBlocks = (blocks) => {

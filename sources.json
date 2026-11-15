@@ -1,5 +1,5 @@
 {
-  "_ohje": "Lähteet. category: varlden | aktuellt | kultur | latt. enabled: false poistaa lähteen käytöstä. max_age_days: kuinka vanhoja juttuja näytetään (oletus 4). exclude_url: osoitteen osat, joita sisältävät jutut jätetään pois. include_url: vain nämä osoitteet otetaan mukaan. tags: merkinnät kaikille lähteen jutuille (bok, film, politik). require_tag: vain jutut, jotka saavat tämän merkinnän (esim. politik = länsimaiden politiikka). no_summary: syötteen tiivistelmä ohitetaan.",
+  "_ohje": "Lähteet. category: varlden | aktuellt | kultur | latt. enabled: false poistaa lähteen käytöstä. max_age_days: kuinka vanhoja juttuja näytetään (oletus 4). exclude_url: osoitteen osat, joita sisältävät jutut jätetään pois. include_url: vain nämä osoitteet otetaan mukaan. tags: merkinnät kaikille lähteen jutuille (bok, film, politik). require_tag: vain jutut, jotka saavat tämän merkinnän (esim. politik = länsimaiden politiikka). no_summary: syötteen tiivistelmä ohitetaan. check_links: true tarkistaa jutun linkin ja korjaa toimimattoman linkin ohjelman verkkosivun perusteella (Sveriges Radio).",
   "sources": [
     {
       "id": "svt-utrikes",
@@ -37,7 +37,8 @@
         "politik"
       ],
       "max_age_days": 10,
-      "_huom": "SR:n viikoittainen ulkomaanmakasiini (maailmanpolitiikka)."
+      "_huom": "SR:n viikoittainen ulkomaanmakasiini (maailmanpolitiikka).",
+      "check_links": true
     },
     {
       "id": "expressen-politik",
@@ -70,7 +71,8 @@
       "id": "ekot",
       "name": "Ekot, Sveriges Radio",
       "url": "https://api.sr.se/api/rss/program/83",
-      "category": "aktuellt"
+      "category": "aktuellt",
+      "check_links": true
     },
     {
       "id": "yle-inrikes",
@@ -88,7 +90,8 @@
       "id": "kulturnytt",
       "name": "Kulturnytt, Sveriges Radio",
       "url": "https://api.sr.se/api/rss/program/478",
-      "category": "kultur"
+      "category": "kultur",
+      "check_links": true
     },
     {
       "id": "yle-kultur",
@@ -126,7 +129,8 @@
       "name": "Klartext, Sveriges Radio",
       "url": "https://api.sr.se/api/rss/program/493",
       "category": "latt",
-      "max_age_days": 7
+      "max_age_days": 7,
+      "check_links": true
     },
     {
       "id": "yle-alla",
