@@ -29,17 +29,21 @@ Usean sanan voi maalata pitkällä painalluksella, jolloin koko valinta käänne
 
 Tallennetut sanat näkyvät tekstissä katkoviivalla alleviivattuina. *Repetera* näyttää sanan ja esimerkkivirkkeen. Kun muistat sanan, se tulee uudelleen yhä harvemmin (1, 2, 4, 8 … päivän päästä). Jos et muista, se kysytään heti uudelleen. Suomennosta voi muokata, ja sanalistan voi kopioida varmuuskopioksi ja palauttaa.
 
-### Sanakirja uutissivuilla
+### Koko juttu sanakirjan kanssa
 
-Valikosta (•••) löytyy kaksi tapaa lukea mitä tahansa tekstiä sanakirjan kanssa:
+*Läs artikeln* (tai jutun kuva) avaa jutun sovelluksen omaan lukunäkymään. Ensin näkyy tiivistelmä, ja hetken päästä koko jutun teksti, jonka jokaista sanaa voi napauttaa. *Original ↗* avaa jutun uutissivustolla.
 
-- **Läs egen text med ordbok:** liitä teksti, niin sen jokaisen sanan voi napauttaa.
-- **Ordbok på nyhetssidor:** Safarin kirjanmerkki, joka avaa auki olevan uutisjutun tämän sivun lukunäkymään. Ohjeet ovat valikossa. Kirjanmerkki toimii useimmilla uutissivuilla (SVT, Yle, SR), mutta maksumuurin takana olevista jutuista se saa vain näkyvän osan.
+- Jutun tekstin hakee ilmainen lukupalvelu [Jina Reader](https://jina.ai/reader) vasta, kun avaat jutun. Teksti näytetään vain sinulle, eikä sitä tallenneta julkiselle sivulle. Palvelulle välittyy vain jutun osoite.
+- Viimeksi avatut 40 juttua säilyvät puhelimessa, joten ne aukeavat uudelleen heti ja myös ilman verkkoa.
+- Jos haku epäonnistuu (esim. sivusto estää palvelun hetkellisesti), lukunäkymässä on tiivistelmä ja painike, joka avaa jutun alkuperäisellä sivulla.
+- Maksumuurin takana olevista jutuista saadaan vain näkyvä osa.
+
+Valikon (•••) kohdassa *Läs egen text med ordbok* voit lisäksi liittää minkä tahansa tekstin ja lukea sen sanakirjan kanssa.
 
 ### Muuta
 
 - **Valikko (•••):** luettujen piilotus, teema (Auto, Ljust, Mörkt), tekstikoko, lähteiden päälle- ja poiskytkentä, lähteiden tila ja Reddit-linkit.
-- **Offline-tila:** viimeksi ladatut jutut ja sanakirja toimivat ilman verkkoa, esimerkiksi lentokoneessa. Kuvat ja artikkelien avaaminen tarvitsevat verkon.
+- **Offline-tila:** viimeksi ladatut jutut, sanakirja ja jo avatut kokonaiset jutut toimivat ilman verkkoa, esimerkiksi lentokoneessa. Kuvat ja uusien juttujen avaaminen tarvitsevat verkon.
 - **Kotivalikkoon:** Safarissa *Jaa → Lisää Koti-valikkoon*, niin sivu aukeaa kuin oma sovellus.
 
 ## Käyttöönotto ja päivitys
@@ -113,7 +117,6 @@ Korjaus tulee voimaan seuraavassa ajossa. Actions-ajon välimuistissa on myös l
 ## Hyvä tietää
 
 - **Tallennukset ovat selaimessa.** Luetut jutut, asetukset ja Mina ord tallentuvat vain siihen selaimeen, jossa niitä käytät. Koti-valikon sovelluksella ja Safarilla on iPhonessa erilliset tallennukset. Safari voi myös poistaa tallennukset, jos et avaa sivua Safarissa seitsemään päivään (Koti-valikon sovellusta tämä ei koske). Ota siksi välillä varmuuskopio Mina ord -välilehdeltä.
-- Kirjanmerkki avaa jutun Safarissa, joten siellä tallennetut sanat menevät Safarin listaan. Ne saa siirrettyä varmuuskopiolla.
 - Jos sivun yläosassa lukee punaisella, ettei syötettä ole päivitetty, katso Actions-välilehdeltä, mikä ajo epäonnistui.
 
 ## Lisenssit

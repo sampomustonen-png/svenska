@@ -22,6 +22,7 @@
     open: '<path d="M14 4.5h5.5V10M19.5 4.5L11 13M17 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-10A1.5 1.5 0 0 1 4 18.5v-10A1.5 1.5 0 0 1 5.5 7H10"/>',
     reddit: '<path d="M4 6.6A2.6 2.6 0 0 1 6.6 4h7A2.6 2.6 0 0 1 16.2 6.6v4a2.6 2.6 0 0 1-2.6 2.6H9.2L5.6 16v-2.8A2.6 2.6 0 0 1 4 10.6z"/><path d="M18.4 9h.1a2 2 0 0 1 2 2v3.6a2 2 0 0 1-2 2h-.4v2.6l-3-2.6h-2.6a2 2 0 0 1-1.8-1.2"/>',
     x: '<path d="M6 6l12 12M18 6L6 18"/>',
+    chev: '<path d="M9.5 5.5l6.5 6.5-6.5 6.5"/>',
   };
   const CATEGORY = {
     varlden: { name: "Världen", icon: "varlden" },
@@ -314,7 +315,7 @@
   function renderHeader() {
     const tab = currentTab();
     $("today").textContent = cap(dayFmt.format(new Date()));
-    const title = state.reader ? (state.reader.paste || state.reader.own ? "Egen text" : "Läsvy") : tab.title;
+    const title = state.reader ? (state.reader.item ? tab.title : "Egen text") : tab.title;
     $("title").textContent = title;
     $("compact").textContent = title;
     document.body.style.setProperty("--tint", tabColor(tab));
@@ -374,13 +375,16 @@
   }
   function markTabs() {
     for (const btn of $("tabbar").querySelectorAll(".tab")) {
-      btn.setAttribute("aria-pressed", String(!state.reader && btn.dataset.tab === state.tab));
+      btn.setAttribute("aria-pressed", String((!state.reader || !!state.reader.item) && btn.dataset.tab === state.tab));
     }
     moveLens();
   }
   function selectTab(id) {
     closeWord();
-    if (state.reader) { closeReader(false); }
+    if (state.reader) {
+      if (history.state && history.state.reader) history.replaceState(null, "");
+      closeReader(false);
+    }
     else if (id === state.tab) {
       window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
       return;
@@ -403,7 +407,7 @@
 
     const img = safeUrl(item.image);
     const cat = CATEGORY[item.category] || CATEGORY.aktuellt;
-    const media = el("a", { class: `media${img ? "" : " ph"}`, href: link, target: "_blank", rel: "noopener", tabindex: "-1", "aria-hidden": "true" });
+    const media = el("div", { class: `media${img ? "" : " ph"}`, "aria-hidden": "true" });
     const placeholder = () => {
       media.classList.add("ph");
       media.textContent = "";
@@ -449,14 +453,10 @@
       paintMark();
       afterReadChange();
     });
-    const open = el("a", { class: "open", href: link, target: "_blank", rel: "noopener", "aria-label": `Läs artikeln: ${item.title}`, html: svg("open") });
+    const open = el("button", { class: "open", type: "button", "aria-label": `Läs artikeln: ${item.title}`, html: svg("chev") });
     open.prepend("Läs artikeln");
-    const opened = () => {
-      if (!state.read.has(item.id)) { setRead(item, true); paintMark(); afterReadChange(); }
-    };
-    open.addEventListener("click", opened);
-    open.addEventListener("auxclick", opened);
-    media.addEventListener("click", opened);
+    open.addEventListener("click", () => openArticle(item));
+    media.addEventListener("click", () => openArticle(item));
     body.append(el("div", { class: "foot" }, markBtn, open));
     card.append(body);
     return card;
@@ -738,10 +738,94 @@
 
   /* ================================================================ lukunäkymä */
 
+  // Koko jutun teksti haetaan lukupalvelun kautta vasta, kun avaat jutun. Mitään ei tallenneta julkiselle sivulle.
+  const READER = "https://r.jina.ai/";
+  const JUNK = /^(javascript måste|publicerad|uppdaterad|ansvarig utgivare|grunden i vår journalistik|svt:s nyheter ska stå|detta är en ai-tjänst|vi använder (nödvändiga )?kakor|dela( artikeln)?$|foto:|bild:|prenumerera|annons|inlägget .+ dök först upp)/i;
+  const NOISE = "script,style,noscript,template,nav,footer,aside,form,button,select,svg,figure,figcaption,iframe,dialog,video,audio," +
+    "[role=navigation],[role=banner],[role=contentinfo],[role=complementary],[role=dialog],[aria-hidden=true],[hidden]";
+
+  function extractArticle(html) {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    if (/access denied|forbidden|just a moment|attention required/i.test(doc.title)) return null;
+    for (const n of doc.querySelectorAll(NOISE)) n.remove();
+    for (const n of doc.querySelectorAll("header")) if (!n.closest("article")) n.remove();
+    const clean = (n) => (n.textContent || "").replace(/\s+/g, " ").trim();
+    const linkChars = (n) => [...n.querySelectorAll("a")].reduce((sum, a) => sum + clean(a).length, 0);
+
+    const blocksOf = (root) => {
+      const out = [];
+      const seen = new Set();
+      let total = 0;
+      for (const n of root.querySelectorAll("p, h2, h3, li, blockquote")) {
+        const tag = n.tagName;
+        if ((tag === "LI" || tag === "BLOCKQUOTE") && n.querySelector("p")) continue;
+        const t = clean(n);
+        if (!t || seen.has(t) || linkChars(n) / t.length > 0.5) continue;
+        seen.add(t);
+        if (tag === "H2" || tag === "H3") {
+          if (t.length >= 3 && t.length <= 120) out.push(["h", t]);
+          continue;
+        }
+        if (t.length < (tag === "LI" ? 40 : 30) || !t.includes(" ") || !/\p{Ll}/u.test(t) || JUNK.test(t)) continue;
+        out.push(["p", t]);
+        total += t.length;
+        if (total > 15000) break;
+      }
+      // Väliotsikko jää vain, jos sen jälkeen tulee tekstiä.
+      const blocks = out.filter((b, i) => b[0] === "p" || (out[i + 1] && out[i + 1][0] === "p"));
+      return { blocks, total };
+    };
+
+    const roots = [...doc.querySelectorAll('[itemprop="articleBody"], article, main, [role=main]')];
+    if (doc.body) roots.push(doc.body);
+    const scored = roots.map((root) => ({ root, ...blocksOf(root) }));
+    const max = Math.max(0, ...scored.map((x) => x.total));
+    if (max < 200) return null;
+    // Tarkin alue, jossa on suurin osa tekstistä (ei koko sivua navigaatioineen).
+    const best = scored.find((x) => x.total >= max * 0.6) || scored[scored.length - 1];
+    return best.blocks;
+  }
+
+  const articleCache = new Map(Object.entries(store.get("sl.art", {})));
+  function cacheArticle(id, blocks) {
+    articleCache.delete(id);
+    articleCache.set(id, { t: now(), b: blocks });
+    while (articleCache.size > 40) articleCache.delete(articleCache.keys().next().value);
+    store.set("sl.art", Object.fromEntries(articleCache));
+  }
+
+  async function fetchArticle(url) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 25000);
+      try {
+        const res = await fetch(READER + url, { headers: { "X-Return-Format": "html" }, signal: ctrl.signal });
+        if (res.ok) {
+          const blocks = extractArticle(await res.text());
+          if (blocks) return blocks;
+        }
+      } catch (err) {
+        console.warn(err);
+      } finally {
+        clearTimeout(timer);
+      }
+      if (attempt === 0) await new Promise((r) => setTimeout(r, 1500));
+    }
+    return null;
+  }
+
+  function openArticle(item) {
+    if (!state.read.has(item.id)) setRead(item, true);
+    openReader({ item });
+  }
   function openReader(data) {
-    if (!state.reader) state.returnTo = { tab: state.tab, y: window.scrollY };
+    if (!state.reader) {
+      state.returnTo = { tab: state.tab, y: window.scrollY };
+      try { history.pushState({ reader: 1 }, ""); } catch { /* ei historiaa */ }
+    }
     state.reader = data;
     closeWord();
+    toggleMenu(false);
     markTabs();
     renderHeader();
     renderView();
@@ -751,6 +835,7 @@
     state.reader = null;
     const back = state.returnTo;
     state.returnTo = null;
+    closeWord();
     markTabs();
     if (rerender) {
       renderHeader();
@@ -758,10 +843,21 @@
       if (back) window.scrollTo({ top: back.y });
     }
   }
+  function leaveReader() {
+    if (history.state && history.state.reader) history.back();
+    else closeReader();
+  }
+  window.addEventListener("popstate", () => {
+    if (state.reader && !(history.state && history.state.reader)) closeReader();
+  });
+
   function renderReader(view) {
     const r = state.reader;
-    view.append(el("div", { class: "toolbar" },
-      el("button", { class: "linkbtn", type: "button", text: "‹ Tillbaka", onclick: () => closeReader() }), el("span")));
+    const bar = el("div", { class: "toolbar" },
+      el("button", { class: "linkbtn", type: "button", text: "‹ Tillbaka", onclick: leaveReader }));
+    view.append(bar);
+    if (r.item) return renderItemReader(view, bar, r.item);
+    bar.append(el("span"));
     if (r.paste) {
       const ta = el("textarea", { lang: "sv", placeholder: "Klistra in svensk text här…", "aria-label": "Text att läsa" });
       const box = el("section", { class: "reader-article paste" },
@@ -772,46 +868,74 @@
           const text = ta.value.trim();
           if (!text) { ta.focus(); return; }
           const paras = text.split(/\n\s*\n|\n/).map((p) => p.trim()).filter(Boolean);
-          state.reader = { t: "", u: "", p: paras, own: true };
+          state.reader = { p: paras, own: true };
           renderHeader();
           renderView();
         } }));
       view.append(box);
       return;
     }
-    const article = el("article", { class: "reader-article", "data-link": safeUrl(r.u) || "", "data-src": r.u ? hostOf(r.u) : "" });
-    if (r.t) article.append(wordify(r.t.normalize("NFC"), el("h1", { lang: "sv" })));
-    if (safeUrl(r.u)) article.append(el("a", { class: "src-link", href: r.u, target: "_blank", rel: "noopener", text: `Originalartikel på ${hostOf(r.u)}` }));
+    const article = el("article", { class: "reader-article" });
     for (const p of r.p || []) article.append(wordify(String(p).normalize("NFC"), el("p", { class: "rp", lang: "sv" })));
     view.append(article);
     markSaved(view);
     loadOrdbok();
   }
+
+  function renderItemReader(view, bar, item) {
+    const source = state.sources.find((s) => s.id === item.source);
+    const link = safeUrl(item.link) || "";
+    const host = hostOf(link);
+    if (link) bar.append(el("a", { class: "linkbtn", href: link, target: "_blank", rel: "noopener", text: "Original ↗" }));
+
+    const article = el("article", { class: `reader-article cat-${item.category}`, "data-link": link, "data-src": source ? source.name : host });
+    const meta = el("div", { class: "meta" }, el("span", { class: "src" }, el("i"), source ? source.name : host));
+    if (item.level) meta.append(el("span", { class: `lvl l${item.level}` }, el("i"), el("i"), el("i"), el("b", { text: LEVEL[item.level] })));
+    meta.append(el("time", { datetime: item.published, text: ago(item.ts) }));
+    article.append(meta, wordify(item.title.normalize("NFC"), el("h1", { lang: "sv" })));
+    const img = safeUrl(item.image);
+    if (img && img.startsWith("https://")) {
+      const im = el("img", { class: "rimg", src: img, alt: "", decoding: "async", referrerpolicy: "no-referrer" });
+      im.addEventListener("error", () => im.remove());
+      article.append(im);
+    }
+    const body = el("div", { class: "rbody" });
+    article.append(body);
+    if (link) article.append(el("a", { class: "src-link", href: link, target: "_blank", rel: "noopener", text: `Läs originalet på ${host} ↗` }));
+    view.append(article);
+
+    const showBlocks = (blocks) => {
+      if (activeWord && body.contains(activeWord)) closeWord();
+      body.textContent = "";
+      for (const [type, text] of blocks) {
+        body.append(wordify(text.normalize("NFC"), type === "h" ? el("h2", { class: "rh", lang: "sv" }) : el("p", { class: "rp", lang: "sv" })));
+      }
+      markSaved(body);
+    };
+    loadOrdbok();
+    const cached = articleCache.get(item.id);
+    if (cached) { showBlocks(cached.b); return; }
+
+    if (item.summary) body.append(wordify(item.summary.normalize("NFC"), el("p", { class: "rp lead", lang: "sv" })));
+    const status = el("p", { class: "rstatus" }, el("span", { class: "spin", "aria-hidden": "true" }), "Hämtar hela artikeln…");
+    body.append(status);
+    markSaved(body);
+    if (!link) { status.remove(); return; }
+    fetchArticle(link).then((blocks) => {
+      if (!state.reader || state.reader.item !== item) return;
+      if (blocks) {
+        cacheArticle(item.id, blocks);
+        showBlocks(blocks);
+        return;
+      }
+      status.textContent = "";
+      status.classList.add("fail");
+      status.append(`Hela artikeln gick inte att hämta just nu. Du kan läsa sammanfattningen här med ordbok eller hela artikeln på ${host}.`);
+      body.append(el("a", { class: "pill primary", href: link, target: "_blank", rel: "noopener", text: `Öppna artikeln på ${host}` }));
+    });
+  }
   function hostOf(u) {
     try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return ""; }
-  }
-  function readHash() {
-    if (!location.hash.startsWith("#las=")) return;
-    try {
-      const data = JSON.parse(decodeURIComponent(location.hash.slice(5)));
-      if (data && Array.isArray(data.p)) {
-        openReader({ t: String(data.t || ""), u: safeUrl(data.u) || "", p: data.p.map(String).slice(0, 200) });
-      }
-    } catch (err) {
-      console.error(err);
-      toast("Artikeln kunde inte öppnas");
-    }
-    history.replaceState(null, "", location.pathname + location.search);
-  }
-  function bookmarkletCode() {
-    const app = location.origin + location.pathname;
-    const code = "(function(){var q=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))" +
-      ".map(function(e){return (e.innerText||'').replace(/\\s+/g,' ').trim()}).filter(function(t){return t.length>25})};" +
-      "var p=q('article p');if(p.length<3)p=q('main p');if(p.length<3)p=q('p');" +
-      "var o=[],n=0;for(var i=0;i<p.length&&n<14000;i++){o.push(p[i]);n+=p[i].length}" +
-      "var h=document.querySelector('h1');var d={t:(h&&h.innerText.trim())||document.title,u:location.href,p:o};" +
-      `location.href=${JSON.stringify(app)}+'#las='+encodeURIComponent(JSON.stringify(d));})()`;
-    return "javascript:" + encodeURIComponent(code);
   }
 
   /* ================================================================ sanakupla */
@@ -1111,16 +1235,6 @@
   if (darkQuery.addEventListener) darkQuery.addEventListener("change", applyTheme);
 
   $("pasteBtn").addEventListener("click", () => { toggleMenu(false); openReader({ paste: true }); });
-  $("copyBookmarklet").addEventListener("click", async () => {
-    const code = bookmarkletCode();
-    try {
-      await navigator.clipboard.writeText(code);
-      toast("Bokmärkets kod är kopierad");
-    } catch {
-      window.prompt("Kopiera koden:", code);
-    }
-  });
-
   function renderSources() {
     const list = $("srcList");
     list.textContent = "";
@@ -1170,8 +1284,6 @@
     renderTabs();
     markTabs();
     applyTheme();
-    readHash();
-    window.addEventListener("hashchange", readHash);
     try {
       const res = await fetch("feed.json", { cache: "no-cache" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
