@@ -100,7 +100,7 @@ Lähteet ovat tiedostossa `sources.json`:
 | `include_url` | vain osoitteet, joissa on jokin näistä osista, otetaan mukaan |
 | `require_tag` | vain jutut, jotka saavat tämän merkinnän, esim. `"politik"` (Expressen ja Aftonbladet: vain maailmanpolitiikka) |
 | `no_summary` | `true` ohittaa syötteen tiivistelmän (jos se on pelkkää roskaa) |
-| `check_links` | `true` tarkistaa jokaisen jutun linkin. Sveriges Radion syötteen numerolinkki ei toimi kaikilla jutuilla (esim. Kulturnytt), vaikka juttu on verkossa: silloin juttu etsitään otsikon perusteella ohjelman verkkosivulta (esim. sverigesradio.se/kultur) ja linkki korjataan. Jos juttua ei löydy, se jätetään pois. |
+| `check_links` | `true` korjaa Sveriges Radion linkit. Syötteen numerolinkki ei toimi kaikilla jutuilla (esim. Kulturnytt), vaikka juttu on verkossa. Siksi jokainen juttu etsitään ensin otsikon perusteella ohjelman verkkosivulta (esim. sverigesradio.se/kultur), ja sieltä löytyvä osoite otetaan käyttöön. Muut linkit kokeillaan, ja jos sivua ei ole, juttu jätetään pois. Tulos näkyy Actions-ajon yhteenvedossa (Annotations) ja feed.jsonin kohdassa `linkcheck`. |
 | `enabled` | `false` poistaa lähteen käytöstä |
 | `max_age_days` | kuinka monen päivän vanhoja juttuja näytetään (oletus 4) |
 
