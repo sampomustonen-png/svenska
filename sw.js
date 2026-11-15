@@ -1,5 +1,6 @@
 /* Offline-tila. GitHub Actions korvaa __BUILD__-merkinnän ajon numerolla,
-   jolloin jokainen julkaisu saa oman välimuistinsa. */
+   jolloin jokainen julkaisu saa oman välimuistinsa. Vain omat vanhat välimuistit
+   poistetaan, koska samassa osoitteessa voi olla muitakin sovelluksia (ranska). */
 const VERSION = "__BUILD__";
 const SHELL = `shell-${VERSION}`;
 const DATA = "data-v1";
@@ -26,7 +27,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== SHELL && k !== DATA).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k.startsWith("shell-") && k !== SHELL).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
