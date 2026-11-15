@@ -1,26 +1,85 @@
 # Läsning på svenska
 
-Oma ruotsinkielinen lukusivu: maailman uutiset, ajankohtaiset aiheet, kulttuuri ja kirjallisuus sekä helppo ruotsi samassa näkymässä. Ulkoasu mukailee iOS 26:n Liquid Glass -tyyliä.
+Oma ruotsinkielinen lukusivu: maailman uutiset, ajankohtaiset aiheet, kulttuuri, kirjallisuus, elokuvat ja tv sekä helppo ruotsi. Jokaisen sanan saa suomennettua napauttamalla. Ulkoasu mukailee iOS 26:n Liquid Glass -tyyliä.
 
-- **Välilehdet:** Allt, Världen, Aktuellt, Kultur, Böcker (kirjallisuusaiheiset jutut kaikista lähteistä), Lätt (helppo ruotsi) ja Reddit.
-- **Sanakirja:** napauta mitä tahansa sanaa jutun ingressissä, niin näet suomennoksen, sanan perusmuodon (esim. *regeringen → regering*) ja yhdyssanan osat (esim. *klimat + mål*). *Översätt meningen* kääntää koko virkkeen. Usean sanan voi myös maalata pitkällä painalluksella.
-- **Luetut:** avaamasi jutut himmenevät, ja ne voi piilottaa valikosta (•••). Samassa valikossa ovat tekstikoko ja lähteiden tila.
+## Mitä sivulla on
+
+- **I dag:** *Dagens läsning* poimii joka päivä kahdeksan juttua eri aiheista, helpoimmat ensin. Rengas näyttää, montako olet lukenut, ja peräkkäisten lukupäivien määrä näkyy sen vieressä. Alla ovat kaikki muut jutut.
+- **Nyheter:** maailman uutiset ja Ruotsin ja Suomen ajankohtaiset asiat (Alla, Världen, Aktuellt). SVT:n urheilu- ja paikallisuutiset on suodatettu pois.
+- **Kultur:** kulttuuri, *Böcker* (kirjallisuus) ja *Film & tv*.
+- **Lätt:** helppoa ruotsia (8 Sidor, Klartext).
+- **Mina ord:** tallentamasi sanat ja niiden kertaus.
+- **Vaikeustaso:** jokaisessa jutussa on merkintä *Lätt*, *Medel* tai *Svår*. Järjestyksen voi vaihtaa kohdasta *Sortera* (Nyast först tai Lättast först).
+
+### Sanakirja
+
+Napauta mitä tahansa sanaa otsikossa tai tekstissä. Kupla näyttää:
+
+- sanan perusmuodon ja sanaluokan (esim. *snöat → snöa, verb*)
+- kuinka yleinen sana on (*vanligt*, *ganska vanligt*, *ovanligt*)
+- suomennokset merkityksittäin, yleisin ensin, ja lyhyen ruotsinkielisen selityksen
+- yhdyssanan osat (esim. *cykel + banor*)
+- **Spara** tallentaa sanan ja virkkeen, jossa se esiintyi, Mina ord -välilehdelle
+- **Översätt meningen** kääntää koko virkkeen
+- **Google** avaa virkkeen Google Kääntäjässä
+
+Usean sanan voi maalata pitkällä painalluksella, jolloin koko valinta käännetään.
+
+### Mina ord ja kertaus
+
+Tallennetut sanat näkyvät tekstissä katkoviivalla alleviivattuina. *Repetera* näyttää sanan ja esimerkkivirkkeen. Kun muistat sanan, se tulee uudelleen yhä harvemmin (1, 2, 4, 8 … päivän päästä). Jos et muista, se kysytään heti uudelleen. Suomennosta voi muokata, ja sanalistan voi kopioida varmuuskopioksi ja palauttaa.
+
+### Sanakirja uutissivuilla
+
+Valikosta (•••) löytyy kaksi tapaa lukea mitä tahansa tekstiä sanakirjan kanssa:
+
+- **Läs egen text med ordbok:** liitä teksti, niin sen jokaisen sanan voi napauttaa.
+- **Ordbok på nyhetssidor:** Safarin kirjanmerkki, joka avaa auki olevan uutisjutun tämän sivun lukunäkymään. Ohjeet ovat valikossa. Kirjanmerkki toimii useimmilla uutissivuilla (SVT, Yle, SR), mutta maksumuurin takana olevista jutuista se saa vain näkyvän osan.
+
+### Muuta
+
+- **Valikko (•••):** luettujen piilotus, teema (Auto, Ljust, Mörkt), tekstikoko, lähteiden päälle- ja poiskytkentä, lähteiden tila ja Reddit-linkit.
+- **Offline-tila:** viimeksi ladatut jutut ja sanakirja toimivat ilman verkkoa, esimerkiksi lentokoneessa. Kuvat ja artikkelien avaaminen tarvitsevat verkon.
 - **Kotivalikkoon:** Safarissa *Jaa → Lisää Koti-valikkoon*, niin sivu aukeaa kuin oma sovellus.
 
-## Käyttöönotto
+## Käyttöönotto ja päivitys
 
-1. Luo GitHubissa uusi **julkinen** repo, esimerkiksi nimellä `svensk-lasning`. GitHub Pages toimii ilmaiseksi julkisissa repoissa.
-2. Lisää kaikki tämän kansion tiedostot repoon kansioineen, myös `.github/workflows/uppdatera.yml`.
-   - Selaimessa: *Add file → Upload files* ja raahaa kansion sisältö. Macin Finder piilottaa `.github`-kansion, mutta sen saa näkyviin näppäimillä Cmd + Shift + piste.
-3. Avaa repon **Settings → Pages** ja valitse kohtaan *Source* vaihtoehto **GitHub Actions**.
-4. Avaa **Actions**-välilehti, valitse **Uppdatera flödet** ja paina **Run workflow**.
-5. Parin minuutin kuluttua sivu toimii osoitteessa `https://KÄYTTÄJÄTUNNUS.github.io/svensk-lasning/`.
+Repo: `sampomustonen-png/svenska`. Sivu: <https://sampomustonen-png.github.io/svenska/>
 
-Tämän jälkeen GitHub hakee uudet jutut noin kolmen tunnin välein ja rakentaa samalla sanaston juttujen sanoista. Sivu päivittyy myös aina, kun muutat repon tiedostoja.
+1. Lisää tai päivitä repoon kaikki tämän kansion tiedostot kansioineen: `.github/workflows/`, `assets/`, `data/`, `scripts/` sekä juuren tiedostot.
+2. **Settings → Pages → Source** pitää olla **GitHub Actions**.
+3. Ajo käynnistyy itsestään, kun tiedostot muuttuvat. Käsin: **Actions → Uppdatera flödet → Run workflow**.
+
+GitHub hakee uudet jutut kolmen tunnin välein. Ensimmäinen ajo kestää noin 10–15 minuuttia, koska se lataa käännösmallin. Sen jälkeen ajot kestävät muutaman minuutin.
+
+### Mitä ajo tekee
+
+| Vaihe | Tiedosto |
+|---|---|
+| Hakee syötteet, juttujen kuvat ja vaikeustasot, kirjoittaa `feed.json` ja `ordbok.json` | `scripts/build_feed.py` |
+| Listaa sanat, joita sanakirjassa ei ole | `scripts/saknade_ord.js` |
+| Kääntää virkkeet ja puuttuvat sanat valmiiksi OPUS-MT-mallilla (Helsingin yliopisto) | `scripts/oversatt.py` |
+| Kopioi sivun tiedostot ja julkaisee sivun | `.github/workflows/uppdatera.yml` |
+| Pitää ajastuksen päällä, ettei GitHub sammuta sitä 60 päivän jälkeen | sama tiedosto, työ `hall-vid-liv` |
+
+Jos käännösvaihe epäonnistuu, sivu julkaistaan silti. Silloin virkkeet käännetään napautettaessa MyMemory-palvelulla (ilmaisraja noin 5 000 merkkiä päivässä).
+
+## Tiedostot
+
+| Tiedosto | Sisältö |
+|---|---|
+| `index.html` | sivun rakenne |
+| `styles.css` | ulkoasu |
+| `app.js` | sivun toiminta |
+| `ordbok.js` | sanahaku: taivutusmuodot, yhdyssanat |
+| `sw.js` | offline-tila |
+| `sources.json` | lähteet ja Reddit-linkit |
+| `data/egna-ord.json` | omat korjaukset sanakirjaan |
+| `data/*.gz` | valmis sanakirja, taivutusmuodot ja sanojen yleisyys |
 
 ## Lähteiden muokkaus
 
-Lähteet ovat tiedostossa `sources.json`. Jokaisella lähteellä on:
+Lähteet ovat tiedostossa `sources.json`:
 
 | Kenttä | Merkitys |
 |---|---|
@@ -28,41 +87,50 @@ Lähteet ovat tiedostossa `sources.json`. Jokaisella lähteellä on:
 | `name` | sivulla näkyvä nimi |
 | `url` | RSS-syötteen osoite |
 | `category` | `varlden`, `aktuellt`, `kultur` tai `latt` |
-| `enabled` | `false` piilottaa lähteen |
+| `tags` | merkinnät kaikille lähteen jutuille, esim. `["film"]` tai `["bok"]` |
+| `exclude_url` | osoitteen osat, joita sisältävät jutut jätetään pois, esim. `"/sport/"` |
+| `enabled` | `false` poistaa lähteen käytöstä |
 | `max_age_days` | kuinka monen päivän vanhoja juttuja näytetään (oletus 4) |
 
-Dagens Nyheter, Svenska Dagbladet ja Hufvudstadsbladet ovat mukana, mutta pois päältä, koska suuri osa niiden jutuista on maksumuurin takana. Jos tilaat jonkin niistä, vaihda sen kohdalle `"enabled": true`.
+Lähteen voi myös piilottaa vain itseltään valikon kytkimellä muuttamatta tiedostoa.
 
-Valikon (•••) **Källor**-kohdasta näet, mitkä lähteet toimivat. Jos lähde näyttää tekstiä *fungerar inte*, sen syötteen osoite on luultavasti muuttunut. Korjaa osoite tai poista lähde.
+Dagens Nyheter, Svenska Dagbladet ja Hufvudstadsbladet ovat mukana, mutta pois päältä, koska suuri osa niiden jutuista on maksumuurin takana.
 
-## Reddit
+## Sanakirjan korjaaminen
 
-Reddit lopetti RSS-syötteet 13.11.2026, eikä sen rajapintaan saa enää uusia käyttöoikeuksia. Siksi Reddit-välilehti näyttää vain pikalinkit (oma etusivu, r/sweden, r/svenskpolitik ja r/Svenska), jotka avautuvat Reddit-sovellukseen. Linkkejä voi muokata `sources.json`-tiedoston kohdassa `reddit`.
+Jos jokin suomennos on väärin, lisää rivi tiedoston `data/egna-ord.json` kohtaan `ord`:
 
-## Sanakirja
+```json
+"cykel": {"p": "subst.", "s": [[["polkupyörä", "pyörä"], "fordon med pedaler"]], "ersätt": true},
+```
 
-- Suomennokset tulevat FreeDict-/WikDict-sanakirjoista (ruotsi–suomi ja käännetty suomi–ruotsi), jotka perustuvat Wikisanakirjaan. Lisenssi CC BY-SA 3.0.
-- Taivutusmuodot tunnistetaan michmech/lemmatization-lists-aineistolla (ODbL).
-- Valmiit tiedostot ovat kansiossa `data/`. Ne on tehty skriptillä `scripts/build_dictionary.py`, eikä niitä tarvitse rakentaa uudelleen.
-- Jos sanaa ei löydy sanakirjasta tai painat *Översätt meningen*, sana tai virke lähetetään MyMemory-konekäännöspalveluun. Ilmaisen käytön raja on noin 5 000 merkkiä päivässä, mikä riittää hyvin henkilökohtaiseen käyttöön.
+- `s` on lista merkityksiä: `[[suomennokset], "ruotsinkielinen selitys"]`.
+- `"ersätt": true` korvaa sanakirjan merkitykset. Ilman sitä omat merkitykset lisätään ensimmäisiksi.
+- Kohdassa `former` taivutusmuoto ohjataan oikeaan perusmuotoon, esim. `"är": "vara"`.
+
+Korjaus tulee voimaan seuraavassa ajossa. Actions-ajon välimuistissa on myös lista sanoista, joita sanakirjasta ei löytynyt.
 
 ## Hyvä tietää
 
-- GitHub pysäyttää ajastetut ajot, jos julkisessa repossa ei ole tapahtunut mitään 60 päivään. Saat siitä sähköpostin, ja ajon saa takaisin päälle Actions-välilehdeltä (*Enable workflow*).
-- Jos sivun yläosassa lukee punaisella, ettei syötettä ole päivitetty vähään aikaan, katso Actions-välilehdeltä, mikä ajo epäonnistui.
-- Luettu-merkinnät ja asetukset tallentuvat vain omaan selaimeesi.
+- **Tallennukset ovat selaimessa.** Luetut jutut, asetukset ja Mina ord tallentuvat vain siihen selaimeen, jossa niitä käytät. Koti-valikon sovelluksella ja Safarilla on iPhonessa erilliset tallennukset. Safari voi myös poistaa tallennukset, jos et avaa sivua Safarissa seitsemään päivään (Koti-valikon sovellusta tämä ei koske). Ota siksi välillä varmuuskopio Mina ord -välilehdeltä.
+- Kirjanmerkki avaa jutun Safarissa, joten siellä tallennetut sanat menevät Safarin listaan. Ne saa siirrettyä varmuuskopiolla.
+- Jos sivun yläosassa lukee punaisella, ettei syötettä ole päivitetty, katso Actions-välilehdeltä, mikä ajo epäonnistui.
+
+## Lisenssit
+
+- Sanakirja: FreeDict / WikDict (Wiktionary), CC BY-SA 3.0, sekä omat korjaukset.
+- Taivutusmuodot: michmech/lemmatization-lists, ODbL.
+- Sanojen yleisyys: wordfreq.
+- Konekäännös: OPUS-MT (Helsinki-NLP); varalla MyMemory.
 
 ## Testaus omalla koneella
 
 ```sh
-pip install feedparser
+pip install "feedparser>=6,<7"
 python scripts/build_feed.py --sources sources.json --data data --out _site
-cp -r index.html manifest.webmanifest fonts assets _site/
+cp index.html styles.css app.js ordbok.js sw.js manifest.webmanifest _site/
+cp -r assets _site/
 python -m http.server -d _site
 ```
 
 Avaa sitten selaimessa `http://localhost:8000`.
-
-## Fontit
-
-Applen laitteilla sivu käyttää järjestelmän fontteja (SF Pro ja New York). Muilla laitteilla tekstit näkyvät Literata-fontilla, joka on SIL Open Font License 1.1 -lisenssin alainen. Lisenssi on kansiossa `fonts/`.

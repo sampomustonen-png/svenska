@@ -1,5 +1,5 @@
 {
-  "_ohje": "Lähteet. category: varlden | aktuellt | kultur | latt. Aseta enabled: false, jos haluat piilottaa lähteen. max_age_days: kuinka vanhoja juttuja näytetään (oletus 4).",
+  "_ohje": "Lähteet. category: varlden | aktuellt | kultur | latt. enabled: false piilottaa lähteen kaikilta. max_age_days: kuinka vanhoja juttuja näytetään (oletus 4). exclude_url: osoitteen osat, joita sisältävät jutut jätetään pois.",
   "sources": [
     {
       "id": "svt-utrikes",
@@ -17,7 +17,12 @@
       "id": "svt-nyheter",
       "name": "SVT Nyheter",
       "url": "https://www.svt.se/nyheter/rss.xml",
-      "category": "aktuellt"
+      "category": "aktuellt",
+      "exclude_url": [
+        "/sport/",
+        "/nyheter/lokalt/"
+      ],
+      "_huom": "Urheilu ja paikallisuutiset suodatetaan pois (exclude_url)."
     },
     {
       "id": "ekot",
@@ -55,6 +60,15 @@
       "url": "https://www.opulens.se/feed",
       "category": "kultur",
       "max_age_days": 10
+    },
+    {
+      "id": "moviezine",
+      "name": "MovieZine",
+      "url": "https://www.moviezine.se/feed",
+      "category": "kultur",
+      "tags": ["film"],
+      "max_age_days": 4,
+      "_huom": "Elokuva- ja tv-uutiset. Kaikki jutut saavat Film & tv -merkinnän."
     },
     {
       "id": "8sidor",
