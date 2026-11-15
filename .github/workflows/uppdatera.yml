@@ -9,8 +9,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -19,6 +17,10 @@ concurrency:
 jobs:
   bygg-och-publicera:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -29,14 +31,44 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Återställ cache
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: data-${{ github.run_id }}
+          restore-keys: data-
+
       - name: Installera feedparser
         run: pip install "feedparser>=6,<7"
 
-      - name: Hämta flödena och bygg ordlistan
-        run: python scripts/build_feed.py --sources sources.json --data data --out _site
+      - name: Hämta flödena och bygg ordboken
+        run: python scripts/build_feed.py --sources sources.json --data data --out _site --cache .cache
+
+      - name: Hitta ord som saknas i ordboken
+        run: node scripts/saknade_ord.js _site > .cache/saknade.txt
+
+      - name: Cache för översättningsmodellen
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-opus-mt-sv-fi-v1
+
+      - name: Installera översättningsmodellen
+        continue-on-error: true
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install "transformers>=4.40,<5" sentencepiece
+
+      - name: Översätt meningar och ord
+        continue-on-error: true
+        timeout-minutes: 25
+        run: python scripts/oversatt.py --site _site --cache .cache --missing .cache/saknade.txt
 
       - name: Kopiera sidan
-        run: cp -r index.html manifest.webmanifest fonts assets _site/
+        run: |
+          cp index.html styles.css app.js ordbok.js manifest.webmanifest _site/
+          cp -r assets _site/
+          sed "s/__BUILD__/${GITHUB_RUN_ID}/" sw.js > _site/sw.js
 
       - uses: actions/configure-pages@v5
 
@@ -47,3 +79,13 @@ jobs:
       - name: Publicera
         id: deployment
         uses: actions/deploy-pages@v5
+
+  hall-vid-liv:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Håll schemat aktivt
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${GITHUB_REPOSITORY}/actions/workflows/uppdatera.yml/enable"
