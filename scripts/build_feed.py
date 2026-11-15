@@ -13,9 +13,11 @@ import argparse
 import calendar
 import collections
 import concurrent.futures as cf
+import difflib
 import hashlib
 import html
 import json
+import os
 import re
 import socket
 import sys
@@ -110,12 +112,13 @@ WP_FOOTER_RE = re.compile(r"\s*(?:Inlägget|The post)\s.+?\s(?:dök först upp p
 
 # --------------------------------------------------------------------------- apufunktiot
 
-def fetch(url: str, timeout: int = 25, limit: int | None = None) -> bytes:
+def fetch(url: str, timeout: int = 25, limit: int | None = None, headers: dict[str, str] | None = None) -> bytes:
     request = urllib.request.Request(
         url,
         headers={
             "User-Agent": USER_AGENT,
             "Accept": "application/rss+xml, application/atom+xml, application/xml;q=0.9, text/html;q=0.8, */*;q=0.5",
+            **(headers or {}),
         },
     )
     with urllib.request.urlopen(request, timeout=timeout) as response:
@@ -381,111 +384,215 @@ def add_images(items: list[dict], cache_dir: Path | None) -> None:
 def norm_title(text: str) -> str:
     text = unicodedata.normalize("NFC", text).lower()
     text = re.sub(r"[”“„\"«»’'`´]", "", text)
-    return re.sub(r"\s+", " ", text).strip(" .:–-")
+    text = re.sub(r"[–—‒−]", "-", text)
+    return re.sub(r"\s+", " ", text).strip(" .:-")
 
 
-def site_links(site_url: str) -> dict[str, str]:
-    """Ohjelman verkkosivun juttulinkit: normalisoitu linkkiteksti -> osoite. Ensin sivun HTML suoraan,
-    jos siitä ei löydy linkkejä, sama sivu lukupalvelun kautta (tekstimuoto)."""
+SR_BASE = "https://www.sverigesradio.se/"
+SR_ARTICLE_RE = r"(?:https?://(?:www\.)?sverigesradio\.se)?/artikel/[^\"'#?\s<>)\\]+"
+# Sveriges Radion "sivua ei löydy" -sivu. Se voi tulla myös tilakoodilla 200.
+SR_NOT_FOUND_RE = re.compile(r"<title[^>]*>[^<]*kunde inte hittas|<h1[^>]*>[^<]*kunde inte hittas", re.I)
+JINA = "https://r.jina.ai/"
+
+
+def _sr_url(path: str) -> str:
+    return urllib.parse.urljoin(SR_BASE, path.replace("\\/", "/"))
+
+
+def _html_links(page: str) -> dict[str, str]:
+    """Juttulinkit HTML:stä: <a href="/artikel/...">otsikko</a>, ja sivun upotetusta datasta
+    ("title":"...", "url":"/artikel/..."), jos linkit piirretään vasta selaimessa."""
     links: dict[str, str] = {}
-    try:
-        page = fetch(site_url, timeout=15, limit=2_000_000).decode("utf-8", "ignore")
-        for m in re.finditer(r'<a\b[^>]*?href="((?:https://www\.sverigesradio\.se)?/artikel/[^"#?]+)"[^>]*>(.*?)</a>', page, re.S | re.I):
-            text = norm_title(clean_text(m.group(2)))
-            if text:
-                links.setdefault(text, urllib.parse.urljoin("https://www.sverigesradio.se/", m.group(1)))
-    except Exception:
-        pass
-    if not links:
+    anchor = re.compile(r"<a\b([^>]*?)href=[\"'](" + SR_ARTICLE_RE + r")[\"']([^>]*)>(.*?)</a>", re.S | re.I)
+    for m in anchor.finditer(page):
+        text = norm_title(clean_text(m.group(4)))
+        if not text:
+            label = re.search(r"aria-label=[\"']([^\"']+)", m.group(1) + m.group(3))
+            text = norm_title(html.unescape(label.group(1))) if label else ""
+        if text:
+            links.setdefault(text, _sr_url(m.group(2)))
+    flat = page.replace('\\"', '"')
+    pair = re.compile(
+        r'"(?:title|headline|heading|name)"\s*:\s*"((?:[^"\\]|\\.){6,300})"[^{}\[\]]{0,600}?"(?:url|href|link|path|canonicalUrl)"\s*:\s*"(' + SR_ARTICLE_RE + r')"'
+        r'|"(?:url|href|link|path|canonicalUrl)"\s*:\s*"(' + SR_ARTICLE_RE + r')"[^{}\[\]]{0,600}?"(?:title|headline|heading|name)"\s*:\s*"((?:[^"\\]|\\.){6,300})"'
+    )
+    for m in pair.finditer(flat):
+        raw, path = (m.group(1), m.group(2)) if m.group(1) else (m.group(4), m.group(3))
         try:
-            md = fetch("https://r.jina.ai/" + site_url, timeout=45).decode("utf-8", "ignore")
-            for m in re.finditer(r"\[([^\]\n]{6,240})\]\((https://www\.sverigesradio\.se/artikel/[^)\s#?]+)\)", md):
-                links.setdefault(norm_title(m.group(1)), m.group(2))
-        except Exception:
-            pass
+            title = json.loads('"' + raw + '"')
+        except ValueError:
+            title = raw
+        text = norm_title(clean_text(title))
+        if text:
+            links.setdefault(text, _sr_url(path))
     return links
+
+
+def _markdown_links(md: str) -> dict[str, str]:
+    """Juttulinkit lukupalvelun tekstimuodosta: [otsikko](https://www.sverigesradio.se/artikel/...),
+    myös kun linkin sisällä on kuva tai väliotsikko."""
+    links: dict[str, str] = {}
+    pattern = re.compile(r"\[((?:!\[[^\]]*\]\([^)]*\)|[^\[\]])*)\]\((" + SR_ARTICLE_RE + r")\)")
+    for m in pattern.finditer(md):
+        text = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", m.group(1))
+        text = re.sub(r"(^|\s)#{1,6}\s", " ", text)
+        text = norm_title(re.sub(r"[*_]{1,3}", "", text))
+        if len(text) >= 6:
+            links.setdefault(text, _sr_url(m.group(2)))
+    return links
+
+
+def site_links(site_url: str) -> tuple[dict[str, str], str]:
+    """Ohjelman verkkosivun juttulinkit: normalisoitu linkkiteksti -> osoite, ja millä tavalla ne saatiin.
+    Ensin sivu suoraan, sitten lukupalvelun kautta HTML:nä (selaimessa piirretty sivu), lopuksi tekstinä."""
+    attempts = [
+        ("suora", lambda: _html_links(fetch(site_url, timeout=15, limit=3_000_000).decode("utf-8", "ignore"))),
+        ("lukupalvelu-html", lambda: _html_links(fetch(JINA + site_url, timeout=45, headers={"X-Return-Format": "html"}).decode("utf-8", "ignore"))),
+        ("lukupalvelu-teksti", lambda: _markdown_links(fetch(JINA + site_url, timeout=45, headers={"X-With-Links-Summary": "true"}).decode("utf-8", "ignore"))),
+    ]
+    tried = []
+    for name, attempt in attempts:
+        try:
+            links = attempt()
+        except urllib.error.HTTPError as exc:
+            tried.append(f"{name}:{exc.code}")
+            continue
+        except Exception as exc:  # noqa: BLE001 - verkko-ongelma, kokeillaan seuraavaa
+            tried.append(f"{name}:{type(exc).__name__}")
+            continue
+        if links:
+            return links, name
+        tried.append(f"{name}:0")
+    return {}, ", ".join(tried)
 
 
 def find_on_site(title: str, links: dict[str, str]) -> str | None:
     want = norm_title(title)
+    if not want:
+        return None
     if want in links:
         return links[want]
     # Linkki voi kattaa koko kortin (otsikko + ingressi): riittää, että se alkaa otsikolla.
+    if len(want) >= 12:
+        for text, url in links.items():
+            if text.startswith(want):
+                return url
+    # Pienet erot (välimerkit, lyhenteet): lähes sama otsikko kelpaa.
+    best, best_ratio = None, 0.0
     for text, url in links.items():
-        if len(want) >= 12 and text.startswith(want):
-            return url
-    return None
+        ratio = difflib.SequenceMatcher(None, want, text[: len(want) + 8]).ratio()
+        if ratio > best_ratio:
+            best, best_ratio = url, ratio
+    return best if best_ratio >= 0.9 and len(want) >= 12 else None
 
 
-def check_links(items: list[dict], sources: list[dict], cache_dir: Path | None, sites: dict[str, str] | None = None) -> list[dict]:
-    """Tarkistaa Sveriges Radion juttujen linkit. Syötteen numerolinkki (sverigesradio.se/artikel/123) ei
-    toimi kaikilla jutuilla (esim. Kulturnytt), vaikka juttu on verkossa toisella osoitteella. Silloin juttu
-    etsitään ohjelman verkkosivulta otsikon perusteella. Jos sitä ei löydy, juttu jätetään pois.
-    Toimiva linkki korvataan osoitteella, johon sivu ohjaa. Juttujen tunnisteet eivät muutu."""
+def check_links(items: list[dict], sources: list[dict], cache_dir: Path | None, sites: dict[str, str] | None = None) -> tuple[list[dict], dict]:
+    """Korjaa Sveriges Radion juttujen linkit. Syötteen numerolinkki (sverigesradio.se/artikel/123) ei toimi
+    kaikilla jutuilla (esim. Kulturnytt), vaikka juttu on verkossa toisella osoitteella. Siksi jokainen juttu
+    etsitään ensin ohjelman verkkosivulta otsikon perusteella, ja sieltä löytyvä osoite on aina oikea.
+    Muut linkit kokeillaan: jos sivua ei ole, juttu jätetään pois. Juttujen tunnisteet eivät muutu.
+    Palauttaa jutut ja tilaston, joka tallennetaan feed.jsoniin (näkyy ilman kirjautumista)."""
     wanted = {s["id"] for s in sources if s.get("check_links")}
-    links = sorted({it["link"] for it in items if it["source"] in wanted})
-    if not links:
-        return items
+    sr_items = [it for it in items if it["source"] in wanted]
+    stats: dict = {"tarkistettu": len(sr_items), "valimuistista": 0, "ohjelman_sivulta": 0, "poistettu": 0, "sivut": {}, "kokeilu": {}}
+    if not sr_items:
+        return items, stats
     cache: dict[str, str] = {}
-    cache_file = cache_dir / "linkit.json" if cache_dir else None
+    cache_file = cache_dir / "linkit2.json" if cache_dir else None
     if cache_file and cache_file.exists():
         try:
             cache = json.loads(cache_file.read_text(encoding="utf-8"))
         except ValueError:
             cache = {}
 
-    def probe(url: str) -> tuple[str, str | None, bool]:
-        """(linkki, lopullinen osoite tai None jos sivua ei ole, voiko tuloksen tallentaa)"""
-        if url in cache:
-            return url, cache[url], False
-        request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    resolved: dict[str, str] = {}  # juttu-id -> oikea osoite
+    for item in sr_items:
+        if cache.get(item["link"], item["link"]) != item["link"]:
+            resolved[item["id"]] = cache[item["link"]]
+            stats["valimuistista"] += 1
+
+    # 1) Ohjelman verkkosivu, yksi haku ohjelmaa kohden.
+    by_source: dict[str, list[dict]] = collections.defaultdict(list)
+    for item in sr_items:
+        if item["id"] not in resolved and (sites or {}).get(item["source"]):
+            by_source[item["source"]].append(item)
+    def load_site(source_id: str) -> tuple[str, dict[str, str], str]:
+        links, how = site_links(sites[source_id])
+        return source_id, links, how
+    with cf.ThreadPoolExecutor(max_workers=4) as pool:
+        site_results = list(pool.map(load_site, by_source))
+    for source_id, links, how in site_results:
+        matched, unmatched = 0, []
+        for item in by_source[source_id]:
+            url = find_on_site(item["title"], links)
+            if url:
+                resolved[item["id"]] = url
+                cache[item["link"]] = url
+                matched += 1
+            else:
+                unmatched.append(item["title"])
+        stats["ohjelman_sivulta"] += matched
+        stats["sivut"][source_id] = {"linkkeja": len(links), "tapa": how, "loytyi": matched, "ei_loytynyt": unmatched[:4]}
+
+    # 2) Loput kokeillaan suoraan.
+    def probe(item: dict) -> tuple[dict, str, str | None]:
+        """(juttu, tulos, lopullinen osoite tai None jos sivua ei ole)"""
+        url = item["link"]
+        request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/html,*/*;q=0.8"})
         try:
             with urllib.request.urlopen(request, timeout=12) as response:
                 final = response.geturl()
-            return url, final if final.startswith("https://") else url, True
+                body = response.read(400_000).decode("utf-8", "ignore")
+            if SR_NOT_FOUND_RE.search(body):
+                return item, "ei-sivua-200", None
+            if final.startswith("https://") and final != url:
+                return item, "ohjaus", final
+            return item, "ok", url
         except urllib.error.HTTPError as exc:
             if exc.code in (404, 410):
-                return url, None, False  # tarkistetaan uudelleen seuraavalla ajolla
-            return url, url, False
-        except Exception:
-            return url, url, False  # verkko-ongelma: juttu pidetään
+                return item, str(exc.code), None
+            return item, f"http-{exc.code}", url
+        except Exception as exc:  # noqa: BLE001 - verkko-ongelma: juttu pidetään
+            return item, type(exc).__name__, url
 
+    rest = [it for it in sr_items if it["id"] not in resolved]
+    dead: set[str] = set()
     with cf.ThreadPoolExecutor(max_workers=8) as pool:
-        results = list(pool.map(probe, links))
-    final = {url: dest for url, dest, _ in results}
-    for url, dest, cacheable in results:
-        if cacheable and dest:
-            cache[url] = dest
-    dead = {url for url, dest in final.items() if dest is None}
+        for item, outcome, dest in pool.map(probe, rest):
+            per_source = stats["kokeilu"].setdefault(item["source"], {})
+            per_source[outcome] = per_source.get(outcome, 0) + 1
+            if dest is None:
+                dead.add(item["id"])
+            else:
+                resolved[item["id"]] = dest
+                if outcome == "ohjaus":
+                    cache[item["link"]] = dest
 
-    # Toimimattomat linkit: haetaan oikea osoite ohjelman verkkosivulta (yksi haku ohjelmaa kohden).
-    found = 0
-    by_site: dict[str, list[dict]] = collections.defaultdict(list)
-    for item in items:
-        if item["link"] in dead and (sites or {}).get(item["source"]):
-            by_site[sites[item["source"]]].append(item)
-    for site, site_items in by_site.items():
-        on_site = site_links(site)
-        for item in site_items:
-            url = find_on_site(item["title"], on_site)
-            if url:
-                final[item["link"]] = url
-                cache[item["link"]] = url
-                dead.discard(item["link"])
-                found += 1
     kept = []
+    current = set()
     for item in items:
-        if item["link"] in dead:
+        if item["id"] in dead:
             continue
-        if item["link"] in final:
-            item["link"] = final[item["link"]]
+        if item["source"] in wanted:
+            current.add(item["link"])
+            item["link"] = resolved.get(item["id"], item["link"])
         kept.append(item)
-    print(f"Linkit: {len(links)} tarkistettu, {found} korjattu ohjelman sivulta, {len(dead)} jätetty pois (sivua ei ole).")
+    stats["poistettu"] = len(dead)
+    summary = (f"Linkit: {len(sr_items)} tarkistettu, {stats['valimuistista']} välimuistista, "
+               f"{stats['ohjelman_sivulta']} ohjelman sivulta, {len(dead)} jätetty pois (sivua ei ole).")
+    print(summary)
+    for source_id, info in stats["sivut"].items():
+        print(f"  {source_id}: sivulla {info['linkkeja']} linkkiä ({info['tapa']}), löytyi {info['loytyi']}")
+    print(f"  kokeilu: {json.dumps(stats['kokeilu'], ensure_ascii=False)}")
+    if os.environ.get("GITHUB_ACTIONS"):
+        # Huomautus näkyy Actions-ajon yhteenvedossa ilman kirjautumista.
+        print(f"::notice title=Sveriges Radion linkit::{summary} Sivut: "
+              + "; ".join(f"{k} {v['linkkeja']} ({v['tapa']})" for k, v in stats["sivut"].items()))
     if cache_file:
-        cache = {k: v for k, v in cache.items() if k in final}
+        cache = {k: v for k, v in cache.items() if k in current}
         cache_file.parent.mkdir(parents=True, exist_ok=True)
         cache_file.write_text(json.dumps(cache, ensure_ascii=False), encoding="utf-8")
-    return kept
+    return kept, stats
 
 
 def main() -> int:
@@ -525,7 +632,7 @@ def main() -> int:
         return 1
 
     sites = {sid: st.get("site") for sid, st in statuses.items() if st.get("site")}
-    items = check_links(items, sources, args.cache, sites)
+    items, link_stats = check_links(items, sources, args.cache, sites)
 
     if not args.no_images:
         add_images(items, args.cache)
@@ -540,6 +647,7 @@ def main() -> int:
         "sources": ordered_statuses,
         "reddit": reddit,
         "items": items,
+        "linkcheck": link_stats,
     }
     (args.out / "feed.json").write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"feed.json: {len(items)} juttua {sum(s['ok'] for s in ordered_statuses)}/{len(sources)} lähteestä.")
