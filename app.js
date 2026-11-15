@@ -743,9 +743,9 @@
 
   // Koko jutun teksti haetaan lukupalvelun kautta vasta, kun avaat jutun. Mitään ei tallenneta julkiselle sivulle.
   const READER = "https://r.jina.ai/";
-  const JUNK = /^(javascript måste|publicerad|uppdaterad|ansvarig utgivare|grunden i vår journalistik|svt:s nyheter ska stå|detta är en ai-tjänst|vi använder (nödvändiga )?kakor|dela( artikeln)?$|foto:|bild:|prenumerera|annons|inlägget .+ dök först upp)/i;
+  const JUNK = /^(javascript måste|publicerad|uppdaterad|ansvarig utgivare|grunden i vår journalistik|svt:s nyheter ska stå|detta är en ai-tjänst|vi använder (nödvändiga )?kakor|dela( artikeln)?$|foto:|bild:|prenumerera|annons|inlägget .+ dök först upp|sveriges radio ska granska|besöksadress|.*ai-genererat$|sändes \d)/i;
   const NOISE = "script,style,noscript,template,nav,footer,aside,form,button,select,svg,figure,figcaption,iframe,dialog,video,audio," +
-    "[role=navigation],[role=banner],[role=contentinfo],[role=complementary],[role=dialog],[aria-hidden=true],[hidden]";
+    "[role=navigation],[role=banner],[role=contentinfo],[role=complementary],[role=dialog],[hidden]";
 
   function extractArticle(html) {
     const doc = new DOMParser().parseFromString(html, "text/html");
@@ -753,6 +753,12 @@
     for (const n of doc.querySelectorAll(NOISE)) n.remove();
     for (const n of doc.querySelectorAll("header")) if (!n.closest("article")) n.remove();
     const clean = (n) => (n.textContent || "").replace(/\s+/g, " ").trim();
+    // Evästeikkuna voi merkitä koko sivun piilotetuksi (aria-hidden), kun ikkuna on auki
+    // (esim. Sveriges Radio). Poistetaan siksi vain pienet piilotetut osat, kuten kuvakkeet.
+    for (const n of doc.querySelectorAll("[aria-hidden=true]")) {
+      if (!n.isConnected || n.querySelector("p, h1, h2, article, main") || clean(n).length > 160) continue;
+      n.remove();
+    }
     const linkChars = (n) => [...n.querySelectorAll("a")].reduce((sum, a) => sum + clean(a).length, 0);
 
     const blocksOf = (root) => {
@@ -789,6 +795,42 @@
     return best.blocks;
   }
 
+  /** Varakeino: sama sivu lukupalvelun tekstimuodossa (markdown), jos HTML:stä ei saatu juttua irti. */
+  function extractMarkdown(md) {
+    const at = md.indexOf("Markdown Content:");
+    const body = at >= 0 ? md.slice(at + 17) : md;
+    const out = [];
+    const seen = new Set();
+    let total = 0;
+    for (const raw of body.split("\n")) {
+      const line = raw.trim();
+      if (!line || /^#\s/.test(line)) continue; // otsikko on jo näkyvissä
+      const linkText = [...line.matchAll(/\[([^\]]*)\]\([^)]*\)/g)].reduce((sum, m) => sum + m[1].length, 0);
+      const t = line
+        .replace(/^#{2,6}\s+|^[*+-]\s+|^\d+\.\s+|^>\s*/, "")
+        .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+        .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+        .replace(/[*_`]+/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (!t || seen.has(t) || linkText / t.length > 0.5) continue;
+      seen.add(t);
+      if (/^#{2,3}\s/.test(line)) {
+        if (t.length <= 120) out.push(["h", t]);
+        continue;
+      }
+      // Rivi ilman linkkejä (esim. "[Till startsidan](…)Sveriges Radio ska…") ja kuvatekstit (Foto:, Photo:).
+      const bare = line.replace(/!?\[[^\]]*\]\([^)]*\)/g, "").replace(/^[*+-]\s+/, "").trim();
+      if (t.length < 40 || !t.includes(" ") || !/\p{Ll}/u.test(t) || JUNK.test(t) || JUNK.test(bare)) continue;
+      if (/\b(foto|bild|photo|crédit photo)\s*:/i.test(t)) continue;
+      out.push(["p", t]);
+      total += t.length;
+      if (total > 15000) break;
+    }
+    const blocks = out.filter((b, i) => b[0] === "p" || (out[i + 1] && out[i + 1][0] === "p"));
+    return total >= 200 ? blocks : null;
+  }
+
   const articleCache = new Map(Object.entries(store.get("sl.art", {})));
   function cacheArticle(id, blocks) {
     articleCache.delete(id);
@@ -806,6 +848,12 @@
         if (res.ok) {
           const blocks = extractArticle(await res.text());
           if (blocks) return blocks;
+          // Varalla tekstimuoto: lukupalvelu poimii sen eri tavalla kuin HTML:n.
+          const md = await fetch(READER + url, { signal: ctrl.signal });
+          if (md.ok) {
+            const fromText = extractMarkdown(await md.text());
+            if (fromText) return fromText;
+          }
         }
       } catch (err) {
         console.warn(err);
