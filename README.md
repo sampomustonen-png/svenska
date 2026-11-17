@@ -38,7 +38,7 @@ Tallennetut sanat näkyvät tekstissä katkoviivalla alleviivattuina. *Repetera*
 - Jutun tekstin hakee ilmainen lukupalvelu [Jina Reader](https://jina.ai/reader) vasta, kun avaat jutun. Teksti näytetään vain sinulle, eikä sitä tallenneta julkiselle sivulle. Palvelulle välittyy vain jutun osoite.
 - Viimeksi avatut 40 juttua säilyvät puhelimessa, joten ne aukeavat uudelleen heti ja myös ilman verkkoa.
 - Jos haku epäonnistuu (esim. sivusto estää palvelun hetkellisesti), lukunäkymässä on tiivistelmä ja painike, joka avaa jutun alkuperäisellä sivulla.
-- Maksumuurin takana olevista jutuista saadaan vain näkyvä osa.
+- Juttu, joka on vain tilaajille, on merkitty kortissa lukolla. Siitä näytetään otsikko ja ingressi sanakirjan kanssa sekä nappi, joka avaa jutun lehden sivulla; koko tekstiä ei yritetä hakea. Päivitysajo tunnistaa lukitut jutut sivun rakenteisesta datasta (schema.org `isAccessibleForFree`), jota lehdet julkaisevat hakukoneita varten. Valikon *Källor*-kohdassa voit piilottaa ne kokonaan (*Låsta artiklar*). Päivän valikoimaan valitaan ensisijaisesti ilmaisia juttuja.
 
 Valikon (•••) kohdassa *Läs egen text med ordbok* voit lisäksi liittää minkä tahansa tekstin ja lukea sen sanakirjan kanssa.
 
@@ -62,7 +62,7 @@ GitHub hakee uudet jutut kolmen tunnin välein. Ensimmäinen ajo kestää noin 1
 
 | Vaihe | Tiedosto |
 |---|---|
-| Hakee syötteet, juttujen kuvat ja vaikeustasot, kirjoittaa `feed.json` ja `ordbok.json` | `scripts/build_feed.py` |
+| Hakee syötteet, juttujen kuvat, maksumuuritiedot ja vaikeustasot, kirjoittaa `feed.json` ja `ordbok.json` | `scripts/build_feed.py` |
 | Listaa sanat, joita sanakirjassa ei ole | `scripts/saknade_ord.js` |
 | Kääntää virkkeet ja puuttuvat sanat valmiiksi OPUS-MT-mallilla (Helsingin yliopisto) | `scripts/oversatt.py` |
 | Kopioi sivun tiedostot ja julkaisee sivun | `.github/workflows/uppdatera.yml` |
@@ -108,7 +108,7 @@ Lähteen voi myös piilottaa vain itseltään valikon kytkimellä muuttamatta ti
 
 Maailmanpolitiikan lähteet ovat SVT Utrikes, Svenska Yle utrikes, Europaportalen (EU ja Euroopan politiikka), Sveriges Radion *Konflikt* (viikoittainen ulkomaanmakasiini) sekä Expressenin ja Aftonbladetin uutisista ne, jotka koskevat länsimaiden politiikkaa. Jos jokin näistä näyttää valikossa tekstiä *fungerar inte*, sen syöteosoite on muuttunut.
 
-Dagens Nyheter, Svenska Dagbladet ja Hufvudstadsbladet ovat mukana, mutta pois päältä, koska suuri osa niiden jutuista on maksumuurin takana.
+Dagens Nyheterin ja Svenska Dagbladetin Världen- ja Kultur-osastot sekä Expressenin ja Aftonbladetin kulttuurisivut ovat mukana (lisätty 17.11., ei tarkistettu, koska sivustot on estetty testiympäristössä). DN:n ja SvD:n jutuista suuri osa on vain tilaajille, ja ne näkyvät lukittuina. Lehtien koko syötteet (`dn`, `svd`) ja Hufvudstadsbladet ovat tiedostossa pois päältä, koska niissä on paljon paikallis- ja urheilu-uutisia.
 
 ## Sanakirjan korjaaminen
 

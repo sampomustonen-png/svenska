@@ -41,6 +41,20 @@
       "check_links": true
     },
     {
+      "id": "dn-varlden",
+      "name": "DN, Världen",
+      "url": "https://www.dn.se/rss/varlden/",
+      "category": "varlden",
+      "_huom": "Lisätty 17.11. Ei tarkistettu: sivusto on estetty testiympäristössä, joten toimivuus näkyy vasta valikon lähdeluettelosta. Suuri osa jutuista on vain tilaajille: ne merkitään lukolla, ja niistä näytetään otsikko ja ingressi."
+    },
+    {
+      "id": "svd-varlden",
+      "name": "SvD, Världen",
+      "url": "https://www.svd.se/feed/articles/category/varlden.rss",
+      "category": "varlden",
+      "_huom": "Lisätty 17.11. Ei tarkistettu: sivusto on estetty testiympäristössä, joten toimivuus näkyy vasta valikon lähdeluettelosta. Suuri osa jutuista on vain tilaajille: ne merkitään lukolla, ja niistä näytetään otsikko ja ingressi."
+    },
+    {
       "id": "expressen-politik",
       "name": "Expressen, världspolitik",
       "url": "https://feeds.expressen.se/nyheter/",
@@ -92,6 +106,38 @@
       "url": "https://api.sr.se/api/rss/program/478",
       "category": "kultur",
       "check_links": true
+    },
+    {
+      "id": "dn-kultur",
+      "name": "DN, Kultur",
+      "url": "https://www.dn.se/rss/kultur/",
+      "category": "kultur",
+      "max_age_days": 6,
+      "_huom": "Lisätty 17.11. Ei tarkistettu: sivusto on estetty testiympäristössä, joten toimivuus näkyy vasta valikon lähdeluettelosta. Suuri osa jutuista on vain tilaajille: ne merkitään lukolla, ja niistä näytetään otsikko ja ingressi."
+    },
+    {
+      "id": "svd-kultur",
+      "name": "SvD, Kultur",
+      "url": "https://www.svd.se/feed/articles/category/kultur.rss",
+      "category": "kultur",
+      "max_age_days": 6,
+      "_huom": "Lisätty 17.11. Ei tarkistettu: sivusto on estetty testiympäristössä, joten toimivuus näkyy vasta valikon lähdeluettelosta. Mukana myös esseesivu Under strecket. Suuri osa jutuista on vain tilaajille: ne merkitään lukolla, ja niistä näytetään otsikko ja ingressi."
+    },
+    {
+      "id": "expressen-kultur",
+      "name": "Expressen, Kultur",
+      "url": "https://feeds.expressen.se/kultur/",
+      "category": "kultur",
+      "max_age_days": 6,
+      "_huom": "Lisätty 17.11. Ei tarkistettu: sivusto on estetty testiympäristössä, joten toimivuus näkyy vasta valikon lähdeluettelosta. Arvostettu kulttuurisivu; useimmat jutut ilmaisia."
+    },
+    {
+      "id": "aftonbladet-kultur",
+      "name": "Aftonbladet, Kultur",
+      "url": "https://rss.aftonbladet.se/rss2/small/pages/sections/kultur/",
+      "category": "kultur",
+      "max_age_days": 6,
+      "_huom": "Lisätty 17.11. Ei tarkistettu: sivusto on estetty testiympäristössä, joten toimivuus näkyy vasta valikon lähdeluettelosta. Arvostettu kulttuurisivu; useimmat jutut ilmaisia."
     },
     {
       "id": "yle-kultur",

@@ -22,6 +22,7 @@
     open: '<path d="M14 4.5h5.5V10M19.5 4.5L11 13M17 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-10A1.5 1.5 0 0 1 4 18.5v-10A1.5 1.5 0 0 1 5.5 7H10"/>',
     reddit: '<path d="M4 6.6A2.6 2.6 0 0 1 6.6 4h7A2.6 2.6 0 0 1 16.2 6.6v4a2.6 2.6 0 0 1-2.6 2.6H9.2L5.6 16v-2.8A2.6 2.6 0 0 1 4 10.6z"/><path d="M18.4 9h.1a2 2 0 0 1 2 2v3.6a2 2 0 0 1-2 2h-.4v2.6l-3-2.6h-2.6a2 2 0 0 1-1.8-1.2"/>',
     x: '<path d="M6 6l12 12M18 6L6 18"/>',
+    lock: '<rect x="5.5" y="10.5" width="13" height="9.5" rx="2.2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>',
     chev: '<path d="M9.5 5.5l6.5 6.5-6.5 6.5"/>',
   };
   const CATEGORY = {
@@ -77,6 +78,7 @@
     tipSeen: store.get("sl.tipSeen2", false),
     read: new Set(store.get("sl.read", [])),
     hiddenSources: new Set(store.get("sl.hiddenSources", [])),
+    hidePaywall: store.get("sl.hidePaywall", false),
     words: store.get("sl.ord", []),
     days: store.get("sl.days", []),
     daily: store.get("sl.dagens", null),
@@ -276,7 +278,7 @@
   /* ================================================================ päivän valikoima */
 
   function visibleItems() {
-    return state.items.filter((i) => !state.hiddenSources.has(i.source));
+    return state.items.filter((i) => !state.hiddenSources.has(i.source) && !(state.hidePaywall && i.paywall));
   }
   function pickDaily() {
     const key = dateKey();
@@ -288,7 +290,7 @@
     const all = visibleItems();
     const recent = all.filter((i) => i.ts > now() - 1.5 * DAY);
     const pool = (recent.length >= 12 ? recent : all).filter((i) => !state.read.has(i.id));
-    const rank = (a, b) => (a.level || 2) - (b.level || 2) || (b.image ? 1 : 0) - (a.image ? 1 : 0) || b.ts - a.ts;
+    const rank = (a, b) => (a.paywall ? 1 : 0) - (b.paywall ? 1 : 0) || (a.level || 2) - (b.level || 2) || (b.image ? 1 : 0) - (a.image ? 1 : 0) || b.ts - a.ts;
     const picked = [];
     const take = (test, n) => {
       for (const item of pool.filter(test).sort(rank)) {
@@ -430,6 +432,7 @@
       meta.append(el("span", { class: `lvl l${item.level}`, title: `Svårighet: ${LEVEL[item.level]}` },
         el("i"), el("i"), el("i"), el("b", { text: LEVEL[item.level] })));
     }
+    if (item.paywall) meta.append(el("span", { class: "lock", role: "img", title: "Artikeln kräver prenumeration", "aria-label": "Artikeln kräver prenumeration", html: svg("lock") }));
     meta.append(el("time", { datetime: item.published, text: ago(item.ts) }));
 
     const body = el("div", { class: "body" }, meta, wordify(item.title.normalize("NFC"), el("h2", { lang: "sv" })));
@@ -967,6 +970,13 @@
     const cached = articleCache.get(item.id);
     if (cached) { showBlocks(cached.b); return; }
 
+    if (item.paywall) {
+      if (item.summary) body.append(wordify(item.summary.normalize("NFC"), el("p", { class: "rp lead", lang: "sv" })));
+      body.append(el("p", { class: "rstatus locked", html: svg("lock") }, `Artikeln är bara för prenumeranter. Ingressen kan du läsa här med ordboken, och hela artikeln finns på ${host}.`));
+      if (link) body.append(el("a", { class: "pill primary", href: link, target: "_blank", rel: "noopener", text: `Öppna artikeln på ${host}` }));
+      markSaved(body);
+      return;
+    }
     if (item.summary) body.append(wordify(item.summary.normalize("NFC"), el("p", { class: "rp lead", lang: "sv" })));
     const status = el("p", { class: "rstatus" }, el("span", { class: "spin", "aria-hidden": "true" }), "Hämtar hela artikeln…");
     body.append(status);
@@ -1359,6 +1369,22 @@
   function renderSources() {
     const list = $("srcList");
     list.textContent = "";
+    const pw = state.items.filter((i) => i.paywall).length;
+    if (pw) {
+      const psw = el("input", { class: "switch", type: "checkbox", role: "switch", "aria-label": "Visa låsta artiklar" });
+      psw.checked = !state.hidePaywall;
+      psw.addEventListener("change", () => {
+        state.hidePaywall = !psw.checked;
+        store.set("sl.hidePaywall", state.hidePaywall);
+        state.daily = null;
+        renderView();
+        renderStatus();
+      });
+      list.append(el("div", { class: "row srcrow lockrow" },
+        el("span", { class: "lock", html: svg("lock") + "<b>Låsta artiklar</b>" }),
+        el("span", { class: "st", text: `${pw} texter` }),
+        psw));
+    }
     for (const s of state.sources) {
       const site = safeUrl(s.site);
       const name = site ? el("a", { href: site, target: "_blank", rel: "noopener", text: s.name }) : s.name;
@@ -1374,7 +1400,7 @@
       });
       list.append(el("div", { class: `row srcrow cat-${s.category}` },
         el("span", { class: "src" }, el("i"), name),
-        el("span", { class: `st${s.ok ? "" : " bad"}`, text: s.ok ? `${s.count} texter` : "fungerar inte" }),
+        el("span", { class: `st${s.ok ? "" : " bad"}`, text: s.ok ? `${s.count} texter` + (s.paywalled ? ` (${s.paywalled} låsta)` : "") : "fungerar inte" }),
         sw));
     }
     const ok = state.sources.filter((s) => s.ok).length;

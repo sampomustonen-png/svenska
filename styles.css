@@ -1143,3 +1143,13 @@ details[open] > summary.rowbtn .chev { transform: rotate(90deg); }
   background: color-mix(in srgb, var(--tint) 26%, transparent);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--tint) 26%, transparent);
 }
+
+/* Maksumuurin takana olevat jutut: lukko kortissa, lukunäkymässä ja valikossa */
+.lock { display: inline-flex; align-items: center; gap: 4px; flex: none; color: var(--label2); }
+.lock svg { width: 14px; height: 14px; stroke-width: 2.1; }
+.lock b { font-weight: 600; }
+.lockrow .lock { flex: 1; gap: 8px; color: var(--label); }
+.lockrow .lock b { font-weight: 500; }
+.lockrow .lock svg { width: 16px; height: 16px; color: var(--label2); }
+.rstatus.locked { align-items: flex-start; line-height: 1.5; }
+.rstatus.locked svg { flex: none; width: 17px; height: 17px; margin-top: 3px; }
