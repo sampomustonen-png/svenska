@@ -38,9 +38,9 @@ USER_AGENT = "Mozilla/5.0 (compatible; svensk-lasning/3.0; personal RSS reader)"
 CATEGORIES = {"varlden", "aktuellt", "kultur", "latt"}
 DEFAULT_MAX_AGE_DAYS = 4
 MAX_ITEMS_PER_SOURCE = 25
-MAX_ITEMS_TOTAL = 400
+MAX_ITEMS_TOTAL = 500
 SUMMARY_CHARS = 360
-IMAGE_FETCH_LIMIT = 120  # kuinka monen uuden jutun kuva haetaan yhdellä ajolla
+PAGE_FETCH_LIMIT = 200  # kuinka monen uuden jutun sivu (kuva ja maksumuuri) haetaan yhdellä ajolla
 
 # Sama sanojen pilkkominen kuin selaimessa.
 WORD_RE = re.compile(r"[^\W\d_]+(?:[-’'][^\W\d_]+)*")
@@ -344,35 +344,58 @@ def load_config(path: Path) -> tuple[list[dict], list[dict]]:
     return sources, reddit
 
 
-def add_images(items: list[dict], cache_dir: Path | None) -> None:
-    """Hakee jokaiselle jutulle jakokuvan (og:image). Tulokset säilyvät välimuistissa ajojen välillä."""
-    cache: dict[str, str | None] = {}
-    cache_file = cache_dir / "kuvat.json" if cache_dir else None
+# Maksumuuri: uutissivut kertovat hakukoneille sivun rakenteisessa datassa (schema.org, JSON-LD),
+# onko juttu kaikkien luettavissa ("isAccessibleForFree": false). Tieto luetaan samasta sivusta kuin
+# jakokuva. Vain sivun omat JSON-LD-lohkot tutkitaan, ettei muiden juttujen esittelyt sekoita tulosta.
+LDJSON_RE = re.compile(r"<script[^>]+application/ld\+json[^>]*>(.*?)</script>", re.S | re.I)
+NOT_FREE_RE = re.compile(r'"isAccessibleForFree"\s*:\s*"?(?:false|no)\b', re.I)
+LOCKED_META_RE = re.compile(
+    r"<meta[^>]+(?:property|name)=[\"']article:content_tier[\"'][^>]+content=[\"']locked"
+    r"|<meta[^>]+content=[\"']locked[\"'][^>]+(?:property|name)=[\"']article:content_tier",
+    re.I,
+)
+
+
+def is_paywalled(page: str) -> bool:
+    if any(NOT_FREE_RE.search(block) for block in LDJSON_RE.findall(page)):
+        return True
+    return bool(LOCKED_META_RE.search(page))
+
+
+def add_page_info(items: list[dict], cache_dir: Path | None) -> None:
+    """Hakee jokaisen jutun sivulta jakokuvan (og:image) ja tiedon, onko juttu maksumuurin takana.
+    Tulokset säilyvät välimuistissa ajojen välillä. Maksulliset jutut saavat merkinnän "paywall": true,
+    jolloin sovellus näyttää niistä otsikon ja ingressin eikä yritä hakea koko tekstiä."""
+    cache: dict[str, dict] = {}
+    cache_file = cache_dir / "sivut.json" if cache_dir else None
     if cache_file and cache_file.exists():
         try:
             cache = json.loads(cache_file.read_text(encoding="utf-8"))
         except ValueError:
             cache = {}
 
-    todo = [it for it in items if it["link"] not in cache][:IMAGE_FETCH_LIMIT]
+    todo = [it for it in items if it["link"] not in cache][:PAGE_FETCH_LIMIT]
 
-    def find(item: dict) -> tuple[str, str | None]:
+    def find(item: dict) -> tuple[str, dict]:
         try:
-            page = fetch(item["link"], timeout=12, limit=200_000).decode("utf-8", "ignore")
-            return item["link"], og_image(page)
+            page = fetch(item["link"], timeout=12, limit=800_000).decode("utf-8", "ignore")
+            return item["link"], {"i": og_image(page), "p": 1 if is_paywalled(page) else 0}
         except Exception:
-            return item["link"], None
+            return item["link"], {"i": None, "p": 0}
 
     with cf.ThreadPoolExecutor(max_workers=6) as pool:
-        for link, image in pool.map(find, todo):
-            cache[link] = image
-    found = 0
+        for link, info in pool.map(find, todo):
+            cache[link] = info
+    found = locked = 0
     for item in items:
-        better = cache.get(item["link"])
-        if better:
-            item["image"] = better
+        info = cache.get(item["link"]) or {}
+        if info.get("i"):
+            item["image"] = info["i"]
             found += 1
-    print(f"Kuvat: {found}/{len(items)} jutulla jakokuva ({len(todo)} haettu nyt).")
+        if info.get("p"):
+            item["paywall"] = True
+            locked += 1
+    print(f"Sivut: {found}/{len(items)} jutulla jakokuva, {locked} maksumuurin takana ({len(todo)} haettu nyt).")
 
     if cache_file:
         live = {it["link"] for it in items}
@@ -635,7 +658,9 @@ def main() -> int:
     items, link_stats = check_links(items, sources, args.cache, sites)
 
     if not args.no_images:
-        add_images(items, args.cache)
+        add_page_info(items, args.cache)
+        for status in ordered_statuses:
+            status["paywalled"] = sum(1 for it in items if it["source"] == status["id"] and it.get("paywall"))
 
     zipf = ordbok_data.zipf_table(args.data)
     for item in items:
